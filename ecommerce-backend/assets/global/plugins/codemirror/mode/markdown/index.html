@@ -1,55 +1,65 @@
-<!doctype html>
+<!DOCTYPE html>
 <title>CodeMirror: Markdown mode</title>
 <meta charset="utf-8" />
-<link rel=stylesheet href="../../doc/docs.css">
-<link rel="stylesheet" href="../../lib/codemirror.css">
+<link rel="stylesheet" href="../../doc/docs.css" />
+<link rel="stylesheet" href="../../lib/codemirror.css" />
 <script src="../../lib/codemirror.js"></script>
 <script src="../../addon/edit/continuelist.js"></script>
 <script src="../xml/xml.js"></script>
 <script src="markdown.js"></script>
 <style type="text/css">
-    .CodeMirror {
-        border-top: 1px solid black;
-        border-bottom: 1px solid black;
-    }
-    
-    .cm-s-default .cm-trailing-space-a:before,
-    .cm-s-default .cm-trailing-space-b:before {
-        position: absolute;
-        content: "\00B7";
-        color: #777;
-    }
-    
-    .cm-s-default .cm-trailing-space-new-line:before {
-        position: absolute;
-        content: "\21B5";
-        color: #777;
-    }
+  .CodeMirror {
+    border-top: 1px solid black;
+    border-bottom: 1px solid black;
+  }
+
+  .cm-s-default .cm-trailing-space-a:before,
+  .cm-s-default .cm-trailing-space-b:before {
+    position: absolute;
+    content: "\00B7";
+    color: #777;
+  }
+
+  .cm-s-default .cm-trailing-space-new-line:before {
+    position: absolute;
+    content: "\21B5";
+    color: #777;
+  }
 </style>
-<div id=nav>
-    <a href="http://codemirror.net">
-        <h1>CodeMirror</h1>
-        <img id=logo src="../../doc/logo.png">
-    </a>
-    <ul>
-        <li>
-            <a href="../../index.html">Home</a>
-            <li>
-                <a href="../../doc/manual.html">Manual</a>
-                <li>
-                    <a href="https://github.com/codemirror/codemirror">Code</a>
-    </ul>
-    <ul>
-        <li>
-            <a href="../index.html">Language modes</a>
-            <li>
-                <a class=active href="#">Markdown</a>
-    </ul>
+<div id="nav">
+  <a href="http://codemirror.net">
+    <h1>CodeMirror</h1>
+    <img id="logo" src="../../doc/logo.png" />
+  </a>
+  <ul>
+    <li>
+      <a href="../../index.html">Home</a>
+    </li>
+
+    <li>
+      <a href="../../doc/manual.html">Manual</a>
+    </li>
+
+    <li>
+      <a href="https://github.com/codemirror/codemirror">Code</a>
+    </li>
+  </ul>
+
+  <ul>
+    <li>
+      <a href="../index.html">Language modes</a>
+    </li>
+
+    <li>
+      <a class="active" href="#">Markdown</a>
+    </li>
+  </ul>
 </div>
 <article>
-    <h2>Markdown mode</h2>
-    <form>
-        <textarea id="code" name="code"> Markdown: Basics ================ &lt;ul id="ProjectSubmenu"&gt; &lt;li&gt;&lt;a href="/projects/markdown/" title="Markdown Project Page"&gt;Main&lt;/a&gt;&lt;/li&gt; &lt;li&gt;&lt;a class="selected" title="Markdown Basics"&gt;Basics&lt;/a&gt;&lt;/li&gt;
+  <h2>Markdown mode</h2>
+  <form>
+    <textarea id="code" name="code">
+ Markdown: Basics ================ &lt;ul id="ProjectSubmenu"&gt; &lt;li&gt;&lt;a href="/projects/markdown/" title="Markdown Project Page"&gt;Main&lt;/a&gt;&lt;/li&gt; &lt;li&gt;&lt;a class="selected" title="Markdown Basics"&gt;Basics&lt;/a&gt;&lt;/li&gt;
             &lt;li&gt;&lt;a href="/projects/markdown/syntax" title="Markdown Syntax Documentation"&gt;Syntax&lt;/a&gt;&lt;/li&gt; &lt;li&gt;&lt;a href="/projects/markdown/license" title="Pricing and License Information"&gt;License&lt;/a&gt;&lt;/li&gt;
             &lt;li&gt;&lt;a href="/projects/markdown/dingus" title="Online Markdown Web Form"&gt;Dingus&lt;/a&gt;&lt;/li&gt; &lt;/ul&gt; Getting the Gist of Markdown's Formatting Syntax ------------------------------------------------ This page offers
             a brief overview of what it's like to use Markdown. The [syntax page] [s] provides complete, detailed documentation for every feature, but Markdown should be very easy to pick up simply by looking at a few examples of it in action. The examples
@@ -82,25 +92,27 @@
             instead of decimal-encoded entites like &lt;code&gt;&amp;amp;#8212;&lt;/code&gt;.&lt;/p&gt; To specify an entire block of pre-formatted code, indent every line of the block by 4 spaces or 1 tab. Just like with code spans, `&amp;`, `&lt;`,
             and `&gt;` characters will be escaped automatically. Markdown: If you want your page to validate under XHTML 1.0 Strict, you've got to put paragraph tags in your blockquotes: &lt;blockquote&gt; &lt;p&gt;For example.&lt;/p&gt; &lt;/blockquote&gt;
             Output: &lt;p&gt;If you want your page to validate under XHTML 1.0 Strict, you've got to put paragraph tags in your blockquotes:&lt;/p&gt; &lt;pre&gt;&lt;code&gt;&amp;lt;blockquote&amp;gt; &amp;lt;p&amp;gt;For example.&amp;lt;/p&amp;gt; &amp;lt;/blockquote&amp;gt;
-            &lt;/code&gt;&lt;/pre&gt; </textarea>
-    </form>
-    <script>
-        var editor = CodeMirror.fromTextArea(document.getElementById("code"),
-        {
-            mode: 'markdown',
-            lineNumbers: true,
-            theme: "default",
-            extraKeys:
-            {
-                "Enter": "newlineAndIndentContinueMarkdownList"
-            }
-        });
-    </script>
-    <p>Optionally depends on the XML mode for properly highlighted inline XML blocks.</p>
-    <p>
-        <strong>MIME types defined:</strong> <code>text/x-markdown</code>.</p>
-    <p>
-        <strong>Parsing/Highlighting Tests:</strong>
-        <a href="../../test/index.html#markdown_*">normal</a>,
-        <a href="../../test/index.html#verbose,markdown_*">verbose</a>.</p>
+            &lt;/code&gt;&lt;/pre&gt; </textarea
+    >
+  </form>
+  <script>
+    var editor = CodeMirror.fromTextArea(document.getElementById("code"), {
+      mode: "markdown",
+      lineNumbers: true,
+      theme: "default",
+      extraKeys: {
+        Enter: "newlineAndIndentContinueMarkdownList",
+      },
+    });
+  </script>
+  <p>
+    Optionally depends on the XML mode for properly highlighted inline XML
+    blocks.
+  </p>
+  <p><strong>MIME types defined:</strong> <code>text/x-markdown</code>.</p>
+  <p>
+    <strong>Parsing/Highlighting Tests:</strong>
+    <a href="../../test/index.html#markdown_*">normal</a>,
+    <a href="../../test/index.html#verbose,markdown_*">verbose</a>.
+  </p>
 </article>

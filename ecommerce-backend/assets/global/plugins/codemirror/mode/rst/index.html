@@ -1,41 +1,51 @@
-<!doctype html>
+<!DOCTYPE html>
 <title>CodeMirror: reStructuredText mode</title>
 <meta charset="utf-8" />
-<link rel=stylesheet href="../../doc/docs.css">
-<link rel="stylesheet" href="../../lib/codemirror.css">
+<link rel="stylesheet" href="../../doc/docs.css" />
+<link rel="stylesheet" href="../../lib/codemirror.css" />
 <script src="../../lib/codemirror.js"></script>
 <script src="../../addon/mode/overlay.js"></script>
 <script src="rst.js"></script>
 <style type="text/css">
-    .CodeMirror {
-        border-top: 1px solid black;
-        border-bottom: 1px solid black;
-    }
+  .CodeMirror {
+    border-top: 1px solid black;
+    border-bottom: 1px solid black;
+  }
 </style>
-<div id=nav>
-    <a href="http://codemirror.net">
-        <h1>CodeMirror</h1>
-        <img id=logo src="../../doc/logo.png">
-    </a>
-    <ul>
-        <li>
-            <a href="../../index.html">Home</a>
-            <li>
-                <a href="../../doc/manual.html">Manual</a>
-                <li>
-                    <a href="https://github.com/codemirror/codemirror">Code</a>
-    </ul>
-    <ul>
-        <li>
-            <a href="../index.html">Language modes</a>
-            <li>
-                <a class=active href="#">reStructuredText</a>
-    </ul>
+<div id="nav">
+  <a href="http://codemirror.net">
+    <h1>CodeMirror</h1>
+    <img id="logo" src="../../doc/logo.png" />
+  </a>
+  <ul>
+    <li>
+      <a href="../../index.html">Home</a>
+    </li>
+
+    <li>
+      <a href="../../doc/manual.html">Manual</a>
+    </li>
+
+    <li>
+      <a href="https://github.com/codemirror/codemirror">Code</a>
+    </li>
+  </ul>
+
+  <ul>
+    <li>
+      <a href="../index.html">Language modes</a>
+    </li>
+
+    <li>
+      <a class="active" href="#">reStructuredText</a>
+    </li>
+  </ul>
 </div>
 <article>
-    <h2>reStructuredText mode</h2>
-    <form>
-        <textarea id="code" name="code"> .. This is an excerpt from Sphinx documentation: http://sphinx.pocoo.org/_sources/rest.txt .. highlightlang:: rest .. _rst-primer: reStructuredText Primer ======================= This section is a brief introduction to reStructuredText (reST)
+  <h2>reStructuredText mode</h2>
+  <form>
+    <textarea id="code" name="code">
+ .. This is an excerpt from Sphinx documentation: http://sphinx.pocoo.org/_sources/rest.txt .. highlightlang:: rest .. _rst-primer: reStructuredText Primer ======================= This section is a brief introduction to reStructuredText (reST)
             concepts and syntax, intended to provide authors with enough information to author documents productively. Since reST was designed to be a simple, unobtrusive markup language, this will not take too long. .. seealso:: The authoritative `reStructuredText
             User Documentation &lt;http://docutils.sourceforge.net/rst.html&gt;`_. The "ref" links in this document link to the description of the individual constructs in the reST reference. Paragraphs ---------- The paragraph (:duref:`ref &lt;paragraphs&gt;`)
             is the most basic block in a reST document. Paragraphs are simply chunks of text separated by one or more blank lines. As in Python, indentation is significant in reST, so all lines of the same paragraph must be left-aligned to the same level
@@ -98,16 +108,20 @@
             write them as Unicode characters, one has to specify an encoding. Sphinx assumes source files to be encoded in UTF-8 by default; you can change this with the :confval:`source_encoding` config value. Gotchas ------- There are some problems
             one commonly runs into while authoring reST documents: * **Separation of inline markup:** As said above, inline markup spans must be separated from the surrounding text by non-word characters, you have to use a backslash-escaped space to get
             around that. See `the reference &lt;http://docutils.sf.net/docs/ref/rst/restructuredtext.html#inline-markup&gt;`_ for the details. * **No nested inline markup:** Something like ``*see :func:`foo`*`` is not possible. .. rubric:: Footnotes ..
-            [1] When the default domain contains a :rst:dir:`class` directive, this directive will be shadowed. Therefore, Sphinx re-exports it as :rst:dir:`rst-class`. </textarea>
-    </form>
-    <script>
-        var editor = CodeMirror.fromTextArea(document.getElementById("code"),
-        {
-            lineNumbers: true,
-        });
-    </script>
-    <p> The <code>python</code> mode will be used for highlighting blocks containing Python/IPython terminal sessions: blocks starting with <code>&gt;&gt;&gt;</code> (for Python) or <code>In [num]:</code> (for IPython). Further, the <code>stex</code> mode
-        will be used for highlighting blocks containing LaTex code. </p>
-    <p>
-        <strong>MIME types defined:</strong> <code>text/x-rst</code>.</p>
+            [1] When the default domain contains a :rst:dir:`class` directive, this directive will be shadowed. Therefore, Sphinx re-exports it as :rst:dir:`rst-class`. </textarea
+    >
+  </form>
+  <script>
+    var editor = CodeMirror.fromTextArea(document.getElementById("code"), {
+      lineNumbers: true,
+    });
+  </script>
+  <p>
+    The <code>python</code> mode will be used for highlighting blocks containing
+    Python/IPython terminal sessions: blocks starting with
+    <code>&gt;&gt;&gt;</code> (for Python) or <code>In [num]:</code> (for
+    IPython). Further, the <code>stex</code> mode will be used for highlighting
+    blocks containing LaTex code.
+  </p>
+  <p><strong>MIME types defined:</strong> <code>text/x-rst</code>.</p>
 </article>

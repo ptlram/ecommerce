@@ -13,11 +13,10 @@ suits your purposes better.
 
 [npm entry](https://www.npmjs.com/package/pwstrength-bootstrap)
 
-
 ## Requirements
 
-* jQuery 1.7 or higher
-* Bootstrap 2, 3 or 4
+- jQuery 1.7 or higher
+- Bootstrap 2, 3 or 4
 
 ### Not using Bootstrap?
 
@@ -27,8 +26,7 @@ forgetting completely about the UI feedback.
 
 Forks to use it with another frameworks that I know of:
 
-* [Zurb Foundation fork by edtownend](https://github.com/edtownend/jquery.pwstrength.foundation)
-
+- [Zurb Foundation fork by edtownend](https://github.com/edtownend/jquery.pwstrength.foundation)
 
 ## How to use it
 
@@ -37,27 +35,25 @@ meter to. For example, to use it on all the password fields with the default
 examples:
 
 ```javascript
-    $(':password').pwstrength();
+$(":password").pwstrength();
 ```
 
 To apply it only to one input and change the options:
 
 ```javascript
-    $('#passwd1').pwstrength({
-        ui: { showVerdictsInsideProgressBar: true }
-    });
+$("#passwd1").pwstrength({
+  ui: { showVerdictsInsideProgressBar: true },
+});
 ```
 
 ## Options
 
 Click here to find [the complete list of options for the plugin](OPTIONS.md).
 
-
 ## Methods
 
 Once the plugin has been initialized, it is possible to interact with it
 through the methods.
-
 
 ### Force an update
 
@@ -69,7 +65,6 @@ callback will be called.
 $("#passwdfield").pwstrength("forceUpdate");
 ```
 
-
 ### Remove the strength meter
 
 This will remove the data associated to the meter, and the UI elements.
@@ -78,24 +73,34 @@ This will remove the data associated to the meter, and the UI elements.
 $("#passwdfield").pwstrength("destroy");
 ```
 
-
 ### Adding Custom Rules
 
 The plugin comes with the functionality to easily define your own custom rules.
 The format is as follows:
 
 ```javascript
-$("#passwdfield").pwstrength("addRule", "ruleName", function (options, word, score) {}, rule_score, rule_enabled);
+$("#passwdfield").pwstrength(
+  "addRule",
+  "ruleName",
+  function (options, word, score) {},
+  rule_score,
+  rule_enabled
+);
 ```
 
 Example:
 
 ```javascript
-$("#passwdfield").pwstrength("addRule", "testRule", function (options, word, score) {
+$("#passwdfield").pwstrength(
+  "addRule",
+  "testRule",
+  function (options, word, score) {
     return word.match(/[a-z].[0-9]/) && score;
-}, 10, true);
+  },
+  10,
+  true
+);
 ```
-
 
 ### Change the score associated to a rule
 
@@ -107,7 +112,6 @@ $("#passwdfield").pwstrength("changeScore", "wordSequences", -100);
 
 That would penalize even more the presence of sequences in the password.
 
-
 ### Activate and deactivate rules
 
 It is also possible to activate or deactivate rules. It as simple as:
@@ -118,27 +122,30 @@ $("#passwdfield").pwstrength("ruleActive", "wordSequences", false);
 
 That would avoid looking for sequences in the password being tested.
 
-
 ## Callback Functions
 
-The plugin provides two callback functions, onLoad and onKeyUp.  You can use
+The plugin provides two callback functions, onLoad and onKeyUp. You can use
 them like this:
 
 ```javascript
 $(document).ready(function () {
-    var options = {};
-    options.common = {
-        onLoad: function () {
-            $('#messages').text('Start typing password');
-        },
-        onKeyUp: function (evt, data) {
-            $("#length-help-text").text("Current length: " + $(evt.target).val().length + " and score: " + data.score);
-        }
-    };
-    $(':password').pwstrength(options);
+  var options = {};
+  options.common = {
+    onLoad: function () {
+      $("#messages").text("Start typing password");
+    },
+    onKeyUp: function (evt, data) {
+      $("#length-help-text").text(
+        "Current length: " +
+          $(evt.target).val().length +
+          " and score: " +
+          data.score
+      );
+    },
+  };
+  $(":password").pwstrength(options);
 });
 ```
-
 
 ## Extra security
 
@@ -149,17 +156,16 @@ is to activate this two rules:
 
 ```javascript
 $(document).ready(function () {
-    var options = {};
-    options.rules = {
-        activated: {
-            wordTwoCharacterClasses: true,
-            wordRepetitions: true
-        }
-    };
-    $(':password').pwstrength(options);
+  var options = {};
+  options.rules = {
+    activated: {
+      wordTwoCharacterClasses: true,
+      wordRepetitions: true,
+    },
+  };
+  $(":password").pwstrength(options);
 });
 ```
-
 
 ## Examples
 
@@ -189,7 +195,6 @@ sudo npm install -g grunt-cli
 
 Now you have the grunt command line utility installed globally.
 
-
 ### Bundle and minified
 
 To generate the bundle and the minified file you only need to execute this in
@@ -203,7 +208,6 @@ grunt
 It will check the source files, and build a minified version with its
 corresponding source map. The generated files will be available in the `dist`
 directory.
-
 
 ### Testing
 

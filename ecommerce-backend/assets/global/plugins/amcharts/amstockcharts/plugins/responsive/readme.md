@@ -2,15 +2,14 @@
 
 Version: 1.0.1
 
-
 ## Description
 
 Use this plugin to enable "responsive" features for amCharts' JavaScript Charts,
 JavaScript Stock Chart, or JavaScript Maps.
 
 "Responsive" chart or map will modify it's features dynamically (even as you
-resize the container) based on the available area. For example: a full fledged 
-line chart with legend guides, labels, titles and other elements will be 
+resize the container) based on the available area. For example: a full fledged
+line chart with legend guides, labels, titles and other elements will be
 displayed in all its glory if container is big enough.
 
 If the container shrinks (i.e. you resize a browser window or view it on an
@@ -26,7 +25,6 @@ enable "responsive" plugin for your chart instance.
 
 You can modify those defaults rules, or make your own list. The plugin allows
 that. (see further down this file for instructions)
-
 
 ## Usage
 
@@ -58,7 +56,6 @@ chart.responsive = {
 ```
 
 That's it.
-
 
 ## Advanced use
 
@@ -124,10 +121,10 @@ you would do something like this:
 Please note that there are several other conditional properties besides the ones
 that deal with chart's dimensions:
 
-* "rotate" (true|false) - set this property if you want to make this rule
+- "rotate" (true|false) - set this property if you want to make this rule
   applicable to rotated serial chart only (i.e. bar chart)
 
-* "legendPosition" ("top|bottom|left|right") - set this property if you want the
+- "legendPosition" ("top|bottom|left|right") - set this property if you want the
   rule applied only when the chart legend is set to particular position.
   Please note that this does not check whether the legend is enabled at all.
 
@@ -289,7 +286,6 @@ When your custom rules are combined with pre-defined ones, yours are appended at
 the end of the list. This means that your rules will always have the "last
 word".
 
-
 ## Requirements
 
 This plugin requires at least 3.13 version of JavaScript Charts, JavaScript
@@ -298,12 +294,10 @@ Stock Chart or JavaScript Maps.
 Any older versions will be ignored by this plugin. The charts will function but
 no responsive rules will be applied to them.
 
-
 ## Demos
 
 Run the index.html in the subdirectory /examples. It will allow viewing misc
 chart types at various resolutions.
-
 
 ## Extending this plugin
 
@@ -318,7 +312,6 @@ https://github.com/amcharts/responsive
 We're curious types. Please let us know (contact@amcharts.com) if you do create
 something new out of this plugin.
 
-
 ## License
 
 This plugin is licensed under Apache License 2.0.
@@ -330,31 +323,34 @@ Please see attached file "license.txt" for the complete license or online here:
 
 http://www.apache.org/licenses/LICENSE-2.0
 
-
 ## Contact us
 
-* Email:contact@amcharts.com
-* Web: http://www.amcharts.com/
-* Facebook: https://www.facebook.com/amcharts
-* Twitter: https://twitter.com/amcharts
-
+- Email:contact@amcharts.com
+- Web: http://www.amcharts.com/
+- Facebook: https://www.facebook.com/amcharts
+- Twitter: https://twitter.com/amcharts
 
 ## Changelog
 
 ### 1.0.1
-* Fixed bug with overrides being overwritten with chart object in some cases
-* V3.14 compatibility
+
+- Fixed bug with overrides being overwritten with chart object in some cases
+- V3.14 compatibility
 
 ### 1.0
-* Added support for GANTT chart type (available sin JavaScript Charts V3.14)
+
+- Added support for GANTT chart type (available sin JavaScript Charts V3.14)
 
 ### 0.9.2
-* Fixed a custom rules being applied in the wrong order
+
+- Fixed a custom rules being applied in the wrong order
 
 ### 0.9.1
-* Made all examples use minified version of the plugin
-* Introduced removal of grid lines on micro charts
-* Tweaked legend hiding dimensions for pie chart
+
+- Made all examples use minified version of the plugin
+- Introduced removal of grid lines on micro charts
+- Tweaked legend hiding dimensions for pie chart
 
 ### 0.9
-* Initial release
+
+- Initial release

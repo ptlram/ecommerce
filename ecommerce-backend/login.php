@@ -23,11 +23,11 @@ if ($_SERVER["REQUEST_METHOD"] == "POST") {
             if ($user["role"] == "admin") {
                 header("location: ./admin/dashboard.php");
             } else {
-                header("location: ./user/index.php");
+                header("location: ./user/index.html");
             }
             exit();
         } else {
-            echo "<script>alert('Invalid email or password!'); window.location.href='./index.php'</script>";
+            echo "<script>alert('Invalid email or password!'); window.location.href='./index.html'</script>";
         }
     } catch (PDOException $e) {
         echo "Error: " . $e->getMessage();

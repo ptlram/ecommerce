@@ -16,9 +16,9 @@ Please see the [CONTRIBUTING](https://github.com/makeusabrew/bootbox/blob/master
 ## Running Tests [![Build Status](https://api.travis-ci.org/makeusabrew/bootbox.svg)](http://travis-ci.org/makeusabrew/bootbox)
 
 Tests are run using [Karma](http://karma-runner.github.io/0.8/index.html) using the Mocha test adapter.
-To run the tests yourself, simply run ```npm install``` within the project followed by ```npm test```.
+To run the tests yourself, simply run `npm install` within the project followed by `npm test`.
 Please note that this will require [PhantomJS](http://phantomjs.org/) being installed and in your path - if
-it is not, you may run the tests and capture browsers manually by running ```karma start``` from the root
+it is not, you may run the tests and capture browsers manually by running `karma start` from the root
 of the project.
 
 The project is also hosted on [Travis CI](https://travis-ci.org/makeusabrew/bootbox) - when submitting
@@ -29,14 +29,14 @@ pull requests **please** ensure your tests pass as failing requests will be reje
 
 The repository no longer contains a minified bootbox.min.js file - this is now only generated
 [for releases](https://github.com/makeusabrew/bootbox/releases). To build your own minified copy
-for use in development simply run ```npm install``` if you haven't already, followed by ```grunt uglify```.
+for use in development simply run `npm install` if you haven't already, followed by `grunt uglify`.
 This will generate a bootbox.min.js file in your working directory.
 
 ## A note on Bootstrap dependencies
 
 Bootbox **4.0.0** is the first release to support Bootstrap 3.0.0.
 
-Bootbox **3.3.0** is the *last* release to support Bootstrap 2.2.x.
+Bootbox **3.3.0** is the _last_ release to support Bootstrap 2.2.x.
 
 Much more dependency information can be found [on the Bootbox website](http://bootboxjs.com/#dependencies).
 
@@ -51,20 +51,20 @@ There is no new major (e.g. 5.x) release on the roadmap at present.
 
 ### Latest Release: 4.4.0
 
-* Allow `backdrop` options of `true` and `false` to dismiss modals
-* Pass dialog as `this` value in callbacks
-* Bootstrap 3.3.2 compatibility
-* jQuery 1.11.2 compatibility
-* Add support for `maxlength` prompt input attribute
-* Gracefully detect lack of Bootstrap library rather than crashing
-* Expose `addLocale` and `removeLocale` for custom locale settings
-* Expose `setLocale` helper to select a locale rather than using `setDefaults("locale", ...)`
-* Add Hungarian locale
-* Add Croatian locale
-* Add Bulgarian locale
-* Add Thai locale
-* Add Persian locale
-* Add Albanian locale
+- Allow `backdrop` options of `true` and `false` to dismiss modals
+- Pass dialog as `this` value in callbacks
+- Bootstrap 3.3.2 compatibility
+- jQuery 1.11.2 compatibility
+- Add support for `maxlength` prompt input attribute
+- Gracefully detect lack of Bootstrap library rather than crashing
+- Expose `addLocale` and `removeLocale` for custom locale settings
+- Expose `setLocale` helper to select a locale rather than using `setDefaults("locale", ...)`
+- Add Hungarian locale
+- Add Croatian locale
+- Add Bulgarian locale
+- Add Thai locale
+- Add Persian locale
+- Add Albanian locale
 
 For a full list of releases and changes please see [the changelog](https://github.com/makeusabrew/bootbox/blob/master/CHANGELOG.md).
 
