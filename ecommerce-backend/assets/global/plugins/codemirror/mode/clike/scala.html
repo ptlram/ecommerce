@@ -1,36 +1,46 @@
-<!doctype html>
+<!DOCTYPE html>
 <title>CodeMirror: Scala mode</title>
 <meta charset="utf-8" />
-<link rel=stylesheet href="../../doc/docs.css">
-<link rel="stylesheet" href="../../lib/codemirror.css">
-<link rel="stylesheet" href="../../theme/ambiance.css">
+<link rel="stylesheet" href="../../doc/docs.css" />
+<link rel="stylesheet" href="../../lib/codemirror.css" />
+<link rel="stylesheet" href="../../theme/ambiance.css" />
 <script src="../../lib/codemirror.js"></script>
 <script src="../../addon/edit/matchbrackets.js"></script>
 <script src="clike.js"></script>
-<div id=nav>
-    <a href="http://codemirror.net">
-        <h1>CodeMirror</h1>
-        <img id=logo src="../../doc/logo.png">
-    </a>
-    <ul>
-        <li>
-            <a href="../../index.html">Home</a>
-            <li>
-                <a href="../../doc/manual.html">Manual</a>
-                <li>
-                    <a href="https://github.com/codemirror/codemirror">Code</a>
-    </ul>
-    <ul>
-        <li>
-            <a href="../index.html">Language modes</a>
-            <li>
-                <a class=active href="#">Scala</a>
-    </ul>
+<div id="nav">
+  <a href="http://codemirror.net">
+    <h1>CodeMirror</h1>
+    <img id="logo" src="../../doc/logo.png" />
+  </a>
+  <ul>
+    <li>
+      <a href="../../index.html">Home</a>
+    </li>
+
+    <li>
+      <a href="../../doc/manual.html">Manual</a>
+    </li>
+
+    <li>
+      <a href="https://github.com/codemirror/codemirror">Code</a>
+    </li>
+  </ul>
+
+  <ul>
+    <li>
+      <a href="../index.html">Language modes</a>
+    </li>
+
+    <li>
+      <a class="active" href="#">Scala</a>
+    </li>
+  </ul>
 </div>
 <article>
-    <h2>Scala mode</h2>
-    <form>
-        <textarea id="code" name="code"> /* __ *\ ** ________ ___ / / ___ Scala API ** ** / __/ __// _ | / / / _ | (c) 2003-2011, LAMP/EPFL ** ** __\ \/ /__/ __ |/ /__/ __ | http://scala-lang.org/ ** ** /____/\___/_/ |_/____/_/ | | ** ** |/ ** \* */ package scala.collection import generic._
+  <h2>Scala mode</h2>
+  <form>
+    <textarea id="code" name="code">
+ /* __ *\ ** ________ ___ / / ___ Scala API ** ** / __/ __// _ | / / / _ | (c) 2003-2011, LAMP/EPFL ** ** __\ \/ /__/ __ |/ /__/ __ | http://scala-lang.org/ ** ** /____/\___/_/ |_/____/_/ | | ** ** |/ ** \* */ package scala.collection import generic._
             import mutable.{ Builder, ListBuffer } import annotation.{tailrec, migration, bridge} import annotation.unchecked.{ uncheckedVariance => uV } import parallel.ParIterable /** A template trait for traversable collections of type `Traversable[A]`.
             * * $traversableInfo * @define mutability * @define traversableInfo * This is a base trait of all kinds of $mutability Scala collections. It * implements the behavior common to all collections, in terms of a method * `foreach` with signature:
             * {{{ * def foreach[U](f: Elem => U): Unit * }}} * Collection classes mixing in this trait provide a concrete * `foreach` method which traverses all the * elements contained in the collection, applying a given function to each. * They also
@@ -159,15 +169,15 @@
                                                                                                                     operations. * All these operations apply to those elements of this $coll which * satisfy the predicate `q` in addition to the predicate `p`.
                                                                                                                     */ def withFilter(q: A=> Boolean): WithFilter = new WithFilter(x => p(x) && q(x)) } // A helper for tails and inits. private def iterateUntilEmpty(f: Traversable[A
                                                                                                                     @uV] => Traversable[A @uV]): Iterator[Repr] = { val it = Iterator.iterate(thisCollection)(f) takeWhile (x => !x.isEmpty) it ++ Iterator(Nil)
-                                                                                                                    map (newBuilder ++= _ result) } } </textarea>
-    </form>
-    <script>
-        var editor = CodeMirror.fromTextArea(document.getElementById("code"),
-        {
-            lineNumbers: true,
-            matchBrackets: true,
-            theme: "ambiance",
-            mode: "text/x-scala"
-        });
-    </script>
+                                                                                                                    map (newBuilder ++= _ result) } } </textarea
+    >
+  </form>
+  <script>
+    var editor = CodeMirror.fromTextArea(document.getElementById("code"), {
+      lineNumbers: true,
+      matchBrackets: true,
+      theme: "ambiance",
+      mode: "text/x-scala",
+    });
+  </script>
 </article>

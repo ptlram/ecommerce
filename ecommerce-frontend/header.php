@@ -96,9 +96,9 @@
         </div>
     </div>
 </div>
-<nav class="navbar navbar-light navbar-expand-lg  bg-faded osahan-menu">
+<nav class="navbar navbar-light navbar-expand-lg bg-dark bg-faded osahan-menu">
     <div class="container-fluid">
-        <a class="navbar-brand" href="index.php"> <img src="img/bitslogo.png" alt="logo"> </a>
+        <a class="navbar-brand" href="index.html"> <img src="img/logo.png" alt="logo"> </a>
         <button class="navbar-toggler navbar-toggler-white" type="button" data-toggle="collapse" data-target="#navbarText" aria-controls="navbarText" aria-expanded="false" aria-label="Toggle navigation">
             <span class="navbar-toggler-icon"></span>
         </button>
@@ -109,10 +109,16 @@
                         <span class="input-group-btn categories-dropdown">
                             <select class="form-control-select">
                                 <option selected="selected">Your City</option>
-                                <option value="0">New Delhi</option>
-                                <option value="2">Bengaluru</option>
-                                <option value="3">Hyderabad</option>
-                                <option value="4">Kolkata</option>
+                                <?php
+                                include "./connection.php";
+
+                                $query = $conn->prepare("SELECT * FROM cities");
+                                $query->execute();
+                                $cities = $query->fetchAll();
+                                foreach ($cities as $city) {
+                                    echo '<option value="' . $city["id"] . '">' . $city["city_name"] . '</option>';
+                                }
+                                ?>
                             </select>
                         </span>
                         <input class="form-control" placeholder="Search products in Your City" aria-label="Search products in Your City" type="text">
@@ -140,10 +146,10 @@
         <div class="collapse navbar-collapse" id="navbarText">
             <ul class="navbar-nav mr-auto mt-2 mt-lg-0 margin-auto">
                 <li class="nav-item">
-                    <a class="nav-link shop" href="index.php"><span class="mdi mdi-store"></span> Super Store</a>
+                    <a class="nav-link shop" href="index.html"><span class="mdi mdi-store"></span> Super Store</a>
                 </li>
                 <li class="nav-item">
-                    <a href="index.php" class="nav-link">Home</a>
+                    <a href="index.html" class="nav-link">Home</a>
                 </li>
                 <li class="nav-item">
                     <a href="about.html" class="nav-link">About Us</a>

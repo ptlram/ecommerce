@@ -50,9 +50,9 @@ $category = $query->fetchAll();
                 }
             }
             ?>
-            <!-- <div class="item">
+            <div class="item">
                 <a href="shop.html"><img class="img-fluid" src="img/slider/slider2.jpg" alt="First slide"></a>
-            </div> -->
+            </div>
 
         </div>
     </section>

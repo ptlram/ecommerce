@@ -1,42 +1,52 @@
-<!doctype html>
+<!DOCTYPE html>
 <title>CodeMirror: XQuery mode</title>
 <meta charset="utf-8" />
-<link rel=stylesheet href="../../doc/docs.css">
-<link rel="stylesheet" href="../../lib/codemirror.css">
-<link rel="stylesheet" href="../../theme/xq-dark.css">
+<link rel="stylesheet" href="../../doc/docs.css" />
+<link rel="stylesheet" href="../../lib/codemirror.css" />
+<link rel="stylesheet" href="../../theme/xq-dark.css" />
 <script src="../../lib/codemirror.js"></script>
 <script src="xquery.js"></script>
 <style type="text/css">
-    .CodeMirror {
-        border-top: 1px solid black;
-        border-bottom: 1px solid black;
-        height: 400px;
-    }
+  .CodeMirror {
+    border-top: 1px solid black;
+    border-bottom: 1px solid black;
+    height: 400px;
+  }
 </style>
-<div id=nav>
-    <a href="http://codemirror.net">
-        <h1>CodeMirror</h1>
-        <img id=logo src="../../doc/logo.png">
-    </a>
-    <ul>
-        <li>
-            <a href="../../index.html">Home</a>
-            <li>
-                <a href="../../doc/manual.html">Manual</a>
-                <li>
-                    <a href="https://github.com/codemirror/codemirror">Code</a>
-    </ul>
-    <ul>
-        <li>
-            <a href="../index.html">Language modes</a>
-            <li>
-                <a class=active href="#">XQuery</a>
-    </ul>
+<div id="nav">
+  <a href="http://codemirror.net">
+    <h1>CodeMirror</h1>
+    <img id="logo" src="../../doc/logo.png" />
+  </a>
+  <ul>
+    <li>
+      <a href="../../index.html">Home</a>
+    </li>
+
+    <li>
+      <a href="../../doc/manual.html">Manual</a>
+    </li>
+
+    <li>
+      <a href="https://github.com/codemirror/codemirror">Code</a>
+    </li>
+  </ul>
+
+  <ul>
+    <li>
+      <a href="../index.html">Language modes</a>
+    </li>
+
+    <li>
+      <a class="active" href="#">XQuery</a>
+    </li>
+  </ul>
 </div>
 <article>
-    <h2>XQuery mode</h2>
-    <div class="cm-s-default">
-        <textarea id="code" name="code"> xquery version &quot;1.0-ml&quot;; (: this is : a "comment" :) let $let := &lt;x attr=&quot;value&quot;&gt;&quot;test&quot;&lt;func&gt;function() $var {function()} {$var}&lt;/func&gt;&lt;/x&gt; let $joe:=1 return element element { attribute attribute
+  <h2>XQuery mode</h2>
+  <div class="cm-s-default">
+    <textarea id="code" name="code">
+ xquery version &quot;1.0-ml&quot;; (: this is : a "comment" :) let $let := &lt;x attr=&quot;value&quot;&gt;&quot;test&quot;&lt;func&gt;function() $var {function()} {$var}&lt;/func&gt;&lt;/x&gt; let $joe:=1 return element element { attribute attribute
             { 1 }, element test { &#39;a&#39; }, attribute foo { &quot;bar&quot; }, fn:doc()[ foo/@bar eq $let ], //x } (: a more 'evil' test :) (: Modified Blakeley example (: with nested comment :) ... :) declare private function local:declare() {()};
             declare private function local:private() {()}; declare private function local:function() {()}; declare private function local:local() {()}; let $let := &lt;let&gt;let $let := &quot;let&quot;&lt;/let&gt; return element element { attribute attribute
             { try { xdmp:version() } catch($e) { xdmp:log($e) } }, attribute fn:doc { &quot;bar&quot; castable as xs:string }, element text { text { &quot;text&quot; } }, fn:doc()[ child::eq/(@bar | attribute::attribute) eq $let ], //fn:doc } xquery version
@@ -63,19 +73,20 @@
             even if single, as an array, and the attribute @type that can be set to &quot;boolean&quot; or &quot;number&quot; to dictate the value should be written as that type (unquoted). There's also an @quote attribute that when set to true writes
             the inner content as text rather than as structured JSON, useful for sending some XHTML over the wire. &lt;p/&gt; Text nodes within mixed content are ignored. @param $x Element node to convert @return String holding JSON serialized representation
             of $x @author Jason Hunter @version 1.0.1 Ported to xquery 1.0-ml; double escaped backslashes in json:escape :) declare function json:serialize($x as element()) as xs:string { string-join(('{', json:print-name-value($x), '}'), &quot;&quot;)
-            }; </textarea>
-    </div>
-    <script>
-        var editor = CodeMirror.fromTextArea(document.getElementById("code"),
-        {
-            lineNumbers: true,
-            matchBrackets: true,
-            theme: "xq-dark"
-        });
-    </script>
-    <p>
-        <strong>MIME types defined:</strong> <code>application/xquery</code>.</p>
-    <p>Development of the CodeMirror XQuery mode was sponsored by
-        <a href="http://marklogic.com">MarkLogic</a> and developed by
-        <a href="https://twitter.com/mbrevoort">Mike Brevoort</a>. </p>
+            }; </textarea
+    >
+  </div>
+  <script>
+    var editor = CodeMirror.fromTextArea(document.getElementById("code"), {
+      lineNumbers: true,
+      matchBrackets: true,
+      theme: "xq-dark",
+    });
+  </script>
+  <p><strong>MIME types defined:</strong> <code>application/xquery</code>.</p>
+  <p>
+    Development of the CodeMirror XQuery mode was sponsored by
+    <a href="http://marklogic.com">MarkLogic</a> and developed by
+    <a href="https://twitter.com/mbrevoort">Mike Brevoort</a>.
+  </p>
 </article>

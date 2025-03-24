@@ -1,40 +1,50 @@
-<!doctype html>
+<!DOCTYPE html>
 <title>CodeMirror: mIRC mode</title>
 <meta charset="utf-8" />
-<link rel=stylesheet href="../../doc/docs.css">
-<link rel="stylesheet" href="../../lib/codemirror.css">
-<link rel="stylesheet" href="../../theme/twilight.css">
+<link rel="stylesheet" href="../../doc/docs.css" />
+<link rel="stylesheet" href="../../lib/codemirror.css" />
+<link rel="stylesheet" href="../../theme/twilight.css" />
 <script src="../../lib/codemirror.js"></script>
 <script src="mirc.js"></script>
 <style>
-    .CodeMirror {
-        border: 1px solid black;
-    }
+  .CodeMirror {
+    border: 1px solid black;
+  }
 </style>
-<div id=nav>
-    <a href="http://codemirror.net">
-        <h1>CodeMirror</h1>
-        <img id=logo src="../../doc/logo.png">
-    </a>
-    <ul>
-        <li>
-            <a href="../../index.html">Home</a>
-            <li>
-                <a href="../../doc/manual.html">Manual</a>
-                <li>
-                    <a href="https://github.com/codemirror/codemirror">Code</a>
-    </ul>
-    <ul>
-        <li>
-            <a href="../index.html">Language modes</a>
-            <li>
-                <a class=active href="#">mIRC</a>
-    </ul>
+<div id="nav">
+  <a href="http://codemirror.net">
+    <h1>CodeMirror</h1>
+    <img id="logo" src="../../doc/logo.png" />
+  </a>
+  <ul>
+    <li>
+      <a href="../../index.html">Home</a>
+    </li>
+
+    <li>
+      <a href="../../doc/manual.html">Manual</a>
+    </li>
+
+    <li>
+      <a href="https://github.com/codemirror/codemirror">Code</a>
+    </li>
+  </ul>
+
+  <ul>
+    <li>
+      <a href="../index.html">Language modes</a>
+    </li>
+
+    <li>
+      <a class="active" href="#">mIRC</a>
+    </li>
+  </ul>
 </div>
 <article>
-    <h2>mIRC mode</h2>
-    <form>
-        <textarea id="code" name="code"> ;AKA Nick Tracker by Ford_Lawnmower irc.GeekShed.net #Script-Help ;*****************************************************************************; ;**Start Setup ;Change JoinDisplay, below, for On Join AKA Display. On = 1 - Off = 0 alias -l JoinDisplay
+  <h2>mIRC mode</h2>
+  <form>
+    <textarea id="code" name="code">
+ ;AKA Nick Tracker by Ford_Lawnmower irc.GeekShed.net #Script-Help ;*****************************************************************************; ;**Start Setup ;Change JoinDisplay, below, for On Join AKA Display. On = 1 - Off = 0 alias -l JoinDisplay
             { return 1 } ;Change MaxNicks, below, to the number of nicknames you want to store for each hostmask. I wouldn't go over 400 with this ;/ alias -l MaxNicks { return 20 } ;Change AKALogo, below, To the text you want displayed before each AKA
             result. alias -l AKALogo { return 06 05A06K07A 06 } ;**End Setup ;*****************************************************************************; On *:Join:#: { if ($nick == $me) { .timer 1 1 ialupdateCheck $chan } NickNamesAdd $nick
             $+($network,$wildsite) if ($JoinDisplay) { .timerNickNames $+ $nick 1 2 NickNames.display $nick $chan $network $wildsite } } on *:Nick: { NickNamesAdd $newnick $+($network,$wildsite) $nick } alias -l NickNames.display { if ($gettok($hget(NickNames,$+($3,$4)),0,126)
@@ -52,18 +62,17 @@
                 07 $mid($replace($hget(NickNames,$v1),$chr(126),$chr(44)),2,-1) } elseif ($did == 9) && ($did($dname,6).seltext) { clipboard $mid($v1,$pos($v1,*,1)) } } On *:Start:{ if (!$hget(NickNames)) { hmake NickNames 10 } if ($isfile(NickNames.hsh))
                 { hload NickNames NickNames.hsh } } On *:Exit: { if ($hget(NickNames)) { hsave NickNames NickNames.hsh } } On *:Disconnect: { if ($hget(NickNames)) { hsave NickNames NickNames.hsh } } On *:Unload: { hfree NickNames } alias -l ialupdateCheck
                 { inc -z $+(%,ialupdateCheck,$network) $calc($nick($1,0) / 4) ;If your ial is already being updated on join .who $1 out. ;If you are using /names to update ial you will still need this line. .who $1 } Raw 352:*: { if ($($+(%,ialupdateCheck,$network),2))
-                haltdef NickNamesAdd $6 $+($network,$address($6,2)) } Raw 315:*: { if ($($+(%,ialupdateCheck,$network),2)) haltdef } </textarea>
-    </form>
-    <script>
-        var editor = CodeMirror.fromTextArea(document.getElementById("code"),
-        {
-            theme: "twilight",
-            lineNumbers: true,
-            matchBrackets: true,
-            indentUnit: 4,
-            mode: "text/mirc"
-        });
-    </script>
-    <p>
-        <strong>MIME types defined:</strong> <code>text/mirc</code>.</p>
+                haltdef NickNamesAdd $6 $+($network,$address($6,2)) } Raw 315:*: { if ($($+(%,ialupdateCheck,$network),2)) haltdef } </textarea
+    >
+  </form>
+  <script>
+    var editor = CodeMirror.fromTextArea(document.getElementById("code"), {
+      theme: "twilight",
+      lineNumbers: true,
+      matchBrackets: true,
+      indentUnit: 4,
+      mode: "text/mirc",
+    });
+  </script>
+  <p><strong>MIME types defined:</strong> <code>text/mirc</code>.</p>
 </article>
