@@ -108,15 +108,15 @@
                     <div class="input-group">
                         <span class="input-group-btn categories-dropdown">
                             <select class="form-control-select">
-                                <option selected="selected">Your City</option>
+                                <option selected="selected">Your Category</option>
                                 <?php
                                 include "./connection.php";
 
-                                $query = $conn->prepare("SELECT * FROM cities");
+                                $query = $conn->prepare("SELECT * FROM category");
                                 $query->execute();
                                 $cities = $query->fetchAll();
                                 foreach ($cities as $city) {
-                                    echo '<option value="' . $city["id"] . '">' . $city["city_name"] . '</option>';
+                                    echo '<option value="' . $city["id"] . '">' . $city["name"] . '</option>';
                                 }
                                 ?>
                             </select>
@@ -151,24 +151,35 @@
                 <li class="nav-item">
                     <a href="index.html" class="nav-link">Home</a>
                 </li>
-                <li class="nav-item">
-                    <a href="about.html" class="nav-link">About Us</a>
-                </li>
-                <li class="nav-item">
-                    <a class="nav-link" href="shop.html">Fruits & Vegetables</a>
-                </li>
-                <li class="nav-item">
-                    <a class="nav-link" href="shop.html">Grocery & Staples</a>
-                </li>
+                <?php
+                $query = $conn->prepare("SELECT * FROM category");
+                $query->execute();
+                $category = $query->fetchAll();
+                foreach ($category as $ca) {
+                    echo '<li class="nav-item dropdown" >
+                            <a class="nav-link dropdown-toggle"  data-toggle="dropdown">' . $ca["name"] . '</a>
+                        ';
+                    $cid = $ca["id"];
+                    $query = $conn->prepare("SELECT * FROM subcategory WHERE category_id=$cid");
+                    $query->execute();
+                    $subcategory = $query->fetchAll();
+                    echo '<div class="dropdown-menu">';
+                    foreach ($subcategory as $sca) {
+                        echo '
+                                <a class="dropdown-item" href="blog.html"><i class="mdi mdi-chevron-right" aria-hidden="true"></i> ' . $sca["name"] . '</a>
+                              ';
+                    }
+                    echo "</div></li>";
+                }
+                ?>
+
                 <li class="nav-item dropdown">
                     <a class="nav-link dropdown-toggle" href="#" data-toggle="dropdown" aria-haspopup="true" aria-expanded="false">
-                        Pages
+                        Blog Page
                     </a>
                     <div class="dropdown-menu">
-                        <a class="dropdown-item" href="shop.html"><i class="mdi mdi-chevron-right" aria-hidden="true"></i> Shop Grid</a>
-                        <a class="dropdown-item" href="single.html"><i class="mdi mdi-chevron-right" aria-hidden="true"></i> Single Product</a>
-                        <a class="dropdown-item" href="cart.html"><i class="mdi mdi-chevron-right" aria-hidden="true"></i> Shopping Cart</a>
-                        <a class="dropdown-item" href="checkout.html"><i class="mdi mdi-chevron-right" aria-hidden="true"></i> Checkout</a>
+                        <a class="dropdown-item" href="blog.html"><i class="mdi mdi-chevron-right" aria-hidden="true"></i> Blog</a>
+                        <a class="dropdown-item" href="blog-detail.html"><i class="mdi mdi-chevron-right" aria-hidden="true"></i> Blog Detail</a>
                     </div>
                 </li>
                 <li class="nav-item dropdown">
@@ -184,15 +195,6 @@
                 </li>
                 <li class="nav-item dropdown">
                     <a class="nav-link dropdown-toggle" href="#" data-toggle="dropdown" aria-haspopup="true" aria-expanded="false">
-                        Blog Page
-                    </a>
-                    <div class="dropdown-menu">
-                        <a class="dropdown-item" href="blog.html"><i class="mdi mdi-chevron-right" aria-hidden="true"></i> Blog</a>
-                        <a class="dropdown-item" href="blog-detail.html"><i class="mdi mdi-chevron-right" aria-hidden="true"></i> Blog Detail</a>
-                    </div>
-                </li>
-                <li class="nav-item dropdown">
-                    <a class="nav-link dropdown-toggle" href="#" data-toggle="dropdown" aria-haspopup="true" aria-expanded="false">
                         More Pages
                     </a>
                     <div class="dropdown-menu">
@@ -201,9 +203,6 @@
                         <a class="dropdown-item" href="faq.html"><i class="mdi mdi-chevron-right" aria-hidden="true"></i> FAQ </a>
                         <a class="dropdown-item" href="not-found.html"><i class="mdi mdi-chevron-right" aria-hidden="true"></i> 404 Error</a>
                     </div>
-                </li>
-                <li class="nav-item">
-                    <a class="nav-link" href="contact.html">Contact</a>
                 </li>
             </ul>
         </div>
