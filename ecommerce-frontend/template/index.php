@@ -98,6 +98,60 @@ $category = $query->fetchAll();
         </div>
     </section>
     <section class="product-items-slider section-padding">
+        <?php foreach ($banner as $product) { ?>
+            <div class="container">
+                <div class="section-header">
+                    <h5 class="heading-design-h5"><?= $product['name'] ?> <span class="badge badge-primary">20% OFF</span>
+                        <a class="float-right text-secondary" href="shop.html">View All</a>
+                    </h5>
+                </div>
+                <div class="owl-carousel owl-carousel-featured">
+                    <?php
+                    $product_ids = $product["product_id"];
+                    $product_id = explode(",", $product_ids);
+
+                    foreach ($product_id as $p_id) { ?>
+
+                        <?php
+                        $q = $conn->prepare("SELECT * FROM products where id=$p_id");
+                        $q->execute();
+                        $products = $q->fetchAll();
+
+                        foreach ($products as $product) { ?>
+
+                            <div class="item">
+                                <div class="product">
+                                    <a href="single.php?slug=<?= $product['slug'] ?>">
+                                        <div class="product-header">
+                                            <!-- <span class="badge badge-success"><?= $product['discount'] ?>% OFF</span> -->
+                                            <img class="img-fluid" src="../../ecommerce-backend/pages/uploads/products/<?= $product['product_image'] ?>" alt="<?= $product['product_name'] ?>">
+                                            <!-- <span class="<?= $product['is_veg'] ? 'veg text-success' : 'non-veg text-danger' ?> mdi mdi-circle"></span> -->
+                                        </div>
+                                        <div class="product-body">
+                                            <h5><?= htmlspecialchars($product['product_name']) ?></h5>
+                                            <h6><strong><span class="mdi mdi-approval"></span> Available in</strong> - <?= htmlspecialchars($product['variant_name']) ?></h6>
+                                        </div>
+                                        <div class="product-footer">
+                                            <button type="button" class="btn btn-secondary btn-sm float-right">
+                                                <i class="mdi mdi-cart-outline"></i> Add To Cart
+                                            </button>
+                                            <p class="offer-price mb-0">$<?= number_format($product['base_price'], 2) ?> <i class="mdi mdi-tag-outline"></i><br>
+                                                <span class="regular-price">$<?= number_format($product['mrp'], 2) ?></span>
+                                            </p>
+                                        </div>
+                                    </a>
+                                </div>
+                            </div>
+
+                        <?php } ?>
+                    <?php } ?>
+                </div>
+            </div>
+        <?php } ?>
+    </section>
+
+
+    <!-- <section class="product-items-slider section-padding">
         <div class="container">
             <div class="section-header">
                 <h5 class="heading-design-h5">Top Savers Today <span class="badge badge-primary">20% OFF</span>
@@ -224,7 +278,7 @@ $category = $query->fetchAll();
     </section>
     <section class="offer-product">
         <div class="container">
-            <div class="row no-gutters">
+            <div class="product no-gutters">
                 <div class="col-md-6">
                     <a href="#"><img class="img-fluid" src="img/ad/1.jpg" alt=""></a>
                 </div>
@@ -233,8 +287,8 @@ $category = $query->fetchAll();
                 </div>
             </div>
         </div>
-    </section>
-    <section class="product-items-slider section-padding">
+    </section> -->
+    <!-- <section class="product-items-slider section-padding">
         <div class="container">
             <div class="section-header">
                 <h5 class="heading-design-h5">Best Offers View <span class="badge badge-info">20% OFF</span>
@@ -358,7 +412,7 @@ $category = $query->fetchAll();
                 </div>
             </div>
         </div>
-    </section>
+    </section> -->
     <section class="section-padding bg-white border-top">
         <div class="container">
             <div class="row">
