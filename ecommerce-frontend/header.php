@@ -96,9 +96,9 @@
         </div>
     </div>
 </div>
-<nav class="navbar navbar-light navbar-expand-lg bg-dark bg-faded osahan-menu">
+<nav class="navbar navbar-light navbar-expand-lg  bg-faded osahan-menu">
     <div class="container-fluid">
-        <a class="navbar-brand" href="index.php"> <img src="img/logo.png" alt="logo"> </a>
+        <a class="navbar-brand" href="index.php"> <img src="img/bitslogo.png" alt="logo"> </a>
         <button class="navbar-toggler navbar-toggler-white" type="button" data-toggle="collapse" data-target="#navbarText" aria-controls="navbarText" aria-expanded="false" aria-label="Toggle navigation">
             <span class="navbar-toggler-icon"></span>
         </button>
