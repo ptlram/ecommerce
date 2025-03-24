@@ -72,6 +72,18 @@ $category = $query->fetchAll();
                         </div>';
                 }
                 ?>
+                <?php
+                foreach ($category as $cate) {
+                    echo '<div class="item">
+                            <div class="category-item">
+                            <a href="shop.html">
+                            <img class="img-fluid" src="../../ecommerce-backend/pages/uploads/category/' . $cate["image"] . '">
+                                <h6>' . $cate["name"] . '</h6>
+                            </a>
+                            </div>
+                        </div>';
+                }
+                ?>
                 <div class="item">
                     <div class="category-item">
                         <a href="shop.html">
