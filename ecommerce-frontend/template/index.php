@@ -39,6 +39,9 @@ $category = $query->fetchAll();
     <?php include "../header.php" ?>
     <section class="carousel-slider-main text-center border-top border-bottom bg-white">
         <div class="owl-carousel owl-carousel-slider">
+            <!-- <div class="item">
+                <a href="shop.html"><img class="img-fluid" src="img/slider/slider2.jpg" alt="First slide"></a>
+            </div> -->
             <?php
             foreach ($banner as $ban) {
                 if ($ban["is_in_banner"] == "Yes") {
@@ -50,9 +53,7 @@ $category = $query->fetchAll();
                 }
             }
             ?>
-            <div class="item">
-                <a href="shop.html"><img class="img-fluid" src="img/slider/slider2.jpg" alt="First slide"></a>
-            </div>
+
 
         </div>
     </section>
