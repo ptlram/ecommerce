@@ -46,7 +46,7 @@ $ssubcategory = $query->fetchAll();
             foreach ($banner as $ban) {
                 if ($ban["is_in_banner"] == "Yes") {
                     echo '<div class="item">
-                    <a href="shop.php">
+                    <a href="single.php?offer=' . $ban["id"] . '">
                     <img class="img-fluid" src="../../ecommerce-backend/pages/uploads/banners/' . $ban["web_banner"] . '" style="height: 500px;">
                      </a>
                     </div>';
