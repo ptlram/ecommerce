@@ -28,15 +28,7 @@ include "./connection.php";
 
 <body>
    <?php include "./header.php" ?>
-   <section class="pt-3 pb-3 page-info section-padding border-bottom bg-white">
-      <div class="container">
-         <div class="row">
-            <div class="col-md-12">
-               <a href="index.php"><strong><span class="mdi mdi-home"></span> Home</strong></a> <span class="mdi mdi-chevron-right"></span> <a href="#">Fruits & Vegetables</a> <span class="mdi mdi-chevron-right"></span> <a href="#">Fruits</a>
-            </div>
-         </div>
-      </div>
-   </section>
+
    <section class="shop-single section-padding pt-3">
       <?php
       if (isset($_GET['product'])) {
@@ -115,11 +107,6 @@ include "./connection.php";
    </section>
    <section class="product-items-slider section-padding bg-white border-top">
       <div class="container">
-         <div class="section-header">
-            <h5 class="heading-design-h5">Best Offers View <span class="badge badge-primary">20% OFF</span>
-               <a class="float-right text-secondary" href="shop.html">View All</a>
-            </h5>
-         </div>
          <?php
          if (isset($_GET['offer'])) {
             $banner_id = isset($_GET['offer']) ? $_GET['offer'] : null;
@@ -131,6 +118,12 @@ include "./connection.php";
             $p_id = $products[0]['product_id'];
             $p_ids = explode(",", $p_id);
          ?>
+            <div class="section-header">
+               <h5 class="heading-design-h5">Best Offers View <span class="badge badge-primary">20% OFF</span>
+                  <a class="float-right text-secondary" href="viewall.php?offer=<?= $banner_id ?>">View All</a>
+               </h5>
+            </div>
+
             <div class="owl-carousel owl-carousel-featured">
                <?php
                foreach ($p_ids as $p_id) { ?>

@@ -68,27 +68,43 @@
       </div>
    </section>
    <br>
-   <section class="product-items-slider section-padding bg-white border-top">
+   <section class="product-items-grid section-padding bg-white border-top">
       <div class="container">
-         <div class="section-header">
-            <h5 class="heading-design-h5">Best Offers View <span class="badge badge-primary">20% OFF</span>
-               <a class="float-right text-secondary" href="shop.php">View All</a>
-            </h5>
+         <div class="row">
+            <div class="col-md-12">
+               <div class="shop-head">
+                  <a href="#"><span class=""></span>&nbsp;</a>
+                  <span class=""></span> <a href="javascript:void(0)"></a>
+                  <div class="btn-group float-right mt-2">
+                     <div class="form-group">
+                        <select class="select2 form-control border-form-control sort_product_selected">
+                           <option value="">Sort by: <b>Recommended</b></option>
+                           <option value="price_low_to_high">Sort by: Price (Low to High)</option>
+                           <option value="price_high_to_low">Sort by: Price (High to Low)</option>
+                           <option value="discount_high_to_low">Sort by: Discount (High to Low)</option>
+                           <option value="discount_low_to_high">Sort by: Discount (Low to High)</option>
+                           <option value="a_to_z">Sort by: Name (A to Z)</option>
+                           <option value="z_to_a">Sort by: Name (Z to A)</option>
+                        </select>
+                     </div>
+                  </div>
+                  <h1 class="mb-3" style="font-size:1.25rem;">New Year</h1>
+               </div>
+            </div>
          </div>
-         <div class="owl-carousel owl-carousel-featured">
+
+         <div class="row"> <!-- NEW ROW FOR PRODUCTS -->
             <?php
-
-            $subidd = $_GET["subcategory"];;
-
-            $query = $conn->prepare("SELECT * FROM products where subcategory=$subidd");
-            $query->execute();
+            $subidd = $_GET["subcategory"];
+            $query = $conn->prepare("SELECT * FROM products WHERE subcategory = ?");
+            $query->execute([$subidd]);
             $pro = $query->fetchAll();
             $count = 0;
 
             foreach ($pro as $p) {
                $count++;
                echo '
-                <div class="item">
+                <div class="col-lg-3 col-md-4 col-sm-6 col-6"> <!-- 4 items per row on large screens -->
                     <div class="product">
                         <a href="single.php?product=' . $p["id"] . '">
                             <div class="product-header">
@@ -113,23 +129,21 @@
                 </div>';
             }
 
-
+            // Show a message if no products are found
+            if ($count === 0) {
+               echo '<div class="col-12 text-center my-5">
+                    <h4 class="text-danger"><i class="mdi mdi-alert-circle-outline"></i> No Products Available</h4>
+                    <p class="text-muted" style="font-size: 16px; max-width: 600px; margin: 0 auto;">
+                        Oops! No products found in this category. Please check back later.
+                    </p>
+                </div>';
+            }
             ?>
-
          </div>
-         <?php
-
-         // Show a message if no products are found
-         if ($count === 0) {
-            echo '<div class="text-center my-5">
-               <h4 class="text-danger"><i class="mdi mdi-alert-circle-outline"></i> No Products Available</h4>
-               <p class="text-muted" style="font-size: 16px; max-width: 600px; margin: 0 auto;">
-                   Oops! No products found in this category. Please check back later.
-               </p>
-             </div>';
-         } ?>
       </div>
    </section>
+
+
 
    <!-- Footer -->
    <?php include "./footer.php" ?>
