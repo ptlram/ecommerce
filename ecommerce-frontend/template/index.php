@@ -84,7 +84,7 @@ $ssubcategory = $query->fetchAll();
 
                 <div class="section-header">
                     <h5 class="heading-design-h5"><?= $bann['name'] ?> <span class="badge badge-primary">20% OFF</span>
-                        <a class="float-right text-secondary" href="shop.html">View All</a>
+                        <a class="float-right text-secondary" href="viewall.php?offer=<?= $bann["id"] ?>">View All</a>
                     </h5>
                 </div>
                 <div class="owl-carousel owl-carousel-featured">
