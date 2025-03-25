@@ -73,15 +73,39 @@ $ssubcategory = $query->fetchAll();
                 }
                 ?>
 
-                <div class="item">
-                    <div class="category-item">
-                        <a href="shop.php">
-                            <img class="img-fluid" src="img/small/1.jpg" alt="">
-                            <h6>Fruits & Vegetables</h6>
-                            <p>150 Items</p>
-                        </a>
-                    </div>
-                </div>
+            </div>
+        </div>
+    </section>
+    <section class="top-category section-padding">
+        <div class="container">
+            <h5 class="heading-design-h5">Shop by category</h5>
+
+            <div class="owl-carousel owl-carousel-category">
+                <?php
+                $query = $conn->prepare("SELECT * FROM category");
+                $query->execute();
+                $ccategory = $query->fetchAll();
+                foreach ($ccategory as $scate) {
+                    echo '<div class="item">
+                            <div class="category-item">
+                             <a href="shop.php?subcategory=' . urlencode($scate["id"]) . '">
+                            <img class="img-fluid" src="../../ecommerce-backend/pages/uploads/category/' . $scate["image"] . '">
+                                <h6>' . $scate["name"] . '</h6>
+                            </a>
+                            </div>
+                        </div>';
+                }
+                foreach ($ccategory as $scate) {
+                    echo '<div class="item">
+                            <div class="category-item">
+                             <a href="shop.php?subcategory=' . urlencode($scate["id"]) . '">
+                            <img class="img-fluid" src="../../ecommerce-backend/pages/uploads/category/' . $scate["image"] . '">
+                                <h6>' . $scate["name"] . '</h6>
+                            </a>
+                            </div>
+                        </div>';
+                }
+                ?>
 
             </div>
         </div>
