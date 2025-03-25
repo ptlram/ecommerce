@@ -98,16 +98,16 @@ $category = $query->fetchAll();
         </div>
     </section>
     <section class="product-items-slider section-padding">
-        <?php foreach ($banner as $product) { ?>
+        <?php foreach ($banner as $bann) { ?>
             <div class="container">
                 <div class="section-header">
-                    <h5 class="heading-design-h5"><?= $product['name'] ?> <span class="badge badge-primary">20% OFF</span>
+                    <h5 class="heading-design-h5"><?= $bann['name'] ?> <span class="badge badge-primary">20% OFF</span>
                         <a class="float-right text-secondary" href="shop.html">View All</a>
                     </h5>
                 </div>
                 <div class="owl-carousel owl-carousel-featured">
                     <?php
-                    $product_ids = $product["product_id"];
+                    $product_ids = $bann["product_id"];
                     $product_id = explode(",", $product_ids);
 
                     foreach ($product_id as $p_id) { ?>
@@ -121,7 +121,7 @@ $category = $query->fetchAll();
 
                             <div class="item">
                                 <div class="product">
-                                    <a href="single.php?slug=<?= $product['slug'] ?>">
+                                    <a href="single.php?product=<?= $product['id'] ?>&offer=<?= $bann['id'] ?>">
                                         <div class="product-header">
                                             <!-- <span class="badge badge-success"><?= $product['discount'] ?>% OFF</span> -->
                                             <img class="img-fluid" src="../../ecommerce-backend/pages/uploads/products/<?= $product['product_image'] ?>" alt="<?= $product['product_name'] ?>">
