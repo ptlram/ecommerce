@@ -89,7 +89,7 @@
     <div class="container-fluid">
         <div class="row">
             <div class="col-lg-12 text-center">
-                <a href="shop.html" class="mb-0 text-white">
+                <a href="shop.php" class="mb-0 text-white">
                     20% cashback for new users | Code: <strong><span class="text-light">OGOFERS13 <span class="mdi mdi-tag-faces"></span></span> </strong>
                 </a>
             </div>
@@ -98,7 +98,7 @@
 </div>
 <nav class="navbar navbar-light navbar-expand-lg bg-dark bg-faded osahan-menu">
     <div class="container-fluid">
-        <a class="navbar-brand" href="index.html"> <img src="img/logo.png" alt="logo"> </a>
+        <a class="navbar-brand" href="index.php"> <img src="img/logo.png" alt="logo"> </a>
         <button class="navbar-toggler navbar-toggler-white" type="button" data-toggle="collapse" data-target="#navbarText" aria-controls="navbarText" aria-expanded="false" aria-label="Toggle navigation">
             <span class="navbar-toggler-icon"></span>
         </button>
@@ -146,10 +146,10 @@
         <div class="collapse navbar-collapse" id="navbarText">
             <ul class="navbar-nav mr-auto mt-2 mt-lg-0 margin-auto">
                 <li class="nav-item">
-                    <a class="nav-link shop" href="index.html"><span class="mdi mdi-store"></span> Super Store</a>
+                    <a class="nav-link shop" href="index.php"><span class="mdi mdi-store"></span> Super Store</a>
                 </li>
                 <li class="nav-item">
-                    <a href="index.html" class="nav-link">Home</a>
+                    <a href="index.php" class="nav-link">Home</a>
                 </li>
                 <?php
                 $query = $conn->prepare("SELECT * FROM category");
