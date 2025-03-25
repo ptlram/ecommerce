@@ -64,7 +64,7 @@ $ssubcategory = $query->fetchAll();
                 foreach ($ssubcategory as $scate) {
                     echo '<div class="item">
                             <div class="category-item">
-                             <a href="shop.php?subcategory=' . urlencode($scate["name"]) . '">
+                             <a href="shop.php?subcategory=' . urlencode($scate["id"]) . '">
                             <img class="img-fluid" src="../../ecommerce-backend/pages/uploads/subcategory/' . $scate["image"] . '">
                                 <h6>' . $scate["name"] . '</h6>
                             </a>

@@ -29,7 +29,7 @@
       <div class="container">
          <div class="row">
             <div class="col-md-12">
-               <a href="#"><strong><span class="mdi mdi-home"></span> Home</strong></a> <span class="mdi mdi-chevron-right"></span> <a href="#">Shop</a>
+               <a href="index.php"><strong><span class="mdi mdi-home"></span> Home</strong></a> <span class="mdi mdi-chevron-right"></span> <a href="#">Shop</a>
             </div>
          </div>
       </div>
@@ -44,11 +44,8 @@
          </div>
          <div class="owl-carousel owl-carousel-featured">
             <?php
-            $sub_category_name = $_GET["subcategory"];
-            $query = $conn->prepare("SELECT * FROM subcategory where name='$sub_category_name'");
-            $query->execute();
-            $subid = $query->fetchAll();
-            $subidd = $subid[0]["id"];
+
+            $subidd = $_GET["subcategory"];;
 
             $query = $conn->prepare("SELECT * FROM products where subcategory=$subidd");
             $query->execute();
