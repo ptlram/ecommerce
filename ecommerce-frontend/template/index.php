@@ -76,6 +76,32 @@ $ssubcategory = $query->fetchAll();
             </div>
         </div>
     </section>
+
+    <section class="top-category section-padding">
+        <div class="container">
+            <h5 class="heading-design-h5">Shop by Brand</h5>
+
+            <div class="owl-carousel owl-carousel-category">
+                <?php
+                $query = $conn->prepare("SELECT * FROM brand");
+                $query->execute();
+                $brand = $query->fetchAll();
+                foreach ($brand as $b) {
+                    echo '<div class="item">
+                            <div class="category-item">
+                             <a href="brand.php?brand=' . urlencode($b["name"]) . '">
+                            <img class="img-fluid" src="../../ecommerce-backend/pages/uploads/brand/' . $b["image"] . '">
+                                <h6>' . $b["name"] . '</h6>
+                            </a>
+                            </div>
+                        </div>';
+                }
+
+                ?>
+
+            </div>
+        </div>
+    </section>
     <section class="top-category section-padding">
         <div class="container">
             <h5 class="heading-design-h5">Shop by category</h5>
@@ -101,6 +127,8 @@ $ssubcategory = $query->fetchAll();
             </div>
         </div>
     </section>
+
+
     <section class="product-items-slider section-padding">
         <?php foreach ($banner as $bann) { ?>
             <div class="container" style="box-shadow: 0px 4px 10px rgba(0, 0, 0, 0.19); ">
