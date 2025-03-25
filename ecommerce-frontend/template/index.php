@@ -103,10 +103,12 @@ $ssubcategory = $query->fetchAll();
     </section>
     <section class="product-items-slider section-padding">
         <?php foreach ($banner as $bann) { ?>
-            <div class="container">
+            <div class="container" style="box-shadow: 0px 4px 10px rgba(0, 0, 0, 0.19); ">
+                <br>
+
                 <div class="section-header">
                     <h5 class="heading-design-h5"><?= $bann['name'] ?> <span class="badge badge-primary">20% OFF</span>
-                        <a class="float-right text-secondary" href="shop.html">View All</a>
+                        <a class="float-right text-secondary" href="viewall.php?offer=<?= $bann["id"] ?>">View All</a>
                     </h5>
                 </div>
                 <div class="owl-carousel owl-carousel-featured">
@@ -151,6 +153,8 @@ $ssubcategory = $query->fetchAll();
                     <?php } ?>
                 </div>
             </div>
+            <br>
+            <br>
         <?php } ?>
     </section>
 
