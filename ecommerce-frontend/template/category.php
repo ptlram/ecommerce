@@ -25,11 +25,30 @@
 
 <body>
     <?php include "./header.php" ?>
-    <section class="pt-3 pb-3 page-info section-padding border-bottom bg-white">
+
+    <section class="shop-list">
         <div class="container">
             <div class="row">
                 <div class="col-md-12">
-                    <a href="index.php"><strong><span class="mdi mdi-home"></span> Home</strong></a> <span class="mdi mdi-chevron-right"></span> <a href="#">Shop</a>
+                    <div class="mt-3" style="padding: 0; background-color: white; border-radius: 5px; overflow-x: auto;">
+                        <div class="scrollmenu" style="display: flex; align-items: center; gap: 15px; padding: 10px; white-space: nowrap; border-bottom: 2px solid #e0e0e0;">
+                            <?php
+                            if (isset($_GET["category"])) {
+                                $subidd = $_GET["category"];;
+
+                                $query = $conn->prepare("SELECT * FROM subcategory where category_id=$subidd");
+                                $query->execute();
+                                $subcatlist = $query->fetchAll();
+                                foreach ($subcatlist as $scl) {
+                                    echo '<div class="subcategory-item active" onclick="getSubcategoryBasedProduct(this,19)" 
+                                            style="padding: 10px 15px; font-size: 16px; font-weight: 500; color: #333; border-radius: 5px; cursor: pointer; transition: background 0.3s, color 0.3s;">
+                                            <a href="javascript:void(0)" style="text-decoration: none; color: inherit;">' . $scl["name"] . '</a>
+                                            </div>';
+                                }
+                            }
+                            ?>
+                        </div>
+                    </div>
                 </div>
             </div>
         </div>
