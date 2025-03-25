@@ -1,5 +1,5 @@
 <?php
-include "../connection.php";
+include "./connection.php";
 ?>
 <!DOCTYPE html>
 <html lang="en">
@@ -325,53 +325,55 @@ include "../connection.php";
             </h5>
          </div>
          <?php
-         $banner_id = isset($_GET['offer']) ? $_GET['offer'] : null;
+         if (isset($_GET['offer'])) {
+            $banner_id = isset($_GET['offer']) ? $_GET['offer'] : null;
 
-         $q = $conn->prepare("SELECT * FROM banners where id=$banner_id");
-         $q->execute();
-         $products = $q->fetchAll();
+            $q = $conn->prepare("SELECT * FROM banners where id=$banner_id");
+            $q->execute();
+            $products = $q->fetchAll();
 
-         $p_id = $products[0]['product_id'];
-         $p_ids = explode(",", $p_id);
+            $p_id = $products[0]['product_id'];
+            $p_ids = explode(",", $p_id);
          ?>
-         <div class="owl-carousel owl-carousel-featured">
-            <?php
-            foreach ($p_ids as $p_id) { ?>
-
+            <div class="owl-carousel owl-carousel-featured">
                <?php
-               $q = $conn->prepare("SELECT * FROM products where id=$p_id");
-               $q->execute();
-               $products = $q->fetchAll();
+               foreach ($p_ids as $p_id) { ?>
 
-               foreach ($products as $product) { ?>
+                  <?php
+                  $q = $conn->prepare("SELECT * FROM products where id=$p_id");
+                  $q->execute();
+                  $products = $q->fetchAll();
 
-                  <div class="item">
-                     <div class="product">
-                        <a href="single.php?product=<?= $product['id'] ?>&offer=<?= $bann['id'] ?>">
-                           <div class="product-header">
-                              <!-- <span class="badge badge-success"><?= $product['discount'] ?>% OFF</span> -->
-                              <img class="img-fluid" src="../../ecommerce-backend/pages/uploads/products/<?= $product['product_image'] ?>" alt="<?= $product['product_name'] ?>">
-                              <!-- <span class="<?= $product['is_veg'] ? 'veg text-success' : 'non-veg text-danger' ?> mdi mdi-circle"></span> -->
-                           </div>
-                           <div class="product-body">
-                              <h5><?= htmlspecialchars($product['product_name']) ?></h5>
-                              <h6><strong><span class="mdi mdi-approval"></span> Available in</strong> - <?= htmlspecialchars($product['variant_name']) ?></h6>
-                           </div>
-                           <div class="product-footer">
-                              <button type="button" class="btn btn-secondary btn-sm float-right">
-                                 <i class="mdi mdi-cart-outline"></i> Add To Cart
-                              </button>
-                              <p class="offer-price mb-0">$<?= number_format($product['base_price'], 2) ?> <i class="mdi mdi-tag-outline"></i><br>
-                                 <span class="regular-price">$<?= number_format($product['mrp'], 2) ?></span>
-                              </p>
-                           </div>
-                        </a>
+                  foreach ($products as $product) { ?>
+
+                     <div class="item">
+                        <div class="product">
+                           <a href="single.php?product=<?= $product['id'] ?>&offer=<?= $bann['id'] ?>">
+                              <div class="product-header">
+                                 <!-- <span class="badge badge-success"><?= $product['discount'] ?>% OFF</span> -->
+                                 <img class="img-fluid" src="../../ecommerce-backend/pages/uploads/products/<?= $product['product_image'] ?>" alt="<?= $product['product_name'] ?>">
+                                 <!-- <span class="<?= $product['is_veg'] ? 'veg text-success' : 'non-veg text-danger' ?> mdi mdi-circle"></span> -->
+                              </div>
+                              <div class="product-body">
+                                 <h5><?= htmlspecialchars($product['product_name']) ?></h5>
+                                 <h6><strong><span class="mdi mdi-approval"></span> Available in</strong> - <?= htmlspecialchars($product['variant_name']) ?></h6>
+                              </div>
+                              <div class="product-footer">
+                                 <button type="button" class="btn btn-secondary btn-sm float-right">
+                                    <i class="mdi mdi-cart-outline"></i> Add To Cart
+                                 </button>
+                                 <p class="offer-price mb-0">$<?= number_format($product['base_price'], 2) ?> <i class="mdi mdi-tag-outline"></i><br>
+                                    <span class="regular-price">$<?= number_format($product['mrp'], 2) ?></span>
+                                 </p>
+                              </div>
+                           </a>
+                        </div>
                      </div>
-                  </div>
 
+                  <?php } ?>
                <?php } ?>
             <?php } ?>
-         </div>
+            </div>
       </div>
    </section>
    <section class="section-padding bg-white border-top">
