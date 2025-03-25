@@ -64,7 +64,7 @@ $ssubcategory = $query->fetchAll();
                 foreach ($ssubcategory as $scate) {
                     echo '<div class="item">
                             <div class="category-item">
-                             <a href="shop.php?subcategory=' . urlencode($scate["name"]) . '">
+                             <a href="shop.php?subcategory=' . urlencode($scate["id"]) . '">
                             <img class="img-fluid" src="../../ecommerce-backend/pages/uploads/subcategory/' . $scate["image"] . '">
                                 <h6>' . $scate["name"] . '</h6>
                             </a>
@@ -124,8 +124,8 @@ $ssubcategory = $query->fetchAll();
                                             <button type="button" class="btn btn-secondary btn-sm float-right">
                                                 <i class="mdi mdi-cart-outline"></i> Add To Cart
                                             </button>
-                                            <p class="offer-price mb-0">$<?= number_format($product['base_price'], 2) ?> <i class="mdi mdi-tag-outline"></i><br>
-                                                <span class="regular-price">$<?= number_format($product['mrp'], 2) ?></span>
+                                            <p class="offer-price mb-0">₹<?= number_format($product['base_price'], 2) ?> <i class="mdi mdi-tag-outline"></i><br>
+                                                <span class="regular-price">₹<?= number_format($product['mrp'], 2) ?></span>
                                             </p>
                                         </div>
                                     </a>

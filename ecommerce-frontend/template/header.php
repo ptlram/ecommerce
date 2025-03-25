@@ -166,7 +166,7 @@
                     echo '<div class="dropdown-menu">';
                     foreach ($subcategory as $sca) {
                         echo '
-                                <a class="dropdown-item" href="blog.html"><i class="mdi mdi-chevron-right" aria-hidden="true"></i> ' . $sca["name"] . '</a>
+                                <a class="dropdown-item" href="shop.php?subcategory=' . $sca["id"] . '"><i class="mdi mdi-chevron-right" aria-hidden="true"></i> ' . $sca["name"] . '</a>
                               ';
                     }
                     echo "</div></li>";
