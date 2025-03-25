@@ -88,7 +88,7 @@ $ssubcategory = $query->fetchAll();
                 foreach ($ccategory as $scate) {
                     echo '<div class="item">
                             <div class="category-item">
-                             <a href="shop.php?subcategory=' . urlencode($scate["id"]) . '">
+                             <a href="category.php?category=' . urlencode($scate["id"]) . '">
                             <img class="img-fluid" src="../../ecommerce-backend/pages/uploads/category/' . $scate["image"] . '">
                                 <h6>' . $scate["name"] . '</h6>
                             </a>
@@ -98,7 +98,7 @@ $ssubcategory = $query->fetchAll();
                 foreach ($ccategory as $scate) {
                     echo '<div class="item">
                             <div class="category-item">
-                             <a href="shop.php?subcategory=' . urlencode($scate["id"]) . '">
+                             <a href="category.php?category=' . urlencode($scate["id"]) . '">
                             <img class="img-fluid" src="../../ecommerce-backend/pages/uploads/category/' . $scate["image"] . '">
                                 <h6>' . $scate["name"] . '</h6>
                             </a>
