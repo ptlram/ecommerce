@@ -76,40 +76,7 @@ $ssubcategory = $query->fetchAll();
             </div>
         </div>
     </section>
-    <section class="top-category section-padding">
-        <div class="container">
-            <h5 class="heading-design-h5">Shop by category</h5>
 
-            <div class="owl-carousel owl-carousel-category">
-                <?php
-                $query = $conn->prepare("SELECT * FROM category");
-                $query->execute();
-                $ccategory = $query->fetchAll();
-                foreach ($ccategory as $scate) {
-                    echo '<div class="item">
-                            <div class="category-item">
-                             <a href="category.php?category=' . urlencode($scate["id"]) . '">
-                            <img class="img-fluid" src="../../ecommerce-backend/pages/uploads/category/' . $scate["image"] . '">
-                                <h6>' . $scate["name"] . '</h6>
-                            </a>
-                            </div>
-                        </div>';
-                }
-                foreach ($ccategory as $scate) {
-                    echo '<div class="item">
-                            <div class="category-item">
-                             <a href="category.php?category=' . urlencode($scate["id"]) . '">
-                            <img class="img-fluid" src="../../ecommerce-backend/pages/uploads/category/' . $scate["image"] . '">
-                                <h6>' . $scate["name"] . '</h6>
-                            </a>
-                            </div>
-                        </div>';
-                }
-                ?>
-
-            </div>
-        </div>
-    </section>
     <section class="product-items-slider section-padding">
         <?php foreach ($banner as $bann) { ?>
             <div class="container">
@@ -162,7 +129,31 @@ $ssubcategory = $query->fetchAll();
             </div>
         <?php } ?>
     </section>
+    <section class="top-category section-padding">
+        <div class="container">
+            <h5 class="heading-design-h5">Shop by category</h5>
 
+            <div class="owl-carousel owl-carousel-category">
+                <?php
+                $query = $conn->prepare("SELECT * FROM category");
+                $query->execute();
+                $ccategory = $query->fetchAll();
+                foreach ($ccategory as $scate) {
+                    echo '<div class="item">
+                            <div class="category-item">
+                             <a href="category.php?category=' . urlencode($scate["id"]) . '">
+                            <img class="img-fluid" src="../../ecommerce-backend/pages/uploads/category/' . $scate["image"] . '">
+                                <h6>' . $scate["name"] . '</h6>
+                            </a>
+                            </div>
+                        </div>';
+                }
+
+                ?>
+
+            </div>
+        </div>
+    </section>
 
     <!-- Footer -->
     <?php
