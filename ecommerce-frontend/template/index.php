@@ -138,6 +138,8 @@ $ssubcategory = $query->fetchAll();
             </div>
         <?php } ?>
     </section>
+
+
     <!-- Footer -->
     <?php
     include "./footer.php";
