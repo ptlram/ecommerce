@@ -1,13 +1,13 @@
 <?php
-include "../connection.php";
+include "./connection.php";
 
 $query = $conn->prepare("SELECT * FROM banners");
 $query->execute();
 $banner = $query->fetchAll();
 
-$query = $conn->prepare("SELECT * FROM category");
+$query = $conn->prepare("SELECT * FROM subcategory");
 $query->execute();
-$category = $query->fetchAll();
+$ssubcategory = $query->fetchAll();
 
 ?>
 <!DOCTYPE html>
@@ -36,17 +36,17 @@ $category = $query->fetchAll();
 </head>
 
 <body>
-    <?php include "../header.php" ?>
+    <?php include "./header.php" ?>
     <section class="carousel-slider-main text-center border-top border-bottom bg-white">
         <div class="owl-carousel owl-carousel-slider">
             <!-- <div class="item">
-                <a href="shop.html"><img class="img-fluid" src="img/slider/slider2.jpg" alt="First slide"></a>
+                <a href="shop.php"><img class="img-fluid" src="img/slider/slider2.jpg" alt="First slide"></a>
             </div> -->
             <?php
             foreach ($banner as $ban) {
                 if ($ban["is_in_banner"] == "Yes") {
                     echo '<div class="item">
-                    <a href="shop.html">
+                    <a href="shop.php">
                     <img class="img-fluid" src="../../ecommerce-backend/pages/uploads/banners/' . $ban["web_banner"] . '" style="height: 500px;">
                      </a>
                     </div>';
@@ -61,32 +61,21 @@ $category = $query->fetchAll();
         <div class="container">
             <div class="owl-carousel owl-carousel-category">
                 <?php
-                foreach ($category as $cate) {
+                foreach ($ssubcategory as $scate) {
                     echo '<div class="item">
                             <div class="category-item">
-                            <a href="shop.html">
-                            <img class="img-fluid" src="../../ecommerce-backend/pages/uploads/category/' . $cate["image"] . '">
-                                <h6>' . $cate["name"] . '</h6>
+                             <a href="shop.php?subcategory=' . urlencode($scate["name"]) . '">
+                            <img class="img-fluid" src="../../ecommerce-backend/pages/uploads/subcategory/' . $scate["image"] . '">
+                                <h6>' . $scate["name"] . '</h6>
                             </a>
                             </div>
                         </div>';
                 }
                 ?>
-                <?php
-                foreach ($category as $cate) {
-                    echo '<div class="item">
-                            <div class="category-item">
-                            <a href="shop.html">
-                            <img class="img-fluid" src="../../ecommerce-backend/pages/uploads/category/' . $cate["image"] . '">
-                                <h6>' . $cate["name"] . '</h6>
-                            </a>
-                            </div>
-                        </div>';
-                }
-                ?>
+
                 <div class="item">
                     <div class="category-item">
-                        <a href="shop.html">
+                        <a href="shop.php">
                             <img class="img-fluid" src="img/small/1.jpg" alt="">
                             <h6>Fruits & Vegetables</h6>
                             <p>150 Items</p>
@@ -155,7 +144,7 @@ $category = $query->fetchAll();
         <div class="container">
             <div class="section-header">
                 <h5 class="heading-design-h5">Top Savers Today <span class="badge badge-primary">20% OFF</span>
-                    <a class="float-right text-secondary" href="shop.html">View All</a>
+                    <a class="float-right text-secondary" href="shop.php">View All</a>
                 </h5>
             </div>
             <div class="owl-carousel owl-carousel-featured">
@@ -292,7 +281,7 @@ $category = $query->fetchAll();
         <div class="container">
             <div class="section-header">
                 <h5 class="heading-design-h5">Best Offers View <span class="badge badge-info">20% OFF</span>
-                    <a class="float-right text-secondary" href="shop.html">View All</a>
+                    <a class="float-right text-secondary" href="shop.php">View All</a>
                 </h5>
             </div>
             <div class="owl-carousel owl-carousel-featured">
@@ -442,26 +431,9 @@ $category = $query->fetchAll();
     </section>
     <!-- Footer -->
     <?php
-    include "../footer.php";
+    include "./footer.php";
     ?>
     <!-- End Footer -->
-    <!-- Copyright -->
-    <section class="pt-4 pb-4 footer-bottom">
-        <div class="container">
-            <div class="row no-gutters">
-                <div class="col-lg-6 col-sm-6">
-                    <p class="mt-1 mb-0">&copy; Copyright 2018 <strong class="text-dark">Groci</strong>. All Rights Reserved<br>
-                        <small class="mt-0 mb-0">Made with <i class="mdi mdi-heart text-danger"></i> by <a href="https://askbootstrap.com/" target="_blank" class="text-primary">Ask Bootstrap</a>
-                        </small>
-                    </p>
-                </div>
-                <div class="col-lg-6 col-sm-6 text-right">
-                    <img alt="osahan logo" src="img/payment_methods.png">
-                </div>
-            </div>
-        </div>
-    </section>
-    <!-- End Copyright -->
     <div class="cart-sidebar">
         <div class="cart-sidebar-header">
             <h5>
