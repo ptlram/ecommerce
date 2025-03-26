@@ -23,7 +23,7 @@ if ($_SERVER["REQUEST_METHOD"] == "POST") {
             if ($user["role"] == "admin") {
                 header("location: ./admin/dashboard.php");
             } else {
-                header("location: ./user/index.html");
+                header("location: ../ecommerce-frontend/template/index.php");
             }
             exit();
         } else {

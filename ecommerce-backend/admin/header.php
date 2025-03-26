@@ -24,7 +24,7 @@ include "../session_expire.php";
                     <!-- BEGIN USER LOGIN DROPDOWN -->
                     <!-- DOC: Apply "dropdown-dark" class after below "dropdown-extended" to change the dropdown styte -->
                     <li class="dropdown dropdown-user dropdown-dark">
-                        <a href="../" class="dropdown-toggle">
+                        <a href="../../ecommerce-frontend/template/index.php" class="dropdown-toggle">
 
                             <span class="username username-hide-on-mobile"> <i class="fa fa-power-off" style="font-size:36px;"></i> </span>
                             <!-- DOC: Do not remove below empty space(&nbsp;) as its purposely used -->

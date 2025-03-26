@@ -1,7 +1,7 @@
 <?php
 session_start();
 
-$timeout_duration =  86400; //  86400 seconds
+$timeout_duration =  60; //  86400 seconds
 
 // Check if session is set and expired
 if (isset($_SESSION["last_activity"])) {
@@ -12,7 +12,7 @@ if (isset($_SESSION["last_activity"])) {
         session_destroy();
         echo "<script>
             alert('Your session has expired. Login again!');
-            window.location.href='../?message=SessionExpired';
+            window.location.href='../../ecommerce-frontend/template/index.php?message=SessionExpired';
         </script>";
         exit();
     }
