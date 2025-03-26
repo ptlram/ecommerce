@@ -27,7 +27,7 @@ if ($_SERVER["REQUEST_METHOD"] == "POST") {
             }
             exit();
         } else {
-            echo "<script>alert('Invalid email or password!'); window.location.href='./index.html'</script>";
+            echo "<script>alert('Invalid email or password!'); window.location.href='../ecommerce-frontend/template/index.php'</script>";
         }
     } catch (PDOException $e) {
         echo "Error: " . $e->getMessage();

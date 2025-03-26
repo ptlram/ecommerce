@@ -58,6 +58,10 @@ include "../../ecommerce-backend/session_expire.php";
                                                 <label for="confirmPassword">Enter Confirm Password</label>
                                                 <input type="password" class="form-control" id="confirmPassword" name="confirmPassword" placeholder="********" required>
                                             </fieldset>
+                                            <fieldset class="form-group">
+                                                <label for="refferal_code">Refferal Code (optional)</label>
+                                                <input type="text" class="form-control" id="refferal_code" name="refferal_code" placeholder="Enter Refferal Code">
+                                            </fieldset>
                                             <div class="custom-control custom-checkbox">
                                                 <input type="checkbox" class="custom-control-input" id="customCheck2" required>
                                                 <label class="custom-control-label" for="customCheck2">
@@ -137,9 +141,22 @@ include "../../ecommerce-backend/session_expire.php";
             </div>
             <div class="my-2 my-lg-0">
                 <ul class="list-inline main-nav-right">
-                    <li class="list-inline-item">
-                        <a href="#" data-target="#bd-example-modal" data-toggle="modal" class="btn btn-link"><i class="mdi mdi-account-circle"></i> Login/Sign Up</a>
-                    </li>
+                    <?php
+
+                    if (isset($_SESSION['email'])) {
+                    ?>
+                        <li class="list-inline-item">
+                            <a href="./my-profile.php" class="btn btn-link"><i class="mdi mdi-account-circle"></i> Hi Raj</a>
+                        </li>
+                    <?php
+                    } else {
+                    ?>
+                        <li class="list-inline-item">
+                            <a href="#" data-target="#bd-example-modal" data-toggle="modal" class="btn btn-link"><i class="mdi mdi-account-circle"></i> Login/Sign Up</a>
+                        </li>
+                    <?php
+                    }
+                    ?>
                     <li class="list-inline-item cart-btn">
                         <a href="#" data-toggle="offcanvas" class="btn btn-link border-none"><i class="mdi mdi-cart"></i> My Cart <small class="cart-value">5</small></a>
                     </li>
@@ -194,7 +211,7 @@ include "../../ecommerce-backend/session_expire.php";
                         My Account
                     </a>
                     <div class="dropdown-menu">
-                        <a class="dropdown-item" href="my-profile.html"><i class="mdi mdi-chevron-right" aria-hidden="true"></i> My Profile</a>
+                        <a class="dropdown-item" href="my-profile.php"><i class="mdi mdi-chevron-right" aria-hidden="true"></i> My Profile</a>
                         <a class="dropdown-item" href="my-address.html"><i class="mdi mdi-chevron-right" aria-hidden="true"></i> My Address</a>
                         <a class="dropdown-item" href="wishlist.html"><i class="mdi mdi-chevron-right" aria-hidden="true"></i> Wish List </a>
                         <a class="dropdown-item" href="orderlist.html"><i class="mdi mdi-chevron-right" aria-hidden="true"></i> Order List</a>
