@@ -102,32 +102,6 @@ $ssubcategory = $query->fetchAll();
             </div>
         </div>
     </section>
-    <section class="top-category section-padding">
-        <div class="container">
-            <h5 class="heading-design-h5">Shop by category</h5>
-
-            <div class="owl-carousel owl-carousel-category">
-                <?php
-                $query = $conn->prepare("SELECT * FROM category");
-                $query->execute();
-                $ccategory = $query->fetchAll();
-                foreach ($ccategory as $scate) {
-                    echo '<div class="item">
-                            <div class="category-item">
-                             <a href="category.php?category=' . urlencode($scate["id"]) . '">
-                            <img class="img-fluid" src="../../ecommerce-backend/pages/uploads/category/' . $scate["image"] . '">
-                                <h6>' . $scate["name"] . '</h6>
-                            </a>
-                            </div>
-                        </div>';
-                }
-
-                ?>
-
-            </div>
-        </div>
-    </section>
-
 
     <section class="product-items-slider section-padding">
         <?php foreach ($banner as $bann) { ?>
@@ -135,7 +109,7 @@ $ssubcategory = $query->fetchAll();
                 <br>
 
                 <div class="section-header">
-                    <h5 class="heading-design-h5"><?= $bann['name'] ?> <span class="badge badge-primary">20% OFF</span>
+                    <h5 class="heading-design-h5"><?= $bann['name'] ?>
                         <a class="float-right text-secondary" href="viewall.php?offer=<?= $bann["id"] ?>">View All</a>
                     </h5>
                 </div>
@@ -157,9 +131,20 @@ $ssubcategory = $query->fetchAll();
                                 <div class="product">
                                     <a href="single.php?product=<?= $product['id'] ?>&offer=<?= $bann['id'] ?>">
                                         <div class="product-header">
-                                            <!-- <span class="badge badge-success"><?= $product['discount'] ?>% OFF</span> -->
+                                            <?php
+                                            $mrp = $product["mrp"];
+                                            $retailer_price = $product["retailer_price"];
+
+                                            $discount = (($mrp - $retailer_price) / $mrp) * 100;
+
+                                            // Display discount only if it's greater than 0
+                                            if ($discount > 0) {
+                                                echo '<span class="badge badge-success">' . number_format($discount, 2) . '% OFF</span>';
+                                            }
+                                            ?>
+
+
                                             <img class="img-fluid" src="../../ecommerce-backend/pages/uploads/products/<?= $product['product_image'] ?>" alt="<?= $product['product_name'] ?>">
-                                            <!-- <span class="<?= $product['is_veg'] ? 'veg text-success' : 'non-veg text-danger' ?> mdi mdi-circle"></span> -->
                                         </div>
                                         <div class="product-body">
                                             <h5><?= htmlspecialchars($product['product_name']) ?></h5>
@@ -169,8 +154,14 @@ $ssubcategory = $query->fetchAll();
                                             <button type="button" class="btn btn-secondary btn-sm float-right">
                                                 <i class="mdi mdi-cart-outline"></i> Add To Cart
                                             </button>
-                                            <p class="offer-price mb-0">₹<?= number_format($product['base_price'], 2) ?> <i class="mdi mdi-tag-outline"></i><br>
-                                                <span class="regular-price">₹<?= number_format($product['mrp'], 2) ?></span>
+                                            <p class="offer-price mb-0">₹<?= number_format($product['retailer_price'], 2) ?> <br>
+                                                <?php
+                                                if ($product['retailer_price'] !== $product['mrp']) {
+                                                    echo '<span class="regular-price">₹' . number_format($product['mrp'], 2) . '</span>';
+                                                }
+                                                ?>
+
+
                                             </p>
                                         </div>
                                     </a>
@@ -206,7 +197,7 @@ $ssubcategory = $query->fetchAll();
                 <span class="badge badge-success">50% OFF</span>
                 <h5><a href="#">Product Title Here</a></h5>
                 <h6><strong><span class="mdi mdi-approval"></span> Available in</strong> - 500 gm</h6>
-                <p class="offer-price mb-0">$450.99 <i class="mdi mdi-tag-outline"></i> <span class="regular-price">$800.99</span></p>
+                <p class="offer-price mb-0">$450.99 <span class="regular-price">$800.99</span></p>
             </div>
             <div class="cart-list-product">
                 <a class="float-right remove-cart" href="#"><i class="mdi mdi-close"></i></a>
@@ -214,7 +205,7 @@ $ssubcategory = $query->fetchAll();
                 <span class="badge badge-success">50% OFF</span>
                 <h5><a href="#">Product Title Here</a></h5>
                 <h6><strong><span class="mdi mdi-approval"></span> Available in</strong> - 500 gm</h6>
-                <p class="offer-price mb-0">$450.99 <i class="mdi mdi-tag-outline"></i> <span class="regular-price">$800.99</span></p>
+                <p class="offer-price mb-0">$450.99 <span class="regular-price">$800.99</span></p>
             </div>
             <div class="cart-list-product">
                 <a class="float-right remove-cart" href="#"><i class="mdi mdi-close"></i></a>
@@ -222,7 +213,7 @@ $ssubcategory = $query->fetchAll();
                 <span class="badge badge-success">50% OFF</span>
                 <h5><a href="#">Product Title Here</a></h5>
                 <h6><strong><span class="mdi mdi-approval"></span> Available in</strong> - 500 gm</h6>
-                <p class="offer-price mb-0">$450.99 <i class="mdi mdi-tag-outline"></i> <span class="regular-price">$800.99</span></p>
+                <p class="offer-price mb-0">$450.99 <span class="regular-price">$800.99</span></p>
             </div>
             <div class="cart-list-product">
                 <a class="float-right remove-cart" href="#"><i class="mdi mdi-close"></i></a>
@@ -230,7 +221,7 @@ $ssubcategory = $query->fetchAll();
                 <span class="badge badge-success">50% OFF</span>
                 <h5><a href="#">Product Title Here</a></h5>
                 <h6><strong><span class="mdi mdi-approval"></span> Available in</strong> - 500 gm</h6>
-                <p class="offer-price mb-0">$450.99 <i class="mdi mdi-tag-outline"></i> <span class="regular-price">$800.99</span></p>
+                <p class="offer-price mb-0">$450.99 <span class="regular-price">$800.99</span></p>
             </div>
             <div class="cart-list-product">
                 <a class="float-right remove-cart" href="#"><i class="mdi mdi-close"></i></a>
@@ -238,7 +229,7 @@ $ssubcategory = $query->fetchAll();
                 <span class="badge badge-success">50% OFF</span>
                 <h5><a href="#">Product Title Here</a></h5>
                 <h6><strong><span class="mdi mdi-approval"></span> Available in</strong> - 500 gm</h6>
-                <p class="offer-price mb-0">$450.99 <i class="mdi mdi-tag-outline"></i> <span class="regular-price">$800.99</span></p>
+                <p class="offer-price mb-0">$450.99 <span class="regular-price">$800.99</span></p>
             </div>
         </div>
         <div class="cart-sidebar-footer">

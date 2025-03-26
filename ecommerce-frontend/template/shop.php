@@ -107,9 +107,19 @@
                 <div class="col-lg-3 col-md-4 col-sm-6 col-6"> <!-- 4 items per row on large screens -->
                     <div class="product">
                         <a href="single.php?product=' . $p["id"] . '">
-                            <div class="product-header">
-                                <span class="badge badge-success">50% OFF</span>
-                                <img class="img-fluid" src="../../ecommerce-backend/pages/uploads/products/' . htmlspecialchars($p["product_image"]) . '" alt="' . htmlspecialchars($p["product_name"]) . '">
+                            <div class="product-header">';
+
+               $mrp = $p["mrp"];
+               $retailer_price = $p["retailer_price"];
+
+               $discount = (($mrp - $retailer_price) / $mrp) * 100;
+
+               // Display discount only if it's greater than 0
+               if ($discount > 0) {
+                  echo '<span class="badge badge-success">' . number_format($discount, 2) . '% OFF</span>';
+               }
+
+               echo '<img class="img-fluid" src="../../ecommerce-backend/pages/uploads/products/' . htmlspecialchars($p["product_image"]) . '" alt="' . htmlspecialchars($p["product_name"]) . '">
                                 <span class="veg text-success mdi mdi-circle"></span>
                             </div>
                             <div class="product-body">
@@ -120,10 +130,13 @@
                                 <button type="button" class="btn btn-secondary btn-sm float-right">
                                     <i class="mdi mdi-cart-outline"></i> Add To Cart
                                 </button>
-                                <p class="offer-price mb-0">₹' . number_format($p["retailer_price"], 2) . ' <i class="mdi mdi-tag-outline"></i><br>
-                                    <span class="regular-price">₹' . number_format($p["mrp"], 2) . '</span>
-                                </p>
-                            </div>
+                                <p class="offer-price mb-0">₹' . number_format($p["retailer_price"], 2) . ' <br>';
+
+               if ($p['retailer_price'] !== $p['mrp']) {
+                  echo '<span class="regular-price">₹' . number_format($p['mrp'], 2) . '</span>';
+               }
+
+               echo '</p></div>
                         </a>
                     </div>
                 </div>';
@@ -163,7 +176,7 @@
             <span class="badge badge-success">50% OFF</span>
             <h5><a href="#">Product Title Here</a></h5>
             <h6><strong><span class="mdi mdi-approval"></span> Available in</strong> - 500 gm</h6>
-            <p class="offer-price mb-0">₹450.99 <i class="mdi mdi-tag-outline"></i> <span class="regular-price">₹800.99</span></p>
+            <p class="offer-price mb-0">₹450.99 <span class="regular-price">₹800.99</span></p>
          </div>
          <div class="cart-list-product">
             <a class="float-right remove-cart" href="#"><i class="mdi mdi-close"></i></a>
@@ -171,7 +184,7 @@
             <span class="badge badge-success">50% OFF</span>
             <h5><a href="#">Product Title Here</a></h5>
             <h6><strong><span class="mdi mdi-approval"></span> Available in</strong> - 500 gm</h6>
-            <p class="offer-price mb-0">₹450.99 <i class="mdi mdi-tag-outline"></i> <span class="regular-price">₹800.99</span></p>
+            <p class="offer-price mb-0">₹450.99 <span class="regular-price">₹800.99</span></p>
          </div>
          <div class="cart-list-product">
             <a class="float-right remove-cart" href="#"><i class="mdi mdi-close"></i></a>
@@ -179,7 +192,7 @@
             <span class="badge badge-success">50% OFF</span>
             <h5><a href="#">Product Title Here</a></h5>
             <h6><strong><span class="mdi mdi-approval"></span> Available in</strong> - 500 gm</h6>
-            <p class="offer-price mb-0">₹450.99 <i class="mdi mdi-tag-outline"></i> <span class="regular-price">₹800.99</span></p>
+            <p class="offer-price mb-0">₹450.99 <span class="regular-price">₹800.99</span></p>
          </div>
          <div class="cart-list-product">
             <a class="float-right remove-cart" href="#"><i class="mdi mdi-close"></i></a>
@@ -187,7 +200,7 @@
             <span class="badge badge-success">50% OFF</span>
             <h5><a href="#">Product Title Here</a></h5>
             <h6><strong><span class="mdi mdi-approval"></span> Available in</strong> - 500 gm</h6>
-            <p class="offer-price mb-0">₹450.99 <i class="mdi mdi-tag-outline"></i> <span class="regular-price">₹800.99</span></p>
+            <p class="offer-price mb-0">₹450.99 <span class="regular-price">₹800.99</span></p>
          </div>
          <div class="cart-list-product">
             <a class="float-right remove-cart" href="#"><i class="mdi mdi-close"></i></a>
@@ -195,7 +208,7 @@
             <span class="badge badge-success">50% OFF</span>
             <h5><a href="#">Product Title Here</a></h5>
             <h6><strong><span class="mdi mdi-approval"></span> Available in</strong> - 500 gm</h6>
-            <p class="offer-price mb-0">₹450.99 <i class="mdi mdi-tag-outline"></i> <span class="regular-price">₹800.99</span></p>
+            <p class="offer-price mb-0">₹450.99 <span class="regular-price">₹800.99</span></p>
          </div>
       </div>
       <div class="cart-sidebar-footer">
