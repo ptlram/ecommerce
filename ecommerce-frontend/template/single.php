@@ -46,10 +46,6 @@ include "./connection.php";
                <div class="col-md-6">
                   <div class="shop-detail-left">
                      <div class="shop-detail-slider">
-                        <div class="favourite-icon">
-                           <a class="fav-btn" title="" data-placement="bottom" data-toggle="tooltip" href="#" data-original-title="59% OFF"><i class="mdi mdi-tag-outline"></i></a>
-                        </div>
-
                         <div id="sync1" class="owl-carousel">
                            <?php foreach ($p_images as $image) { ?>
                               <div class="item"><img src="../../ecommerce-backend/pages/uploads/products/<?= htmlspecialchars($image) ?>" class="img-fluid img-center"></div>
@@ -67,11 +63,27 @@ include "./connection.php";
                </div>
                <div class="col-md-6">
                   <div class="shop-detail-right">
-                     <span class="badge badge-success">50% OFF</span>
+                     <?php
+                     $mrp = $products[0]["mrp"];
+                     $retailer_price = $products[0]["retailer_price"];
+
+                     $discount = (($mrp - $retailer_price) / $mrp) * 100;
+
+                     // Display discount only if it's greater than 0
+                     if ($discount > 0) {
+                        echo '<span class="badge badge-success">' . number_format($discount, 2) . '% OFF</span>';
+                     }
+                     ?></span>
                      <h2><?= $products[0]['product_name'] ?></h2>
                      <h6><strong><span class="mdi mdi-approval"></span> Available in</strong> - <?= $products[0]['variant_name'] ?></h6>
-                     <p class="regular-price"><i class="mdi mdi-tag-outline"></i> MRP : <?= $products[0]['mrp'] ?></p>
-                     <p class="offer-price mb-0">Discounted price : <span class="text-success"><?= $products[0]['base_price'] ?></span></p>
+                     <p class="offer-price mb-0"><?php
+                                                   if ($products[0]['retailer_price'] !== $products[0]['mrp']) {
+                                                      echo '<span class="regular-price">MRP : ₹' . number_format($products[0]['mrp'], 2) . '</span>';
+                                                   }
+                                                   ?> <br>
+                        Discounted price : ₹<?= number_format($products[0]['retailer_price'], 2) ?>
+                     </p>
+
                      <a href="checkout.html"><button type="button" class="btn btn-secondary btn-lg"><i class="mdi mdi-cart-outline"></i> Add To Cart</button> </a>
                      <div class="short-description">
                         <h5>
@@ -139,9 +151,19 @@ include "./connection.php";
                         <div class="product">
                            <a href="single.php?product=<?= $product['id'] ?>&offer=<?= $bann['id'] ?>">
                               <div class="product-header">
-                                 <!-- <span class="badge badge-success"><?= $product['discount'] ?>% OFF</span> -->
+                                 <?php
+                                 $mrp = $product["mrp"];
+                                 $retailer_price = $product["retailer_price"];
+
+                                 $discount = (($mrp - $retailer_price) / $mrp) * 100;
+
+                                 // Display discount only if it's greater than 0
+                                 if ($discount > 0) {
+                                    echo '<span class="badge badge-success">' . number_format($discount, 2) . '% OFF</span>';
+                                 }
+                                 ?>
                                  <img class="img-fluid" src="../../ecommerce-backend/pages/uploads/products/<?= $product['product_image'] ?>" alt="<?= $product['product_name'] ?>">
-                                 <!-- <span class="<?= $product['is_veg'] ? 'veg text-success' : 'non-veg text-danger' ?> mdi mdi-circle"></span> -->
+
                               </div>
                               <div class="product-body">
                                  <h5><?= htmlspecialchars($product['product_name']) ?></h5>
@@ -151,8 +173,12 @@ include "./connection.php";
                                  <button type="button" class="btn btn-secondary btn-sm float-right">
                                     <i class="mdi mdi-cart-outline"></i> Add To Cart
                                  </button>
-                                 <p class="offer-price mb-0">₹<?= number_format($product['base_price'], 2) ?> <i class="mdi mdi-tag-outline"></i><br>
-                                    <span class="regular-price">₹<?= number_format($product['mrp'], 2) ?></span>
+                                 <p class="offer-price mb-0">₹<?= number_format($product['retailer_price'], 2) ?> <br>
+                                    <?php
+                                    if ($product['retailer_price'] !== $product['mrp']) {
+                                       echo '<span class="regular-price">₹' . number_format($product['mrp'], 2) . '</span>';
+                                    }
+                                    ?>
                                  </p>
                               </div>
                            </a>
@@ -183,7 +209,7 @@ include "./connection.php";
             <span class="badge badge-success">50% OFF</span>
             <h5><a href="#">Product Title Here</a></h5>
             <h6><strong><span class="mdi mdi-approval"></span> Available in</strong> - 500 gm</h6>
-            <p class="offer-price mb-0">₹450.99 <i class="mdi mdi-tag-outline"></i> <span class="regular-price">₹800.99</span></p>
+            <p class="offer-price mb-0">₹450.99 <span class="regular-price">₹800.99</span></p>
          </div>
          <div class="cart-list-product">
             <a class="float-right remove-cart" href="#"><i class="mdi mdi-close"></i></a>
@@ -191,7 +217,7 @@ include "./connection.php";
             <span class="badge badge-success">50% OFF</span>
             <h5><a href="#">Product Title Here</a></h5>
             <h6><strong><span class="mdi mdi-approval"></span> Available in</strong> - 500 gm</h6>
-            <p class="offer-price mb-0">₹450.99 <i class="mdi mdi-tag-outline"></i> <span class="regular-price">₹800.99</span></p>
+            <p class="offer-price mb-0">₹450.99 <span class="regular-price">₹800.99</span></p>
          </div>
          <div class="cart-list-product">
             <a class="float-right remove-cart" href="#"><i class="mdi mdi-close"></i></a>
@@ -199,7 +225,7 @@ include "./connection.php";
             <span class="badge badge-success">50% OFF</span>
             <h5><a href="#">Product Title Here</a></h5>
             <h6><strong><span class="mdi mdi-approval"></span> Available in</strong> - 500 gm</h6>
-            <p class="offer-price mb-0">₹450.99 <i class="mdi mdi-tag-outline"></i> <span class="regular-price">₹800.99</span></p>
+            <p class="offer-price mb-0">₹450.99 <span class="regular-price">₹800.99</span></p>
          </div>
          <div class="cart-list-product">
             <a class="float-right remove-cart" href="#"><i class="mdi mdi-close"></i></a>
@@ -207,7 +233,7 @@ include "./connection.php";
             <span class="badge badge-success">50% OFF</span>
             <h5><a href="#">Product Title Here</a></h5>
             <h6><strong><span class="mdi mdi-approval"></span> Available in</strong> - 500 gm</h6>
-            <p class="offer-price mb-0">₹450.99 <i class="mdi mdi-tag-outline"></i> <span class="regular-price">₹800.99</span></p>
+            <p class="offer-price mb-0">₹450.99 <span class="regular-price">₹800.99</span></p>
          </div>
          <div class="cart-list-product">
             <a class="float-right remove-cart" href="#"><i class="mdi mdi-close"></i></a>
@@ -215,7 +241,7 @@ include "./connection.php";
             <span class="badge badge-success">50% OFF</span>
             <h5><a href="#">Product Title Here</a></h5>
             <h6><strong><span class="mdi mdi-approval"></span> Available in</strong> - 500 gm</h6>
-            <p class="offer-price mb-0">₹450.99 <i class="mdi mdi-tag-outline"></i> <span class="regular-price">₹800.99</span></p>
+            <p class="offer-price mb-0">₹450.99 <span class="regular-price">₹800.99</span></p>
          </div>
       </div>
       <div class="cart-sidebar-footer">
