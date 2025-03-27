@@ -17,7 +17,9 @@ if ($_SERVER["REQUEST_METHOD"] == "POST") {
             // Store user session
             $_SESSION["email"] = $user["email"];
             $_SESSION["role"] = $user["role"];
+            $_SESSION["customer_id"] = $user["id"];
             $_SESSION["last_activity"] = time();
+
 
             // Redirect based on role
             if ($user["role"] == "admin") {

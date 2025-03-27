@@ -33,7 +33,7 @@
                 <div class="shop-head">
                     <a href="#"><span class=""></span>&nbsp;</a>
                     <span class=""></span> <a href="javascript:void(0)"></a>
-                    <div class="btn-group float-right mt-2">
+                    <div class="btn-group float-right mt-1">
                         <div class="form-group">
                             <select class="select2 form-control border-form-control sort_product_selected">
                                 <option value="">Sort by: <b>Recommended</b></option>
@@ -44,6 +44,7 @@
                                 <option value="a_to_z">Sort by: Name (A to Z)</option>
                                 <option value="z_to_a">Sort by: Name (Z to A)</option>
                             </select>
+
                         </div>
                     </div>
 
