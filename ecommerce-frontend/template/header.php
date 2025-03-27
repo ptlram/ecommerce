@@ -226,9 +226,9 @@ include "../../ecommerce-backend/session_expire.php";
                         More Pages
                     </a>
                     <div class="dropdown-menu">
-                        <a class="dropdown-item" href="about.html"><i class="mdi mdi-chevron-right" aria-hidden="true"></i> About Us</a>
-                        <a class="dropdown-item" href="contact.html"><i class="mdi mdi-chevron-right" aria-hidden="true"></i> Contact Us</a>
-                        <a class="dropdown-item" href="faq.html"><i class="mdi mdi-chevron-right" aria-hidden="true"></i> FAQ </a>
+                        <a class="dropdown-item" href="about.php"><i class="mdi mdi-chevron-right" aria-hidden="true"></i> About Us</a>
+                        <a class="dropdown-item" href="contact.php"><i class="mdi mdi-chevron-right" aria-hidden="true"></i> Contact Us</a>
+                        <a class="dropdown-item" href="faq.php"><i class="mdi mdi-chevron-right" aria-hidden="true"></i> FAQ </a>
                     </div>
                 </li>
                 <?php if (isset($_SESSION['email'])): ?>
