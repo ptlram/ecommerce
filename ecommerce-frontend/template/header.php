@@ -146,7 +146,20 @@ include "../../ecommerce-backend/session_expire.php";
                     if (isset($_SESSION['email'])) {
                     ?>
                         <li class="list-inline-item">
-                            <a href="./my-profile.php" class="btn btn-link"><i class="mdi mdi-account-circle"></i> Hi Raj</a>
+                            <a href="./my-profile.php" class="btn btn-link"><i class="mdi mdi-account-circle"></i> Hi
+
+                                <?php
+                                include "./connection.php";
+                                $loginuser = $_SESSION['email'];
+                                $que = $conn->prepare("SELECT * FROM customers WHERE email='$loginuser' || mobile_number='$loginuser'");
+                                $que->execute();
+                                $username = $que->fetchAll();
+                                if ($username[0]["name"] == Null) {
+                                    echo $loginuser;
+                                } else {
+                                    echo $username[0]["name"];
+                                }
+                                ?></a>
                         </li>
                     <?php
                     } else {
@@ -206,17 +219,7 @@ include "../../ecommerce-backend/session_expire.php";
                         <a class="dropdown-item" href="blog-detail.html"><i class="mdi mdi-chevron-right" aria-hidden="true"></i> Blog Detail</a>
                     </div>
                 </li>
-                <li class="nav-item dropdown">
-                    <a class="nav-link dropdown-toggle" href="#" data-toggle="dropdown" aria-haspopup="true" aria-expanded="false">
-                        My Account
-                    </a>
-                    <div class="dropdown-menu">
-                        <a class="dropdown-item" href="my-profile.php"><i class="mdi mdi-chevron-right" aria-hidden="true"></i> My Profile</a>
-                        <a class="dropdown-item" href="my-address.html"><i class="mdi mdi-chevron-right" aria-hidden="true"></i> My Address</a>
-                        <a class="dropdown-item" href="wishlist.html"><i class="mdi mdi-chevron-right" aria-hidden="true"></i> Wish List </a>
-                        <a class="dropdown-item" href="orderlist.html"><i class="mdi mdi-chevron-right" aria-hidden="true"></i> Order List</a>
-                    </div>
-                </li>
+
                 <li class="nav-item dropdown">
                     <a class="nav-link dropdown-toggle" href="#" data-toggle="dropdown" aria-haspopup="true" aria-expanded="false">
                         More Pages
