@@ -163,7 +163,12 @@
 
                                         </div>
                                         <div class="row">
-
+                                            <div class="col-sm-6">
+                                                <div class="form-group">
+                                                    <label class="control-label">Pin Code <span class="required">*</span></label>
+                                                    <input class="form-control border-form-control" name="pincode" value="<?= $userdata[0]['pincode'] ?? '' ?>" placeholder="Enter Pin Code" type="text">
+                                                </div>
+                                            </div>
                                             <div class="col-sm-6">
                                                 <div class="form-group">
                                                     <label class="control-label">GST Number <span class="required">*</span></label>
@@ -335,6 +340,7 @@ if (isset($_POST["save_changes"])) {
     $city = trim($_POST["city"]);
     $gst_number = trim($_POST["gst_number"]);
     $address = trim($_POST["address"]);
+    $pincode = trim($_POST["pincode"]); // New pincode field
 
     // Determine whether to update email or phone based on session email type
     $update_field = $is_numeric_email ? "mobile_number" : "email";
@@ -365,6 +371,7 @@ if (isset($_POST["save_changes"])) {
                 city = :city, 
                 gst_number = :gst_number, 
                 address = :address, 
+                pincode = :pincode, 
                 $update_field = :session_email
             WHERE $update_field = :session_email
         ");
@@ -375,6 +382,7 @@ if (isset($_POST["save_changes"])) {
         $query->bindParam(":city", $city, PDO::PARAM_STR);
         $query->bindParam(":gst_number", $gst_number, PDO::PARAM_STR);
         $query->bindParam(":address", $address, PDO::PARAM_STR);
+        $query->bindParam(":pincode", $pincode, PDO::PARAM_STR);
         $query->bindParam(":session_email", $email, PDO::PARAM_STR);
 
         if ($query->execute()) {
