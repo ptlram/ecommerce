@@ -46,7 +46,7 @@
                             </select>
                         </div>
                     </div>
-                    <h1 class="mb-3" style="font-size:1.25rem;">New Year</h1>
+
                 </div>
                 <div class="row no-gutters filter_data">
                     <?php
@@ -110,6 +110,60 @@
                     <?php }
                             }
                         }
+                    } ?>
+                </div>
+                <div class="row no-gutters filter_data">
+                    <?php
+                    if (isset($_GET['product'])) {
+                        $product_name = $_GET['product'];
+                        $q = $conn->prepare("SELECT * FROM products WHERE product_name like ?");
+                        $q->execute(["%$product_name%"]);
+                        $search_products = $q->fetchAll();
+
+                        foreach ($search_products as $product) { ?>
+                            <div class="col-lg-3 col-md-3 col-sm-6 col-6 p_list"> <!-- 4 items per row -->
+                                <div class="product">
+                                    <a href="single.php?product=<?= $product['id'] ?>&offer=<?= $banner['id'] ?>">
+                                        <div class="product-header">
+                                            <?php
+                                            $mrp = $product["mrp"];
+                                            $retailer_price = $product["retailer_price"];
+
+                                            $discount = (($mrp - $retailer_price) / $mrp) * 100;
+
+                                            // Display discount only if it's greater than 0
+                                            if ($discount > 0) {
+                                                echo '<span class="badge badge-success">' . number_format($discount, 2) . '% OFF</span>';
+                                            }
+                                            ?>
+                                            <img class="img-fluid lazyload" src="../../ecommerce-backend/pages/uploads/products/<?= $product['product_image'] ?>" alt="<?= $product['product_name'] ?>">
+
+                                        </div>
+                                        <div class="product-body">
+                                            <h5 class="cut-text" title="<?= htmlspecialchars($product['product_name']) ?>">
+                                                <?= htmlspecialchars($product['product_name']) ?>
+                                            </h5>
+                                            <h6><strong><span class="mdi mdi-approval"></span> <?= htmlspecialchars($product['variant_name']) ?></strong></h6>
+                                        </div>
+                                    </a>
+                                    <div class="product-footer">
+                                        <form method='post' action='' id="product_form_<?= $product['id'] ?>">
+                                            <input type='hidden' name='code' value="<?= $product['id'] ?>" />
+                                            <input type='hidden' name='action' value="add" />
+                                            <button type="button" onclick="CartActionGuest('<?= $product['id'] ?>', this, 'Add')" class="btn btn-secondary btn-sm float-right">
+                                                <i class="mdi mdi-cart-outline"></i> Add To Cart
+                                            </button>
+                                        </form>
+                                        <p class="offer-price mb-0">₹<?= number_format($product['retailer_price'], 2) ?> <br>
+                                            <?php
+                                            if ($product['retailer_price'] !== $product['mrp']) {
+                                                echo '<span class="regular-price">₹' . number_format($product['mrp'], 2) . '</span>';
+                                            }
+                                            ?>
+                                    </div>
+                                </div>
+                            </div>
+                    <?php }
                     } ?>
                 </div>
 
