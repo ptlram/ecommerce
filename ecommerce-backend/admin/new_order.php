@@ -95,19 +95,36 @@ License: You must have a valid license purchased only from themeforest(the above
                                                     <option value="">Select Customer</option>
                                                     <?php
                                                     include "../connection.php";
-                                                    $query = $conn->prepare("select * from customers");
+
+                                                    $query = $conn->prepare("SELECT * FROM customers");
                                                     $query->execute();
-                                                    // Fetch all records
-                                                    $customers = $query->fetchAll();
+                                                    $customers = $query->fetchAll(PDO::FETCH_ASSOC);
+
                                                     foreach ($customers as $customer) {
                                                         $id = $customer["city"];
-                                                        $subquery = $conn->prepare("select * from cities where id=$id ");
-                                                        $subquery->execute();
-                                                        $citys = $subquery->fetchAll();
-                                                        echo '<option value=" ' . $customer["id"] . '"  data-mobile_number="' . $customer["mobile_number"] . '" data-email="' . $customer["email"] . '" data-address="' . $customer["address"] . '" data-city="' . $citys[0]["city_name"] . '" > ' . $customer["name"] . '-' . $customer["mobile_number"] . '</option>';
+
+                                                        // Ensure city ID is not empty/null before querying
+                                                        if (!empty($id)) {
+                                                            $subquery = $conn->prepare("SELECT city_name FROM cities WHERE id = :id");
+                                                            $subquery->execute(['id' => $id]);
+                                                            $city = $subquery->fetch(PDO::FETCH_ASSOC);
+
+                                                            // Get city name safely
+                                                            $cityName = $city ? $city["city_name"] : "Unknown City";
+                                                        } else {
+                                                            $cityName = "Unknown City"; // Default if no city is found
+                                                        }
+
+                                                        echo '<option value="' . htmlspecialchars($customer["id"]) . '"  
+              data-mobile_number="' . htmlspecialchars($customer["mobile_number"]) . '" 
+              data-email="' . htmlspecialchars($customer["email"]) . '" 
+              data-address="' . htmlspecialchars($customer["address"]) . '" 
+              data-city="' . htmlspecialchars($cityName) . '" > '
+                                                            . htmlspecialchars($customer["name"]) . '-' . htmlspecialchars($customer["mobile_number"]) . '</option>';
                                                     }
                                                     ?>
                                                 </select>
+
                                             </div>
 
                                             <div class="form-group">
