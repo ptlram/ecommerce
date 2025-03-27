@@ -53,15 +53,14 @@
                             <div class="card account-left">
                                 <div class="user-profile-header">
                                     <img alt="logo" src="img/user.jpg">
-                                    <h5 class="mb-1 text-secondary"><strong>Hi </strong><?php echo $userdata[0]['name']; ?></h5>
+                                    <h5 class="mb-1 text-secondary"><strong>Hi </strong><?php echo $userdata[0]['name'] ?? null; ?></h5>
                                     <p> <?= $userdata[0]['mobile_number'] ?? '+91 000 000 0000' ?></p>
                                 </div>
                                 <div class="list-group">
-                                    <a href="my-profile.html" class="list-group-item list-group-item-action active"><i aria-hidden="true" class="mdi mdi-account-outline"></i> My Profile</a>
-                                    <a href="my-address.html" class="list-group-item list-group-item-action"><i aria-hidden="true" class="mdi mdi-map-marker-circle"></i> My Address</a>
-                                    <a href="wishlist.html" class="list-group-item list-group-item-action"><i aria-hidden="true" class="mdi mdi-heart-outline"></i> Wish List </a>
-                                    <a href="orderlist.html" class="list-group-item list-group-item-action"><i aria-hidden="true" class="mdi mdi-format-list-bulleted"></i> Order List</a>
-                                    <a href="#" class="list-group-item list-group-item-action"><i aria-hidden="true" class="mdi mdi-lock"></i> Logout</a>
+                                    <a href="my-profile.php" class="list-group-item list-group-item-action active"><i aria-hidden="true" class="mdi mdi-account-outline"></i> My Profile</a>
+                                    <a href="my-address.php" class="list-group-item list-group-item-action"><i aria-hidden="true" class="mdi mdi-map-marker-circle"></i> My Address</a>
+                                    <a href="orderlist.php" class="list-group-item list-group-item-action"><i aria-hidden="true" class="mdi mdi-format-list-bulleted"></i> Order List</a>
+                                    <a href="logout.php" class="list-group-item list-group-item-action"><i aria-hidden="true" class="mdi mdi-lock"></i> Logout</a>
                                 </div>
                             </div>
                         </div>

@@ -186,11 +186,9 @@ include "../../ecommerce-backend/session_expire.php";
         <div class="collapse navbar-collapse" id="navbarText">
             <ul class="navbar-nav mr-auto mt-2 mt-lg-0 margin-auto">
                 <li class="nav-item">
-                    <a class="nav-link shop" href="index.php"><span class="mdi mdi-store"></span> Super Store</a>
+                    <a class="nav-link shop" href="index.php"><strong>Home</strong></a>
                 </li>
-                <li class="nav-item">
-                    <a href="index.php" class="nav-link">Home</a>
-                </li>
+
                 <?php
                 $query = $conn->prepare("SELECT * FROM category");
                 $query->execute();
@@ -231,9 +229,16 @@ include "../../ecommerce-backend/session_expire.php";
                         <a class="dropdown-item" href="about.html"><i class="mdi mdi-chevron-right" aria-hidden="true"></i> About Us</a>
                         <a class="dropdown-item" href="contact.html"><i class="mdi mdi-chevron-right" aria-hidden="true"></i> Contact Us</a>
                         <a class="dropdown-item" href="faq.html"><i class="mdi mdi-chevron-right" aria-hidden="true"></i> FAQ </a>
-                        <a class="dropdown-item" href="not-found.html"><i class="mdi mdi-chevron-right" aria-hidden="true"></i> 404 Error</a>
                     </div>
                 </li>
+                <?php if (isset($_SESSION['email'])): ?>
+                    <li class="nav-item">
+                        <a class="nav-link" href="logout.php">
+                            Logout
+                        </a>
+                    </li>
+                <?php endif; ?>
+
             </ul>
         </div>
     </div>
