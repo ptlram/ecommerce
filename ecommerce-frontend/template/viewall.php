@@ -30,7 +30,7 @@
     <section class="shop-list section-padding">
         <div class="container">
             <div class="col-md-12">
-                <div class="shop-head">
+                <!-- <div class="shop-head">
                     <a href="#"><span class=""></span>&nbsp;</a>
                     <span class=""></span> <a href="javascript:void(0)"></a>
                     <div class="btn-group float-right mt-1">
@@ -48,7 +48,7 @@
                         </div>
                     </div>
 
-                </div>
+                </div> -->
                 <div class="row no-gutters filter_data">
                     <?php
                     if (isset($_GET['offer'])) {
