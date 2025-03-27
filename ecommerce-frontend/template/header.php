@@ -116,27 +116,30 @@ include "../../ecommerce-backend/session_expire.php";
         <div class="navbar-collapse" id="navbarNavDropdown">
             <div class="navbar-nav mr-auto mt-2 mt-lg-0 margin-auto top-categories-search-main">
                 <div class="top-categories-search">
+
                     <div class="input-group">
                         <span class="input-group-btn categories-dropdown">
-                            <select class="form-control-select">
+                            <select id="category" name="category" class="form-control-select">
                                 <option selected="selected">Your Category</option>
                                 <?php
                                 include "./connection.php";
-
                                 $query = $conn->prepare("SELECT * FROM category");
                                 $query->execute();
-                                $cities = $query->fetchAll();
-                                foreach ($cities as $city) {
-                                    echo '<option value="' . $city["id"] . '">' . $city["name"] . '</option>';
+                                $categories = $query->fetchAll();
+                                foreach ($categories as $category) {
+                                    echo '<option value="' . $category["id"] . '">' . $category["name"] . '</option>';
                                 }
                                 ?>
                             </select>
                         </span>
-                        <input class="form-control" placeholder="Search products in Your City" aria-label="Search products in Your City" type="text">
+                        <input class="form-control" id="search" name="search" placeholder="Search products in Your City" aria-label="Search products in Your City" type="text">
                         <span class="input-group-btn">
-                            <button class="btn btn-secondary" type="button"><i class="mdi mdi-file-find"></i> Search</button>
+                            <button class="btn btn-secondary" type="button" name="searchbtn">
+                                <i class="mdi mdi-file-find"></i> Search
+                            </button>
                         </span>
                     </div>
+                    <div id="suggestions" style="position: absolute; background: white; width: 64%;margin-left: 22% ;border: 1px solid #ddd; display: none;z-index: 1;"></div>
                 </div>
             </div>
             <div class="my-2 my-lg-0">
@@ -235,3 +238,41 @@ include "../../ecommerce-backend/session_expire.php";
         </div>
     </div>
 </nav>
+
+<script src="https://code.jquery.com/jquery-3.6.0.min.js"></script>
+<script>
+    $(document).ready(function() {
+        $("#search").on("keyup", function() {
+            let searchText = $(this).val();
+            let category = $("#category").val();
+
+            if (searchText.length > 0) {
+                $.ajax({
+                    url: "search_suggestions.php",
+                    method: "POST",
+                    data: {
+                        query: searchText,
+                        category: category
+                    },
+                    success: function(response) {
+                        $("#suggestions").html(response).fadeIn();
+                    }
+                });
+            } else {
+                $("#suggestions").fadeOut();
+            }
+        });
+
+        $(document).on("click", ".suggestion-item", function() {
+            $("#search").val($(this).text());
+            $("#suggestions").fadeOut();
+        });
+
+        $("button[name='searchbtn']").on("click", function() {
+            let searchQuery = $("#search").val().trim();
+            if (searchQuery !== "") {
+                window.location.href = "viewall.php?product=" + encodeURIComponent(searchQuery);
+            }
+        });
+    });
+</script>
