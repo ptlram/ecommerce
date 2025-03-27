@@ -29,8 +29,7 @@
     <!-- END Footer -->
     <section class="shop-list section-padding">
         <div class="container">
-            <div class="row">
-
+            <div class="col-md-12">
                 <div class="shop-head">
                     <a href="#"><span class=""></span>&nbsp;</a>
                     <span class=""></span> <a href="javascript:void(0)"></a>

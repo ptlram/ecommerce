@@ -76,7 +76,7 @@
 
 
 
-                                    <form method="POST" action="update-profile.php">
+                                    <form method="POST" action="">
                                         <div class="row">
                                             <div class="col-sm-6">
                                                 <div class="form-group">
@@ -92,20 +92,32 @@
                                             </div>
                                         </div>
 
+                                        <?php
+
+                                        $email = $_SESSION['email'] ?? ''; // Get session email
+                                        $is_numeric_email = is_numeric($email); // Check if email is numeric
+                                        ?>
+
                                         <div class="row">
                                             <div class="col-sm-6">
                                                 <div class="form-group">
                                                     <label class="control-label">Phone <span class="required">*</span></label>
-                                                    <input class="form-control border-form-control" name="mobile_number" value="<?= $userdata[0]['mobile_number'] ?? '' ?>" placeholder="Enter phone number" type="number">
+                                                    <input class="form-control border-form-control" name="mobile_number"
+                                                        value="<?= $userdata[0]['mobile_number'] ?? '' ?>"
+                                                        placeholder="Enter phone number" type="number"
+                                                        <?= $is_numeric_email ? 'disabled' : '' ?>>
                                                 </div>
                                             </div>
                                             <div class="col-sm-6">
                                                 <div class="form-group">
                                                     <label class="control-label">Email Address <span class="required">*</span></label>
-                                                    <input class="form-control border-form-control" name="email" value="<?= $userdata[0]['email'] ?? '' ?>" type="email">
+                                                    <input class="form-control border-form-control" name="email"
+                                                        value="<?= $userdata[0]['email'] ?? '' ?>" type="email"
+                                                        <?= !$is_numeric_email ? 'disabled' : '' ?>>
                                                 </div>
                                             </div>
                                         </div>
+
 
                                         <div class="row">
 
@@ -172,8 +184,8 @@
 
                                         <div class="row">
                                             <div class="col-sm-12 text-right">
-                                                <button type="button" class="btn btn-danger btn-lg">Cancel</button>
-                                                <button type="submit" class="btn btn-success btn-lg">Save Changes</button>
+                                                <button type="button" class="btn btn-danger btn-lg" onclick="window.location.href='./index.php'">Cancel</button>
+                                                <button type="submit" name="save_changes" class="btn btn-success btn-lg">Save Changes</button>
                                             </div>
                                         </div>
                                     </form>
@@ -307,54 +319,72 @@ if (isset($_POST['state_id'])) {
 <?php
 include "./connection.php"; // Ensure this contains your PDO connection
 
-if ($_SERVER["REQUEST_METHOD"] == "POST") {
+if (isset($_POST["save_changes"])) {
     // Check if the user is logged in
     if (!isset($_SESSION['email'])) {
         echo "<script>alert('You are not logged in. Please log in first.'); window.location.href='./index.php';</script>";
         exit;
     }
 
-    $email = $_SESSION['email']; // Email is used as the unique identifier
+    $email = $_SESSION['email']; // Session email as identifier
+    $is_numeric_email = is_numeric($email); // Check if session email is numeric
 
     // Collect form data and sanitize input
     $name = trim($_POST["name"]);
-
     $mobile_number = trim($_POST["mobile_number"]);
     $state = trim($_POST["state"]);
     $city = trim($_POST["city"]);
     $gst_number = trim($_POST["gst_number"]);
     $address = trim($_POST["address"]);
 
+    // Determine whether to update email or phone based on session email type
+    $update_field = $is_numeric_email ? "mobile_number" : "email";
+
     try {
-        // Update user details in the database
+        // Check if email or phone already exists for another user
+        $check_query = $conn->prepare("
+            SELECT id FROM customers 
+            WHERE ($update_field = :session_email OR mobile_number = :mobile_number OR email = :email) 
+            AND $update_field != :session_email
+        ");
+        $check_query->bindParam(":session_email", $email, PDO::PARAM_STR);
+        $check_query->bindParam(":mobile_number", $mobile_number, PDO::PARAM_STR);
+        $check_query->bindParam(":email", $email, PDO::PARAM_STR);
+        $check_query->execute();
+
+        if ($check_query->rowCount() > 0) {
+            echo "<script>alert('Phone number or email already exists. Please use a different one.'); window.location.href='./my-profile.php';</script>";
+            exit;
+        }
+
+        // Prepare the update query dynamically
         $query = $conn->prepare("
             UPDATE customers 
             SET name = :name, 
-               
                 mobile_number = :mobile_number, 
                 state = :state, 
                 city = :city, 
                 gst_number = :gst_number, 
-                address = :address 
-            WHERE email = :email
+                address = :address, 
+                $update_field = :session_email
+            WHERE $update_field = :session_email
         ");
 
         $query->bindParam(":name", $name, PDO::PARAM_STR);
-
         $query->bindParam(":mobile_number", $mobile_number, PDO::PARAM_STR);
         $query->bindParam(":state", $state, PDO::PARAM_STR);
         $query->bindParam(":city", $city, PDO::PARAM_STR);
         $query->bindParam(":gst_number", $gst_number, PDO::PARAM_STR);
         $query->bindParam(":address", $address, PDO::PARAM_STR);
-        $query->bindParam(":email", $email, PDO::PARAM_STR);
+        $query->bindParam(":session_email", $email, PDO::PARAM_STR);
 
         if ($query->execute()) {
-            echo "<script>alert('Profile updated successfully!'); window.location.href='./profile.php';</script>";
+            echo "<script>alert('Profile updated successfully!'); window.location.href='./my-profile.php';</script>";
         } else {
-            echo "<script>alert('Error updating profile. Please try again.'); window.location.href='./profile.php';</script>";
+            echo "<script>alert('Error updating profile. Please try again.'); window.location.href='./my-profile.php';</script>";
         }
     } catch (PDOException $e) {
-        echo "<script>alert('Database error: " . $e->getMessage() . "'); window.location.href='./profile.php';</script>";
+        echo "<script>alert('Database error: " . $e->getMessage() . "'); window.location.href='./my-profile.php';</script>";
     }
 }
 ?>
