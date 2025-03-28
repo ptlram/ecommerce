@@ -158,7 +158,15 @@
                      <form method="post" id="checkout-selection">
                         <div class="card checkout-step-one">
                         </div>
+                        <?php include "./connection.php";
+                        if (isset($_SESSION["email"])) {
 
+                           $email = $_SESSION["email"];
+                           $quer = $conn->prepare("SELECT * FROM customers WHERE email='$email' OR mobile_number='$email'");
+                           $quer->execute();
+                           $caddress = $quer->fetchAll();
+                        }
+                        ?>
                         <div class="card checkout-step-two">
                            <div class="card-header" id="headingTwo">
                               <h5 class="mb-0">
@@ -167,14 +175,14 @@
                                  </button>
                               </h5>
                            </div>
-                           <div id="collapseTwo" class="collapse show" aria-labelledby="headingTwo" data-parent="#accordionExample">
+                           <div id="collapseTwo" cla ss="collapse show" aria-labelledby="headingTwo" data-parent="#accordionExample">
                               <div class="card-body">
 
                                  <div class="row">
                                     <div class="col-sm-12">
                                        <div class="form-group">
                                           <label class="control-label">Name <span class="required">*</span></label>
-                                          <input name="customer_name" class="form-control border-form-control" value="Shubham Bhatt" placeholder="Name" type="text" required="">
+                                          <input name="customer_name" class="form-control border-form-control" value="<?php echo $caddress[0]["name"]; ?>" placeholder="Name" type="text" required="">
                                        </div>
                                     </div>
                                  </div>
@@ -182,13 +190,13 @@
                                     <div class="col-sm-6">
                                        <div class="form-group">
                                           <label class="control-label">Phone <span class="required">*</span></label>
-                                          <input name="customer_mobile" class="form-control border-form-control" value="8320099260" placeholder="Phone Number" type="text" onkeypress="return isNumberKey(event)" maxlength="12" minlength="10" readonly required="">
+                                          <input name="customer_mobile" class="form-control border-form-control" value="<?php echo $caddress[0]["mobile_number"]; ?>" placeholder="Phone Number" type="text" onkeypress="return isNumberKey(event)" maxlength="12" minlength="10" readonly required="">
                                        </div>
                                     </div>
                                     <div class="col-sm-6">
                                        <div class="form-group">
                                           <label class="control-label">Email Address </label>
-                                          <input name="customer_email" class="form-control border-form-control" value="Shubhambhatt@gmail.comv" placeholder="Email Address" type="email">
+                                          <input name="customer_email" class="form-control border-form-control" value="<?php echo $caddress[0]["email"]; ?>" placeholder="Email Address" type="email">
                                        </div>
                                     </div>
                                  </div>
@@ -209,7 +217,7 @@
                                     <div class="col-sm-6">
                                        <div class="form-group">
                                           <label class="control-label">Pincode <span class="required">*</span></label>
-                                          <input type="text" name="invoice_pincode" class="form-control" placeholder="Pincode" required value="380051" onkeypress="return isNumberKey(event)">
+                                          <input type="text" name="invoice_pincode" class="form-control" placeholder="Pincode" required value="<?php echo $caddress[0]["pincode"]; ?>" onkeypress="return isNumberKey(event)">
                                        </div>
                                     </div>
                                  </div>
@@ -217,7 +225,7 @@
                                     <div class="col-sm-12">
                                        <div class="form-group">
                                           <label class="control-label">Shipping Address <span class="required">*</span></label>
-                                          <textarea name="customer_address" class="form-control border-form-control" required="required">A - 605, Shiddhivinayak Business Towers, Kataria Automobiles Rd, Makarba</textarea>
+                                          <textarea name="customer_address" class="form-control border-form-control" required="required"><?php echo $caddress[0]["address"]; ?></textarea>
                                        </div>
                                     </div>
                                  </div>
@@ -236,11 +244,8 @@
                                           <select name="delivery_time_slot" class="select2 form-control border-form-control" data-placeholder="Select Delivery Time" required id="delivery_time_slot_id">
                                              <option value="">Select Delivery Time</option>
                                              <br />
-                                             <b>Notice</b>: Undefined variable: delivery_time_slot in <b>D:\Software\xampp\htdocs\native_setup\checkout.php</b> on line <b>715</b><br />
-                                             <option value="1">10:00 AM To 09:00 PM</option><br />
-                                             <b>Notice</b>: Undefined variable: delivery_time_slot in <b>D:\Software\xampp\htdocs\native_setup\checkout.php</b> on line <b>715</b><br />
+                                             <option value="1" selected>10:00 AM To 09:00 PM</option><br />
                                              <option value="3">10:00 AM To 01:00 PM</option><br />
-                                             <b>Notice</b>: Undefined variable: delivery_time_slot in <b>D:\Software\xampp\htdocs\native_setup\checkout.php</b> on line <b>715</b><br />
                                              <option value="2">03:00 PM To 05:00 PM</option>
                                           </select>
                                        </div>
