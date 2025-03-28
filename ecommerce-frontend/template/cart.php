@@ -152,164 +152,7 @@
 
                </div>
             </div>
-            <div class="col-md-8">
-               <div class="checkout-step">
-                  <div class="accordion" id="accordionExample">
-                     <form method="post" id="checkout-selection">
-                        <div class="card checkout-step-one">
-                        </div>
-                        <?php include "./connection.php";
-                        if (isset($_SESSION["email"])) {
 
-                           $email = $_SESSION["email"];
-                           $quer = $conn->prepare("SELECT * FROM customers WHERE email='$email' OR mobile_number='$email'");
-                           $quer->execute();
-                           $caddress = $quer->fetchAll();
-                        }
-                        ?>
-                        <div class="card checkout-step-two">
-                           <div class="card-header" id="headingTwo">
-                              <h5 class="mb-0">
-                                 <button class="btn btn-link collapsed" type="button" data-toggle="collapse" data-target="#collapseTwo" aria-expanded="false" aria-controls="collapseTwo">
-                                    <span class="number">1</span> Delivery Address
-                                 </button>
-                              </h5>
-                           </div>
-                           <div id="collapseTwo" cla ss="collapse show" aria-labelledby="headingTwo" data-parent="#accordionExample">
-                              <div class="card-body">
-
-                                 <div class="row">
-                                    <div class="col-sm-12">
-                                       <div class="form-group">
-                                          <label class="control-label">Name <span class="required">*</span></label>
-                                          <input name="customer_name" class="form-control border-form-control" value="<?php echo $caddress[0]["name"]; ?>" placeholder="Name" type="text" required="">
-                                       </div>
-                                    </div>
-                                 </div>
-                                 <div class="row">
-                                    <div class="col-sm-6">
-                                       <div class="form-group">
-                                          <label class="control-label">Phone <span class="required">*</span></label>
-                                          <input name="customer_mobile" class="form-control border-form-control" value="<?php echo $caddress[0]["mobile_number"]; ?>" placeholder="Phone Number" type="text" onkeypress="return isNumberKey(event)" maxlength="12" minlength="10" readonly required="">
-                                       </div>
-                                    </div>
-                                    <div class="col-sm-6">
-                                       <div class="form-group">
-                                          <label class="control-label">Email Address </label>
-                                          <input name="customer_email" class="form-control border-form-control" value="<?php echo $caddress[0]["email"]; ?>" placeholder="Email Address" type="email">
-                                       </div>
-                                    </div>
-                                 </div>
-                                 <div class="row">
-                                    <div class="col-sm-6">
-                                       <div class="form-group">
-                                          <label class="control-label">City <span class="required">*</span></label>
-                                          <select name="customer_city" class="select2 form-control border-form-control" data-placeholder="Select a City" required id="customer_city_id">
-                                             <option value="">Select City</option>
-                                             <option value="7">4544</option>
-                                             <option value="1" selected>Ahmedabad</option>
-                                             <option value="2">Surat</option>
-                                             <option value="5">surat</option>
-                                             <option value="6">Surat</option>
-                                          </select>
-                                       </div>
-                                    </div>
-                                    <div class="col-sm-6">
-                                       <div class="form-group">
-                                          <label class="control-label">Pincode <span class="required">*</span></label>
-                                          <input type="text" name="invoice_pincode" class="form-control" placeholder="Pincode" required value="<?php echo $caddress[0]["pincode"]; ?>" onkeypress="return isNumberKey(event)">
-                                       </div>
-                                    </div>
-                                 </div>
-                                 <div class="row">
-                                    <div class="col-sm-12">
-                                       <div class="form-group">
-                                          <label class="control-label">Shipping Address <span class="required">*</span></label>
-                                          <textarea name="customer_address" class="form-control border-form-control" required="required"><?php echo $caddress[0]["address"]; ?></textarea>
-                                       </div>
-                                    </div>
-                                 </div>
-                                 <div class="row">
-                                    <div class="col-sm-12">
-                                       <div class="form-group">
-                                          <label class="control-label">Special Instruction</label>
-                                          <textarea name="invoice_special_instruction" class="form-control border-form-control" placeholder="Special Instruction"></textarea>
-                                       </div>
-                                    </div>
-                                 </div>
-                                 <div class="row">
-                                    <div class="col-sm-6">
-                                       <div class="form-group">
-                                          <label class="control-label">Select Delivery Time <span class="required">*</span></label>
-                                          <select name="delivery_time_slot" class="select2 form-control border-form-control" data-placeholder="Select Delivery Time" required id="delivery_time_slot_id">
-                                             <option value="">Select Delivery Time</option>
-                                             <br />
-                                             <option value="1" selected>10:00 AM To 09:00 PM</option><br />
-                                             <option value="3">10:00 AM To 01:00 PM</option><br />
-                                             <option value="2">03:00 PM To 05:00 PM</option>
-                                          </select>
-                                       </div>
-                                    </div>
-                                 </div>
-                              </div>
-                           </div>
-                        </div>
-
-                        <div class="card">
-                           <div class="card-header" id="headingThree">
-                              <h5 class="mb-0">
-                                 <button class="btn btn-link collapsed" type="button" data-toggle="collapse" data-target="#collapseThree" aria-expanded="false" aria-controls="collapseThree">
-                                    <span class="number">2</span> Payment
-                                 </button>
-                              </h5>
-                           </div>
-                           <div id="collapseThree" class="collapse show" aria-labelledby="headingThree" data-parent="#accordionExample">
-                              <div class="card-body">
-                                 <div class="col-12 mb-3 payment-options">
-                                    <div class="row">
-                                       <input type="hidden" name="applied_coupon_code" id="applied_coupon_code">
-                                       <input type="hidden" name="applied_coupon_code_id" id="applied_coupon_code_id">
-                                       <input type="hidden" name="applied_coupon_code_type" id="applied_coupon_code_type">
-                                       <input type="radio" id="customRadio1" name="invoice_payment_mode" value="1" required checked>
-                                       <label class="selected-payment" for="customRadio1">Cash on Delivery</label>
-                                       <input type="radio" id="customRadio2" name="invoice_payment_mode" value="2" required>
-                                       <label class="" for="customRadio2">Pay Online</label>
-                                    </div>
-                                 </div>
-                                 <div class="col-12">
-                                    <div class="row float-right">
-                                       <button type="submit" name="btn_invoice" class="btn btn-secondary mb-2 btn-lg" id="btn_next"> Place Order <i class="fa fa-long-arrow-right ml-2"></i></button>
-                                    </div>
-                                 </div>
-                              </div>
-                           </div>
-                        </div>
-                  </div>
-                  </form>
-                  <div class="card" style="display: none">
-                     <div class="card-header" id="headingThree">
-                        <h5 class="mb-0">
-                           <button class="btn btn-link collapsed" type="button" data-toggle="collapse" data-target="#collapsefour" aria-expanded="false" aria-controls="collapsefour">
-                              <span class="number">3</span> Order Complete
-                           </button>
-                        </h5>
-                     </div>
-                     <div id="collapsefour" class="collapse " aria-labelledby="headingThree" data-parent="#accordionExample">
-                        <div class="card-body">
-                           <div class="text-center">
-                              <div class="col-lg-10 col-md-10 mx-auto order-done">
-                                 <i class="mdi mdi-check-circle-outline text-secondary"></i>
-                                 <h4 class="text-success">Congrats! Your Order has been Accepted..</h4>
-                              </div>
-                              <div class="text-center">
-                                 <a href="http://192.168.1.111/native_setup/"><button type="submit" class="btn btn-secondary mb-2 btn-lg">Return to store</button></a>
-                              </div>
-                           </div>
-                        </div>
-                     </div>
-                  </div>
-               </div>
-            </div>
          </div>
       </div>
 
@@ -355,7 +198,7 @@
 
             // Send AJAX request to update the cart in the database
             $.ajax({
-               url: "./update_cart.php",
+               url: "./cart_update.php",
                type: "POST",
                data: {
                   cart_id: cartId,
@@ -385,7 +228,7 @@
             let cartId = $(this).data("cart-id");
 
             $.ajax({
-               url: "./remove_from_cart.php",
+               url: "./cart_remove.php",
                type: "POST",
                data: {
                   cart_id: cartId
