@@ -13,12 +13,22 @@ if ($_SERVER["REQUEST_METHOD"] == "POST") {
         $query->execute();
         $user = $query->fetch(PDO::FETCH_ASSOC);
 
+        $querys = $conn->prepare("SELECT * FROM customers WHERE email = :email or mobile_number=:mobile_number ");
+        $querys->bindParam(':email', $myemail);
+        $querys->bindParam(':mobile_number', $myemail);
+        $querys->execute();
+        $customer = $querys->fetch(PDO::FETCH_ASSOC);
+
+
+
         if ($user && password_verify($mypassword, $user["password"])) {
             // Store user session
             $_SESSION["email"] = $user["email"];
             $_SESSION["role"] = $user["role"];
-            $_SESSION["customer_id"] = $user["id"];
+            $_SESSION["customer_id"] = $customer["id"];
             $_SESSION["last_activity"] = time();
+
+
 
 
             // Redirect based on role

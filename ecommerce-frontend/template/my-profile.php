@@ -322,6 +322,7 @@ if (isset($_POST['state_id'])) {
 
 <?php
 include "./connection.php"; // Ensure this contains your PDO connection
+session_start(); // Ensure session is started
 
 if (isset($_POST["save_changes"])) {
     // Check if the user is logged in
@@ -330,68 +331,53 @@ if (isset($_POST["save_changes"])) {
         exit;
     }
 
-    $email = $_SESSION['email']; // Session email as identifier
-    $is_numeric_email = is_numeric($email); // Check if session email is numeric
+    $session_email = $_SESSION['email'];
+    $is_numeric_email = is_numeric($session_email); // Check if session email is numeric
 
     // Collect form data and sanitize input
     $name = trim($_POST["name"]);
-    $mobile_number = trim($_POST["mobile_number"]);
     $state = trim($_POST["state"]);
     $city = trim($_POST["city"]);
     $gst_number = trim($_POST["gst_number"]);
     $address = trim($_POST["address"]);
-    $pincode = trim($_POST["pincode"]); // New pincode field
-
-    // Determine whether to update email or phone based on session email type
-    $update_field = $is_numeric_email ? "mobile_number" : "email";
+    $pincode = trim($_POST["pincode"]);
 
     try {
-        // Check if email or phone already exists for another user
-        $check_query = $conn->prepare("
-            SELECT id FROM customers 
-            WHERE ($update_field = :session_email OR mobile_number = :mobile_number OR email = :email) 
-            AND $update_field != :session_email
-        ");
-        $check_query->bindParam(":session_email", $email, PDO::PARAM_STR);
-        $check_query->bindParam(":mobile_number", $mobile_number, PDO::PARAM_STR);
-        $check_query->bindParam(":email", $email, PDO::PARAM_STR);
-        $check_query->execute();
+        if ($is_numeric_email) {
+            $email = trim($_POST["email"]);
 
-        if ($check_query->rowCount() > 0) {
-            echo "<script>alert('Phone number or email already exists. Please use a different one.'); window.location.href='./my-profile.php';</script>";
-            exit;
-        }
+            // Check if email already exists for another user
+            $check_query = $conn->prepare("SELECT * FROM customers WHERE email = ? AND mobile_number != ?");
+            $check_query->execute([$email, $session_email]);
 
-        // Prepare the update query dynamically
-        $query = $conn->prepare("
-            UPDATE customers 
-            SET name = :name, 
-                mobile_number = :mobile_number, 
-                state = :state, 
-                city = :city, 
-                gst_number = :gst_number, 
-                address = :address, 
-                pincode = :pincode, 
-                $update_field = :session_email
-            WHERE $update_field = :session_email
-        ");
+            if ($check_query->rowCount() > 0) {
+                echo "<script>alert('Email already exists. Please use a different one.'); window.location.href='./my-profile.php';</script>";
+                exit;
+            }
 
-        $query->bindParam(":name", $name, PDO::PARAM_STR);
-        $query->bindParam(":mobile_number", $mobile_number, PDO::PARAM_STR);
-        $query->bindParam(":state", $state, PDO::PARAM_STR);
-        $query->bindParam(":city", $city, PDO::PARAM_STR);
-        $query->bindParam(":gst_number", $gst_number, PDO::PARAM_STR);
-        $query->bindParam(":address", $address, PDO::PARAM_STR);
-        $query->bindParam(":pincode", $pincode, PDO::PARAM_STR);
-        $query->bindParam(":session_email", $email, PDO::PARAM_STR);
-
-        if ($query->execute()) {
-            echo "<script>alert('Profile updated successfully!'); window.location.href='./my-profile.php';</script>";
+            // Correct SQL update query
+            $query = $conn->prepare("UPDATE customers SET name = ?, state = ?, city = ?, gst_number = ?, address = ?, pincode = ?, email = ? WHERE mobile_number = ?");
+            $query->execute([$name, $state, $city, $gst_number, $address, $pincode, $email, $session_email]);
         } else {
-            echo "<script>alert('Error updating profile. Please try again.'); window.location.href='./my-profile.php';</script>";
+            $mobile_number = trim($_POST["mobile_number"]);
+
+            // Check if mobile number already exists for another user
+            $check_query = $conn->prepare("SELECT * FROM customers WHERE mobile_number = ? AND email != ?");
+            $check_query->execute([$mobile_number, $session_email]);
+
+            if ($check_query->rowCount() > 0) {
+                echo "<script>alert('Mobile number already exists. Please use a different one.'); window.location.href='./my-profile.php';</script>";
+                exit;
+            }
+
+            // Correct SQL update query
+            $query = $conn->prepare("UPDATE customers SET name = ?, mobile_number = ?, state = ?, city = ?, gst_number = ?, address = ?, pincode = ? WHERE email = ?");
+            $query->execute([$name, $mobile_number, $state, $city, $gst_number, $address, $pincode, $session_email]);
         }
+
+        echo "<script>alert('Profile updated successfully!'); window.location.href='./my-profile.php';</script>";
     } catch (PDOException $e) {
-        echo "<script>alert('Database error: " . $e->getMessage() . "'); window.location.href='./my-profile.php';</script>";
+        echo "<script>alert('Error: " . addslashes($e->getMessage()) . "'); window.location.href='./my-profile.php';</script>";
     }
 }
 ?>

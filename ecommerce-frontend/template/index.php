@@ -107,7 +107,6 @@ $ssubcategory = $query->fetchAll();
         <?php foreach ($banner as $bann) { ?>
             <div class="container" style="box-shadow: 0px 4px 10px rgba(0, 0, 0, 0.19); ">
                 <br>
-
                 <div class="section-header">
                     <h5 class="heading-design-h5"><?= $bann['name'] ?>
                         <a class="float-right text-secondary" href="viewall.php?offer=<?= $bann["id"] ?>">View All</a>
@@ -118,15 +117,12 @@ $ssubcategory = $query->fetchAll();
                     $product_ids = $bann["product_id"];
                     $product_id = explode(",", $product_ids);
 
-                    foreach ($product_id as $p_id) { ?>
-
-                        <?php
-                        $q = $conn->prepare("SELECT * FROM products where id=$p_id");
+                    foreach ($product_id as $p_id) {
+                        $q = $conn->prepare("SELECT * FROM products WHERE id=$p_id");
                         $q->execute();
                         $products = $q->fetchAll();
 
                         foreach ($products as $product) { ?>
-
                             <div class="item">
                                 <div class="product">
                                     <a href="single.php?product=<?= $product['id'] ?>&offer=<?= $bann['id'] ?>">
@@ -134,16 +130,11 @@ $ssubcategory = $query->fetchAll();
                                             <?php
                                             $mrp = $product["mrp"];
                                             $retailer_price = $product["retailer_price"];
-
                                             $discount = (($mrp - $retailer_price) / $mrp) * 100;
-
-                                            // Display discount only if it's greater than 0
                                             if ($discount > 0) {
                                                 echo '<span class="badge badge-success">' . number_format($discount, 2) . '% OFF</span>';
                                             }
                                             ?>
-
-
                                             <img class="img-fluid" src="../../ecommerce-backend/pages/uploads/products/<?= $product['product_image'] ?>" alt="<?= $product['product_name'] ?>">
                                         </div>
                                         <div class="product-body">
@@ -156,12 +147,11 @@ $ssubcategory = $query->fetchAll();
                                                 <i class="mdi mdi-cart-outline"></i> Add To Cart
                                             </button>
 
-                                            <!-- Quantity Selector (Hidden Initially) -->
+                                            <!-- Quantity Selector -->
                                             <div class="qty-selector d-none">
-                                                <button type="button" class="btn btn-outline-secondary decrease-qty">-</button>
+                                                <button type="button" class="btn btn-outline-secondary decrease-qty" data-product-id="<?= $product['id'] ?>">-</button>
                                                 <span class="quantity">1</span>
-                                                <button type="button" class="btn btn-outline-secondary increase-qty">+</button>
-                                                <button type="button" class="btn btn-primary btn-sm confirm-add" data-product-id="<?= $product['id'] ?>">✔</button>
+                                                <button type="button" class="btn btn-outline-secondary increase-qty" data-product-id="<?= $product['id'] ?>">+</button>
                                             </div>
 
                                             <p class="offer-price mb-0">₹<?= number_format($product['retailer_price'], 2) ?> <br>
@@ -170,20 +160,113 @@ $ssubcategory = $query->fetchAll();
                                                 } ?>
                                             </p>
                                         </div>
-
-
                                     </a>
                                 </div>
                             </div>
-
                         <?php } ?>
                     <?php } ?>
                 </div>
             </div>
-            <br>
-            <br>
+            <br><br>
         <?php } ?>
     </section>
+
+    <script>
+        $(document).ready(function() {
+            $(".add-to-cart").click(function(event) {
+                event.preventDefault();
+                event.stopPropagation();
+
+                var parentContainer = $(this).closest(".product-footer");
+                parentContainer.find(".add-to-cart").addClass("d-none");
+                parentContainer.find(".qty-selector").removeClass("d-none");
+
+                var productId = $(this).data("product-id");
+                updateCart(productId, 1);
+            });
+
+            $(".increase-qty, .decrease-qty").click(function(event) {
+                event.preventDefault();
+                event.stopPropagation();
+
+                var quantityElem = $(this).siblings(".quantity");
+                var quantity = parseInt(quantityElem.text());
+                var productId = $(this).data("product-id");
+                var customerId = <?= isset($_SESSION['customer_id']) ? $_SESSION['customer_id'] : 'null' ?>;
+
+                if (!customerId) {
+                    alert("Please log in to add items to your cart.");
+                    return;
+                }
+
+                if ($(this).hasClass("increase-qty")) {
+                    quantity += 1;
+                } else {
+                    if (quantity > 1) {
+                        quantity -= 1;
+                    } else {
+                        removeFromCart(productId, customerId, $(this));
+                        return;
+                    }
+                }
+
+                quantityElem.text(quantity);
+                updateCart(productId, quantity);
+            });
+
+            function updateCart(productId, quantity) {
+                $.ajax({
+                    url: "./update_cart.php",
+                    type: "POST",
+                    data: {
+                        product_id: productId,
+                        customer_id: <?= isset($_SESSION['customer_id']) ? $_SESSION['customer_id'] : 'null' ?>,
+                        quantity: quantity
+                    },
+                    success: function(response) {
+                        console.log(response);
+                    },
+                    error: function() {
+                        alert("Error updating cart.");
+                    }
+                });
+            }
+
+            function removeFromCart(productId, customerId, btnElement) {
+                $.ajax({
+                    url: "./remove_from_cart.php",
+                    type: "POST",
+                    data: {
+                        product_id: productId,
+                        customer_id: customerId
+                    },
+                    success: function(response) {
+                        console.log(response);
+
+                        // Reset UI when the item is removed
+                        var parentContainer = btnElement.closest(".product-footer");
+                        parentContainer.find(".add-to-cart").removeClass("d-none");
+                        parentContainer.find(".qty-selector").addClass("d-none");
+                    },
+                    error: function() {
+                        alert("Error removing product from cart.");
+                    }
+                });
+            }
+
+            $(".product-footer").on("click", function(event) {
+                event.preventDefault();
+                event.stopPropagation();
+            });
+
+            $(".product-footer button").on("click", function(event) {
+                event.preventDefault();
+                event.stopPropagation();
+            });
+        });
+    </script>
+
+
 
 
     <!-- Footer -->
@@ -203,79 +286,6 @@ $ssubcategory = $query->fetchAll();
     <script src="js/custom.js"></script>
 
 
-    <script>
-        $(document).ready(function() {
-            $(".add-to-cart").click(function(event) {
-                event.preventDefault(); // Prevent default link behavior
-                event.stopPropagation(); // Stop event bubbling
-
-                var productId = $(this).data("product-id");
-                var parentContainer = $(this).closest(".product-footer");
-
-                // Hide only the clicked button and show its quantity selector
-                parentContainer.find(".add-to-cart").addClass("d-none");
-                parentContainer.find(".qty-selector").removeClass("d-none");
-            });
-
-            $(".increase-qty, .decrease-qty, .confirm-add").on("click", function(event) {
-                event.preventDefault();
-                event.stopPropagation(); // Stop propagation inside <a> tags
-            });
-
-            $(".increase-qty").click(function() {
-                var quantityElem = $(this).siblings(".quantity");
-                var quantity = parseInt(quantityElem.text());
-                quantityElem.text(quantity + 1);
-            });
-
-            $(".decrease-qty").click(function() {
-                var quantityElem = $(this).siblings(".quantity");
-                var quantity = parseInt(quantityElem.text());
-
-                if (quantity > 1) {
-                    quantityElem.text(quantity - 1);
-                }
-            });
-
-            $(".confirm-add").click(function() {
-                var productId = $(this).data("product-id");
-                var quantity = parseInt($(this).siblings(".quantity").text());
-                var customerId = <?= isset($_SESSION['customer_id']) ? $_SESSION['customer_id'] : 'null' ?>;
-
-                if (!customerId) {
-                    alert("Please log in to add items to your cart.");
-                    return;
-                }
-
-                $.ajax({
-                    url: "./add_to_cart.php",
-                    type: "POST",
-                    data: {
-                        product_id: productId,
-                        customer_id: customerId,
-                        quantity: quantity
-                    },
-                    success: function(response) {
-                        alert(response);
-                    },
-                    error: function() {
-                        alert("Error adding product to cart.");
-                    }
-                });
-            });
-
-            // Prevent entire <a> tag from redirecting when clicking inside .product-footer
-            $(".product-footer").on("click", function(event) {
-                event.preventDefault();
-                event.stopPropagation();
-            });
-
-            $(".product-footer button").on("click", function(event) {
-                event.preventDefault();
-                event.stopPropagation();
-            });
-        });
-    </script>
 
 </body>
 
