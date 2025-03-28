@@ -174,7 +174,12 @@ include "../../ecommerce-backend/session_expire.php";
                     }
                     ?>
                     <li class="list-inline-item cart-btn">
-                        <a href="./cart.php" data-toggle="offcanvas" class="btn btn-link border-none"><i class="mdi mdi-cart"></i> My Cart <small class="cart-value">5</small></a>
+                        <?php if (isset($loginuser)) { ?>
+                            <a href="./cart.php" data-toggle="offcanvas" class="btn btn-link border-none"><i class="mdi mdi-cart"></i> My Cart <small class="cart-value">5</small></a>
+                        <?php } else { ?>
+
+                            <a href="#" data-target="#bd-example-modal" data-toggle="modal" class="btn btn-link"><i class="mdi mdi-cart"></i> My Cart</a>
+                        <?php } ?>
                     </li>
                 </ul>
             </div>
