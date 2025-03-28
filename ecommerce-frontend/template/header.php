@@ -118,7 +118,7 @@ include "../../ecommerce-backend/session_expire.php";
                 <div class="top-categories-search">
 
                     <div class="input-group">
-                        <span class="input-group-btn categories-dropdown">
+                        <span class="input-group-btn categories-dropdown" hidden>
                             <select id="category" name="category" class="form-control-select">
                                 <option selected="selected">Your Category</option>
                                 <?php
@@ -139,7 +139,7 @@ include "../../ecommerce-backend/session_expire.php";
                             </button>
                         </span>
                     </div>
-                    <div id="suggestions" style="position: absolute; background: white; width: 64%;margin-left: 22% ;border: 1px solid #ddd; display: none;z-index: 1;"></div>
+                    <div id="suggestions" style="position: absolute; background: white; width: 86% ;border: 1px solid #ddd; display: none;z-index: 1;"></div>
                 </div>
             </div>
             <div class="my-2 my-lg-0">
@@ -175,7 +175,29 @@ include "../../ecommerce-backend/session_expire.php";
                     ?>
                     <li class="list-inline-item cart-btn">
                         <?php if (isset($loginuser)) { ?>
-                            <a href="./cart.php" data-toggle="offcanvas" class="btn btn-link border-none"><i class="mdi mdi-cart"></i> My Cart <small class="cart-value">5</small></a>
+                            <a href="./cart.php" data-toggle="offcanvas" class="btn btn-link border-none"><i class="mdi mdi-cart"></i> My Cart <small class="cart-value">
+                                    <?php
+
+                                    include './connection.php'; // Ensure this is the correct DB connection file
+
+                                    if (isset($_SESSION["customer_id"])) {
+                                        $customer_id = intval($_SESSION["customer_id"]); // Ensure it's an integer for security
+
+                                        try {
+                                            $queryitem = $conn->prepare("SELECT COUNT(id) AS count FROM cart WHERE customer_id = ?");
+                                            $queryitem->execute([$customer_id]);
+                                            $result = $queryitem->fetch(PDO::FETCH_ASSOC);
+
+                                            $count = $result["count"] ?? 0;
+                                            echo $count;
+                                        } catch (PDOException $e) {
+                                            echo "Error: " . $e->getMessage();
+                                        }
+                                    } else {
+                                        echo "0"; // If no session exists, return 0
+                                    }
+                                    ?>
+                                </small></a>
                         <?php } else { ?>
 
                             <a href="#" data-target="#bd-example-modal" data-toggle="modal" class="btn btn-link"><i class="mdi mdi-cart"></i> My Cart</a>
