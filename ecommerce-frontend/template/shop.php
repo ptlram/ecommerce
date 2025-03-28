@@ -93,66 +93,126 @@
             </div>
          </div>
 
-         <div class="row"> <!-- NEW ROW FOR PRODUCTS -->
+         <div class="row no-gutters filter_data">
             <?php
-            $subidd = $_GET["subcategory"];
-            $query = $conn->prepare("SELECT * FROM products WHERE subcategory = ?");
-            $query->execute([$subidd]);
-            $pro = $query->fetchAll();
-            $count = 0;
+            if (isset($_GET['subcategory'])) {
+               $subcategory_id = $_GET['subcategory'];
+               $q = $conn->prepare("SELECT * FROM products WHERE subcategory = ?");
+               $q->execute([$subcategory_id]);
+               $search_products = $q->fetchAll();
 
-            foreach ($pro as $p) {
-               $count++;
-               echo '
-                <div class="col-lg-3 col-md-4 col-sm-6 col-6"> <!-- 4 items per row on large screens -->
-                    <div class="product">
-                        <a href="single.php?product=' . $p["id"] . '">
-                            <div class="product-header">';
+               foreach ($search_products as $product) { ?>
+                  <div class="col-lg-3 col-md-3 col-sm-6 col-6 p_list"> <!-- 4 items per row -->
+                     <div class="product">
+                        <a href="single.php?product=<?= $product['id'] ?>">
+                           <div class="product-header">
+                              <?php
+                              $mrp = $product["mrp"];
+                              $retailer_price = $product["retailer_price"];
+                              $discount = (($mrp - $retailer_price) / $mrp) * 100;
 
-               $mrp = $p["mrp"];
-               $retailer_price = $p["retailer_price"];
-
-               $discount = (($mrp - $retailer_price) / $mrp) * 100;
-
-               // Display discount only if it's greater than 0
-               if ($discount > 0) {
-                  echo '<span class="badge badge-success">' . number_format($discount, 2) . '% OFF</span>';
-               }
-
-               echo '<img class="img-fluid" src="../../ecommerce-backend/pages/uploads/products/' . htmlspecialchars($p["product_image"]) . '" alt="' . htmlspecialchars($p["product_name"]) . '">
-                                <span class="veg text-success mdi mdi-circle"></span>
-                            </div>
-                            <div class="product-body">
-                                <h5>' . htmlspecialchars($p["product_name"]) . '</h5>
-                                <h6><strong><span class="mdi mdi-approval"></span> Available in</strong> - ' . htmlspecialchars($p["variant_name"]) . '</h6>
-                            </div>
-                            <div class="product-footer">
-                                <button type="button" class="btn btn-secondary btn-sm float-right">
-                                    <i class="mdi mdi-cart-outline"></i> Add To Cart
-                                </button>
-                                <p class="offer-price mb-0">₹' . number_format($p["retailer_price"], 2) . ' <br>';
-
-               if ($p['retailer_price'] !== $p['mrp']) {
-                  echo '<span class="regular-price">₹' . number_format($p['mrp'], 2) . '</span>';
-               }
-
-               echo '</p></div>
+                              // Display discount only if it's greater than 0
+                              if ($discount > 0) {
+                                 echo '<span class="badge badge-success">' . number_format($discount, 2) . '% OFF</span>';
+                              }
+                              ?>
+                              <img class="img-fluid lazyload" src="../../ecommerce-backend/pages/uploads/products/<?= $product['product_image'] ?>" alt="<?= $product['product_name'] ?>">
+                           </div>
+                           <div class="product-body">
+                              <h5 class="cut-text" title="<?= htmlspecialchars($product['product_name']) ?>">
+                                 <?= htmlspecialchars($product['product_name']) ?>
+                              </h5>
+                              <h6><strong><span class="mdi mdi-approval"></span> <?= htmlspecialchars($product['variant_name']) ?></strong></h6>
+                           </div>
                         </a>
-                    </div>
-                </div>';
-            }
+                        <div class="product-footer">
+                           <!-- Add to Cart Button -->
+                           <button type="button" class="btn btn-secondary btn-sm float-right add-to-cart" data-product-id="<?= $product['id'] ?>">
+                              <i class="mdi mdi-cart-outline"></i> Add To Cart
+                           </button>
 
-            // Show a message if no products are found
-            if ($count === 0) {
-               echo '<div class="col-12 text-center my-5">
-                    <h4 class="text-danger"><i class="mdi mdi-alert-circle-outline"></i> No Products Available</h4>
-                    <p class="text-muted" style="font-size: 16px; max-width: 600px; margin: 0 auto;">
-                        Oops! No products found in this category. Please check back later.
-                    </p>
-                </div>';
-            }
-            ?>
+                           <!-- Quantity Selector -->
+                           <div class="qty-selector d-none" id="qty-selector-<?= $product['id'] ?>">
+                              <button type="button" class="btn btn-outline-secondary decrease-qty" data-product-id="<?= $product['id'] ?>">-</button>
+                              <span class="quantity" id="quantity-<?= $product['id'] ?>">1</span>
+                              <button type="button" class="btn btn-outline-secondary increase-qty" data-product-id="<?= $product['id'] ?>">+</button>
+                           </div>
+
+                           <p class="offer-price mb-0">₹<?= number_format($product['retailer_price'], 2) ?> <br>
+                              <?php
+                              if ($product['retailer_price'] !== $product['mrp']) {
+                                 echo '<span class="regular-price">₹' . number_format($product['mrp'], 2) . '</span>';
+                              }
+                              ?>
+                           </p>
+                        </div>
+                     </div>
+                  </div>
+            <?php }
+            } ?>
          </div>
+
+         <div class="row no-gutters filter_data">
+            <?php
+            echo $_GET['brand'];
+            if (isset($_GET['brand'])) {
+               $brand_id = $_GET['brand'];
+               $q = $conn->prepare("SELECT * FROM products WHERE brand = ?");
+               $q->execute([$brand_id]);
+               $search_products = $q->fetchAll();
+
+               foreach ($search_products as $product) { ?>
+                  <div class="col-lg-3 col-md-3 col-sm-6 col-6 p_list"> <!-- 4 items per row -->
+                     <div class="product">
+                        <a href="single.php?product=<?= $product['id'] ?>">
+                           <div class="product-header">
+                              <?php
+                              $mrp = $product["mrp"];
+                              $retailer_price = $product["retailer_price"];
+                              $discount = (($mrp - $retailer_price) / $mrp) * 100;
+
+                              // Display discount only if it's greater than 0
+                              if ($discount > 0) {
+                                 echo '<span class="badge badge-success">' . number_format($discount, 2) . '% OFF</span>';
+                              }
+                              ?>
+                              <img class="img-fluid lazyload" src="../../ecommerce-backend/pages/uploads/products/<?= $product['product_image'] ?>" alt="<?= $product['product_name'] ?>">
+                           </div>
+                           <div class="product-body">
+                              <h5 class="cut-text" title="<?= htmlspecialchars($product['product_name']) ?>">
+                                 <?= htmlspecialchars($product['product_name']) ?>
+                              </h5>
+                              <h6><strong><span class="mdi mdi-approval"></span> <?= htmlspecialchars($product['variant_name']) ?></strong></h6>
+                           </div>
+                        </a>
+                        <div class="product-footer">
+                           <!-- Add to Cart Button -->
+                           <button type="button" class="btn btn-secondary btn-sm float-right add-to-cart" data-product-id="<?= $product['id'] ?>">
+                              <i class="mdi mdi-cart-outline"></i> Add To Cart
+                           </button>
+
+                           <!-- Quantity Selector -->
+                           <div class="qty-selector d-none" id="qty-selector-<?= $product['id'] ?>">
+                              <button type="button" class="btn btn-outline-secondary decrease-qty" data-product-id="<?= $product['id'] ?>">-</button>
+                              <span class="quantity" id="quantity-<?= $product['id'] ?>">1</span>
+                              <button type="button" class="btn btn-outline-secondary increase-qty" data-product-id="<?= $product['id'] ?>">+</button>
+                           </div>
+
+                           <p class="offer-price mb-0">₹<?= number_format($product['retailer_price'], 2) ?> <br>
+                              <?php
+                              if ($product['retailer_price'] !== $product['mrp']) {
+                                 echo '<span class="regular-price">₹' . number_format($product['mrp'], 2) . '</span>';
+                              }
+                              ?>
+                           </p>
+                        </div>
+                     </div>
+                  </div>
+            <?php }
+            } ?>
+         </div>
+
+
       </div>
    </section>
 
@@ -229,6 +289,100 @@
    <script src="vendor/owl-carousel/owl.carousel.js"></script>
    <!-- Custom -->
    <script src="js/custom.js"></script>
+   <script>
+      $(document).ready(function() {
+         $(".add-to-cart").click(function(event) {
+            event.preventDefault();
+            event.stopPropagation();
+
+            var parentContainer = $(this).closest(".product-footer");
+            parentContainer.find(".add-to-cart").addClass("d-none");
+            parentContainer.find(".qty-selector").removeClass("d-none");
+
+            var productId = $(this).data("product-id");
+            updateCart(productId, 1);
+         });
+
+         $(".increase-qty, .decrease-qty").click(function(event) {
+            event.preventDefault();
+            event.stopPropagation();
+
+            var quantityElem = $(this).siblings(".quantity");
+            var quantity = parseInt(quantityElem.text());
+            var productId = $(this).data("product-id");
+            var customerId = <?= isset($_SESSION['customer_id']) ? $_SESSION['customer_id'] : 'null' ?>;
+
+            if (!customerId) {
+               alert("Please log in to add items to your cart.");
+               return;
+            }
+
+            if ($(this).hasClass("increase-qty")) {
+               quantity += 1;
+            } else {
+               if (quantity > 1) {
+                  quantity -= 1;
+               } else {
+                  removeFromCart(productId, customerId, $(this));
+                  return;
+               }
+            }
+
+            quantityElem.text(quantity);
+            updateCart(productId, quantity);
+         });
+
+         function updateCart(productId, quantity) {
+            $.ajax({
+               url: "./update_cart.php",
+               type: "POST",
+               data: {
+                  product_id: productId,
+                  customer_id: <?= isset($_SESSION['customer_id']) ? $_SESSION['customer_id'] : 'null' ?>,
+                  quantity: quantity
+               },
+               success: function(response) {
+                  console.log(response);
+               },
+               error: function() {
+                  alert("Error updating cart.");
+               }
+            });
+         }
+
+         function removeFromCart(productId, customerId, btnElement) {
+            $.ajax({
+               url: "./remove_from_cart.php",
+               type: "POST",
+               data: {
+                  product_id: productId,
+                  customer_id: customerId
+               },
+               success: function(response) {
+                  console.log(response);
+
+                  // Reset UI when the item is removed
+                  var parentContainer = btnElement.closest(".product-footer");
+                  parentContainer.find(".add-to-cart").removeClass("d-none");
+                  parentContainer.find(".qty-selector").addClass("d-none");
+               },
+               error: function() {
+                  alert("Error removing product from cart.");
+               }
+            });
+         }
+
+         $(".product-footer").on("click", function(event) {
+            event.preventDefault();
+            event.stopPropagation();
+         });
+
+         $(".product-footer button").on("click", function(event) {
+            event.preventDefault();
+            event.stopPropagation();
+         });
+      });
+   </script>
 </body>
 
 </html>

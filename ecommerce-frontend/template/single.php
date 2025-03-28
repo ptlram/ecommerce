@@ -34,30 +34,25 @@ include "./connection.php";
       if (isset($_GET['product'])) {
          $product_id = isset($_GET['product']) ? $_GET['product'] : null;
 
-         $q = $conn->prepare("SELECT * FROM products where id=$product_id");
-         $q->execute();
+         $q = $conn->prepare("SELECT * FROM products WHERE id = ?");
+         $q->execute([$product_id]);
          $products = $q->fetchAll();
 
-         $p_images = $products[0]['multiple_images'];
-         $p_images = explode(",", $p_images);
+         $p_images = explode(",", $products[0]['multiple_images']);
       ?>
          <div class="container">
             <div class="row">
                <div class="col-md-6">
                   <div class="shop-detail-left">
-                     <div class="shop-detail-slider">
-                        <div id="sync1" class="owl-carousel">
-                           <?php foreach ($p_images as $image) { ?>
-                              <div class="item"><img src="../../ecommerce-backend/pages/uploads/products/<?= htmlspecialchars($image) ?>" class="img-fluid img-center"></div>
-                           <?php } ?>
-                        </div>
-
-                        <!-- Thumbnail Carousel -->
-                        <div id="sync2" class="owl-carousel">
-                           <?php foreach ($p_images as $image) { ?>
-                              <div class="item"><img src="../../ecommerce-backend/pages/uploads/products/<?= htmlspecialchars($image) ?>" class="img-fluid img-center"></div>
-                           <?php } ?>
-                        </div>
+                     <div id="sync1" class="owl-carousel">
+                        <?php foreach ($p_images as $image) { ?>
+                           <div class="item"><img src="../../ecommerce-backend/pages/uploads/products/<?= htmlspecialchars($image) ?>" class="img-fluid img-center"></div>
+                        <?php } ?>
+                     </div>
+                     <div id="sync2" class="owl-carousel">
+                        <?php foreach ($p_images as $image) { ?>
+                           <div class="item"><img src="../../ecommerce-backend/pages/uploads/products/<?= htmlspecialchars($image) ?>" class="img-fluid img-center"></div>
+                        <?php } ?>
                      </div>
                   </div>
                </div>
@@ -66,33 +61,39 @@ include "./connection.php";
                      <?php
                      $mrp = $products[0]["mrp"];
                      $retailer_price = $products[0]["retailer_price"];
-
                      $discount = (($mrp - $retailer_price) / $mrp) * 100;
 
-                     // Display discount only if it's greater than 0
                      if ($discount > 0) {
                         echo '<span class="badge badge-success">' . number_format($discount, 2) . '% OFF</span>';
                      }
-                     ?></span>
-                     <h2><?= $products[0]['product_name'] ?></h2>
-                     <h6><strong><span class="mdi mdi-approval"></span> Available in</strong> - <?= $products[0]['variant_name'] ?></h6>
-                     <p class="offer-price mb-0"><?php
-                                                   if ($products[0]['retailer_price'] !== $products[0]['mrp']) {
-                                                      echo '<span class="regular-price">MRP : ₹' . number_format($products[0]['mrp'], 2) . '</span>';
-                                                   }
-                                                   ?> <br>
-                        Discounted price : ₹<?= number_format($products[0]['retailer_price'], 2) ?>
+                     ?>
+                     <h2><?= htmlspecialchars($products[0]['product_name']) ?></h2>
+                     <h6><strong><span class="mdi mdi-approval"></span> Available in</strong> - <?= htmlspecialchars($products[0]['variant_name']) ?></h6>
+                     <p class="offer-price mb-0">
+                        <?php if ($products[0]['retailer_price'] !== $products[0]['mrp']) {
+                           echo '<span class="regular-price">MRP : ₹' . number_format($products[0]['mrp'], 2) . '</span>';
+                        } ?>
+                        <br> Discounted price : ₹<?= number_format($products[0]['retailer_price'], 2) ?>
                      </p>
 
-                     <a href="checkout.html"><button type="button" class="btn btn-secondary btn-lg"><i class="mdi mdi-cart-outline"></i> Add To Cart</button> </a>
+                     <!-- Add to Cart Button -->
+                     <button type="button" class="btn btn-secondary btn-lg add-to-cart" data-product-id="<?= $products[0]['id'] ?>">
+                        <i class="mdi mdi-cart-outline"></i> Add To Cart
+                     </button>
+
+                     <!-- Quantity Selector -->
+                     <div class="qty-selector d-none">
+                        <button type="button" class="btn btn-outline-secondary decrease-qty" data-product-id="<?= $products[0]['id'] ?>">-</button>
+                        <span class="quantity">1</span>
+                        <button type="button" class="btn btn-outline-secondary increase-qty" data-product-id="<?= $products[0]['id'] ?>">+</button>
+                     </div>
+
                      <div class="short-description">
-                        <h5>
-                           Quick Overview
+                        <h5>Quick Overview
                            <p class="float-right">Availability: <span class="badge badge-success">In Stock</span></p>
                         </h5>
-                        <p><b>Lorem ipsum dolor sit amet, consectetur adipiscing elit.</b> Nam fringilla augue nec est tristique auctor. Donec non est at libero vulputate rutrum.
-                        </p>
-                        <p class="mb-0"> Vivamus adipiscing nisl ut dolor dignissim semper. Nulla luctus malesuada tincidunt. Class aptent taciti sociosqu ad litora torquent per conubia nostra, per inceptos hiMenaeos. Integer enim purus, posuere at ultricies eu, placerat a felis. Suspendisse aliquet urna pretium eros convallis interdum.</p>
+                        <p><b>Lorem ipsum dolor sit amet, consectetur adipiscing elit.</b> Nam fringilla augue nec est tristique auctor. Donec non est at libero vulputate rutrum.</p>
+                        <p class="mb-0"> Vivamus adipiscing nisl ut dolor dignissim semper. Nulla luctus malesuada tincidunt.</p>
                      </div>
                      <h6 class="mb-3 mt-4">Why shop from Groci?</h6>
                      <div class="row">
@@ -149,7 +150,7 @@ include "./connection.php";
 
                      <div class="item">
                         <div class="product">
-                           <a href="single.php?product=<?= $product['id'] ?>&offer=<?= $bann['id'] ?>">
+                           <a href="single.php?product=<?= $product['id'] ?>&offer=<?= $banner_id ?>">
                               <div class="product-header">
                                  <?php
                                  $mrp = $product["mrp"];
@@ -170,9 +171,14 @@ include "./connection.php";
                                  <h6><strong><span class="mdi mdi-approval"></span> Available in</strong> - <?= htmlspecialchars($product['variant_name']) ?></h6>
                               </div>
                               <div class="product-footer">
-                                 <button type="button" class="btn btn-secondary btn-sm float-right">
+                                 <button type="button" class="btn btn-secondary btn-sm float-right add-to-cart" data-product-id="<?= $product['id'] ?>">
                                     <i class="mdi mdi-cart-outline"></i> Add To Cart
                                  </button>
+                                 <div class="qty-selector d-none">
+                                    <button type="button" class="btn btn-outline-secondary decrease-qty" data-product-id="<?= $product['id'] ?>">-</button>
+                                    <span class="quantity">1</span>
+                                    <button type="button" class="btn btn-outline-secondary increase-qty" data-product-id="<?= $product['id'] ?>">+</button>
+                                 </div>
                                  <p class="offer-price mb-0">₹<?= number_format($product['retailer_price'], 2) ?> <br>
                                     <?php
                                     if ($product['retailer_price'] !== $product['mrp']) {
@@ -262,6 +268,101 @@ include "./connection.php";
    <script src="vendor/owl-carousel/owl.carousel.js"></script>
    <!-- Custom -->
    <script src="js/custom.js"></script>
+
+   <script>
+      $(document).ready(function() {
+         $(".add-to-cart").click(function(event) {
+            event.preventDefault();
+            event.stopPropagation();
+
+            var parentContainer = $(this).closest(".product-footer");
+            parentContainer.find(".add-to-cart").addClass("d-none");
+            parentContainer.find(".qty-selector").removeClass("d-none");
+
+            var productId = $(this).data("product-id");
+            updateCart(productId, 1);
+         });
+
+         $(".increase-qty, .decrease-qty").click(function(event) {
+            event.preventDefault();
+            event.stopPropagation();
+
+            var quantityElem = $(this).siblings(".quantity");
+            var quantity = parseInt(quantityElem.text());
+            var productId = $(this).data("product-id");
+            var customerId = <?= isset($_SESSION['customer_id']) ? $_SESSION['customer_id'] : 'null' ?>;
+
+            if (!customerId) {
+               alert("Please log in to add items to your cart.");
+               return;
+            }
+
+            if ($(this).hasClass("increase-qty")) {
+               quantity += 1;
+            } else {
+               if (quantity > 1) {
+                  quantity -= 1;
+               } else {
+                  removeFromCart(productId, customerId, $(this));
+                  return;
+               }
+            }
+
+            quantityElem.text(quantity);
+            updateCart(productId, quantity);
+         });
+
+         function updateCart(productId, quantity) {
+            $.ajax({
+               url: "./update_cart.php",
+               type: "POST",
+               data: {
+                  product_id: productId,
+                  customer_id: <?= isset($_SESSION['customer_id']) ? $_SESSION['customer_id'] : 'null' ?>,
+                  quantity: quantity
+               },
+               success: function(response) {
+                  console.log(response);
+               },
+               error: function() {
+                  alert("Error updating cart.");
+               }
+            });
+         }
+
+         function removeFromCart(productId, customerId, btnElement) {
+            $.ajax({
+               url: "./remove_from_cart.php",
+               type: "POST",
+               data: {
+                  product_id: productId,
+                  customer_id: customerId
+               },
+               success: function(response) {
+                  console.log(response);
+
+                  // Reset UI when the item is removed
+                  var parentContainer = btnElement.closest(".product-footer");
+                  parentContainer.find(".add-to-cart").removeClass("d-none");
+                  parentContainer.find(".qty-selector").addClass("d-none");
+               },
+               error: function() {
+                  alert("Error removing product from cart.");
+               }
+            });
+         }
+
+         $(".product-footer").on("click", function(event) {
+            event.preventDefault();
+            event.stopPropagation();
+         });
+
+         $(".product-footer button").on("click", function(event) {
+            event.preventDefault();
+            event.stopPropagation();
+         });
+      });
+   </script>
 </body>
 
 </html>

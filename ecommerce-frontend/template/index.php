@@ -89,7 +89,7 @@ $ssubcategory = $query->fetchAll();
                 foreach ($brand as $b) {
                     echo '<div class="item">
                             <div class="category-item">
-                             <a href="brand.php?brand=' . urlencode($b["name"]) . '">
+                             <a href="shop.php?brand=' . urlencode($b["name"]) . '">
                             <img class="img-fluid" src="../../ecommerce-backend/pages/uploads/brand/' . $b["image"] . '">
                                 <h6>' . $b["name"] . '</h6>
                             </a>
