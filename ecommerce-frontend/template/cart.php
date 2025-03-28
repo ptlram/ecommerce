@@ -206,11 +206,20 @@
                                           <label class="control-label">City <span class="required">*</span></label>
                                           <select name="customer_city" class="select2 form-control border-form-control" data-placeholder="Select a City" required id="customer_city_id">
                                              <option value="">Select City</option>
-                                             <option value="7">4544</option>
-                                             <option value="1" selected>Ahmedabad</option>
-                                             <option value="2">Surat</option>
-                                             <option value="5">surat</option>
-                                             <option value="6">Surat</option>
+                                             <?php
+                                             $stateid = $caddress[0]["state"];
+                                             $cityid = $caddress[0]["city"];
+                                             $query = $conn->prepare("SELECT * FROM cities where state_id='$stateid'");
+                                             $query->execute();
+                                             $citydata = $query->fetchAll();
+                                             foreach ($citydata as $city) {
+                                                echo '<option value="' . $city["id"] . '"';
+                                                if ($cityid == $city["id"]) {
+                                                   echo "selected";
+                                                }
+                                                echo '>' . $city["city_name"] . '</option>';
+                                             }
+                                             ?>
                                           </select>
                                        </div>
                                     </div>
@@ -241,12 +250,17 @@
                                     <div class="col-sm-6">
                                        <div class="form-group">
                                           <label class="control-label">Select Delivery Time <span class="required">*</span></label>
-                                          <select name="delivery_time_slot" class="select2 form-control border-form-control" data-placeholder="Select Delivery Time" required id="delivery_time_slot_id">
+                                          <select name="delivery_time_slot" class="select2 form-control border-form-control" data-placeholder="Select Delivery Time" required id="delivery_time_slot_id" required>
                                              <option value="">Select Delivery Time</option>
                                              <br />
-                                             <option value="1" selected>10:00 AM To 09:00 PM</option><br />
-                                             <option value="3">10:00 AM To 01:00 PM</option><br />
-                                             <option value="2">03:00 PM To 05:00 PM</option>
+                                             <?php
+                                             $query = $conn->prepare("SELECT * FROM time_slot ORDER BY priority");
+                                             $query->execute();
+                                             $timedata = $query->fetchAll();
+                                             foreach ($timedata as $time) {
+                                                echo '<option value="' . $time["time_slot"] . '">' . $time["time_slot"] . '</option><br />';
+                                             }
+                                             ?>
                                           </select>
                                        </div>
                                     </div>
