@@ -155,7 +155,7 @@
             <div class="col-md-8">
                <div class="checkout-step">
                   <div class="accordion" id="accordionExample">
-                     <form method="post" id="checkout-selection">
+                     <form action="placeorder.php" method="post" id="checkout-selection">
                         <div class="card checkout-step-one">
                         </div>
                         <?php include "./connection.php";
@@ -213,7 +213,7 @@
                                              $query->execute();
                                              $citydata = $query->fetchAll();
                                              foreach ($citydata as $city) {
-                                                echo '<option value="' . $city["id"] . '"';
+                                                echo '<option value="' . $city["city_name"] . '"';
                                                 if ($cityid == $city["id"]) {
                                                    echo "selected";
                                                 }
@@ -298,8 +298,9 @@
                               </div>
                            </div>
                         </div>
+                     </form>
+
                   </div>
-                  </form>
                   <div class="card" style="display: none">
                      <div class="card-header" id="headingThree">
                         <h5 class="mb-0">
@@ -413,6 +414,30 @@
                }
             });
          });
+      });
+   </script>
+   <script>
+      $("input[name='invoice_payment_mode']").on("change", (e) => {
+         for (const iterator of $(".selected-payment")) {
+            $(iterator).removeClass("selected-payment")
+         }
+
+         if (e.target.value == 1) {
+            document.getElementById("btn_next").innerText = "Place Order";
+         } else {
+            document.getElementById("btn_next").innerText = "Proceed to payment";
+         }
+         var icon = document.createElement("i");
+         icon.className = "fa fa-long-arrow-right ml-2"
+         document.getElementById("btn_next").appendChild(icon)
+         $(e.target).next().addClass("selected-payment")
+      })
+      $(document).ready(function() {
+         document.getElementById("btn-offer-close").addEventListener("click", () => {
+            setTimeout(() => {
+               $("#header-nav-menu").css("position", "sticky");
+            }, 200)
+         })
       });
    </script>
 </body>
