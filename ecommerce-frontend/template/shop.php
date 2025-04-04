@@ -224,7 +224,7 @@ $is_product = false;
          <?php
          if ($is_product == true) {
          } else {
-            echo "<h1>Product are not available</h1>";
+            echo "<h1>Products are currently unavailable</h1>";
          }
          ?>
 
