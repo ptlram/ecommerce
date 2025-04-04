@@ -2,14 +2,14 @@
 <html lang="en">
 
 <head>
-   <!-- Custom styles for this template -->
-   <link href="http://192.168.1.111/native_setup/css/osahan.css" rel="stylesheet">
-   <!-- Owl Carousel -->
-   <link rel="stylesheet" href="http://192.168.1.111/native_setup/vendor/owl-carousel/owl.carousel.css">
-   <link rel="stylesheet" href="http://192.168.1.111/native_setup/vendor/owl-carousel/owl.theme.css">
+
+   <link href="../template/css/1st.css" rel="stylesheet">
+   <link rel="stylesheet" href="../template/css/2nd.css">
+   <link rel="stylesheet" href="../template/css/3rd.css">
    <script src="https://cdnjs.cloudflare.com/ajax/libs/jquery/3.3.1/jquery.min.js"></script>
    <link rel="stylesheet" type="text/css" href="https://stackpath.bootstrapcdn.com/font-awesome/4.7.0/css/font-awesome.min.css">
-   <link rel="stylesheet" href="http://192.168.1.111/native_setup/css/sitestyle.css">
+   <link rel="stylesheet" href="../template/css/4th.css">
+
 
    <meta charset="utf-8">
    <meta name="viewport" content="width=device-width, initial-scale=1, shrink-to-fit=no">
@@ -301,28 +301,7 @@
                      </form>
 
                   </div>
-                  <div class="card" style="display: none">
-                     <div class="card-header" id="headingThree">
-                        <h5 class="mb-0">
-                           <button class="btn btn-link collapsed" type="button" data-toggle="collapse" data-target="#collapsefour" aria-expanded="false" aria-controls="collapsefour">
-                              <span class="number">3</span> Order Complete
-                           </button>
-                        </h5>
-                     </div>
-                     <div id="collapsefour" class="collapse " aria-labelledby="headingThree" data-parent="#accordionExample">
-                        <div class="card-body">
-                           <div class="text-center">
-                              <div class="col-lg-10 col-md-10 mx-auto order-done">
-                                 <i class="mdi mdi-check-circle-outline text-secondary"></i>
-                                 <h4 class="text-success">Congrats! Your Order has been Accepted..</h4>
-                              </div>
-                              <div class="text-center">
-                                 <a href="http://192.168.1.111/native_setup/"><button type="submit" class="btn btn-secondary mb-2 btn-lg">Return to store</button></a>
-                              </div>
-                           </div>
-                        </div>
-                     </div>
-                  </div>
+
                </div>
             </div>
          </div>
@@ -336,16 +315,10 @@
    <!-- Bootstrap core JavaScript -->
    <link href="https://code.jquery.com/ui/1.10.2/themes/smoothness/jquery-ui.css" rel="Stylesheet">
    </link>
-   <script src="http://192.168.1.111/native_setup/vendor/jquery/jquery.min.js"></script>
-   <script src="https://code.jquery.com/ui/1.10.2/jquery-ui.js"></script>
-   <script src="http://192.168.1.111/native_setup/vendor/bootstrap/js/bootstrap.bundle.min.js"></script>
-   <!-- select2 Js -->
-   <script src="http://192.168.1.111/native_setup/vendor/select2/js/select2.min.js"></script>
-   <!-- Owl Carousel -->
-   <script src="http://192.168.1.111/native_setup/vendor/owl-carousel/owl.carousel.js"></script>
-   <!-- Custom -->
-   <script src="http://192.168.1.111/native_setup/js/custom.js"></script>
-   <script src="http://192.168.1.111/native_setup/lazysizes.min.js" async></script>
+   <script src="../template/js/1st.js"></script>
+   <script src="../template/js/2nd.js"></script>
+
+
 
    <!-- <script src="js/sweetalert.js"></script> -->
    <link href="vendor/datatables/datatables.min.css" rel="stylesheet" />
