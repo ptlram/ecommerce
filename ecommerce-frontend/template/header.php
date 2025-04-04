@@ -132,7 +132,7 @@ include "../../ecommerce-backend/session_expire.php";
                                 ?>
                             </select>
                         </span>
-                        <input class="form-control" id="search" name="search" placeholder="Search products in Your City" aria-label="Search products in Your City" type="text">
+                        <input class="form-control" id="search" name="search" placeholder="Search products" aria-label="Search products in Your City" type="text">
                         <span class="input-group-btn">
                             <button class="btn btn-secondary" type="button" name="searchbtn">
                                 <i class="mdi mdi-file-find"></i> Search
