@@ -1,3 +1,6 @@
+<?php
+$is_product = false;
+?>
 <!DOCTYPE html>
 <html lang="en">
 
@@ -88,7 +91,7 @@
                         </select>
                      </div>
                   </div>
-                  <h1 class="mb-3" style="font-size:1.25rem;">New Year</h1>
+                  <h1 class="mb-3" style="font-size:1.25rem;">Product</h1>
                </div>
             </div>
          </div>
@@ -100,6 +103,9 @@
                $q = $conn->prepare("SELECT * FROM products WHERE subcategory = ?");
                $q->execute([$subcategory_id]);
                $search_products = $q->fetchAll();
+               if (!empty($search_products)) {
+                  $is_product = true;
+               }
 
                foreach ($search_products as $product) { ?>
                   <div class="col-lg-3 col-md-3 col-sm-6 col-6 p_list"> <!-- 4 items per row -->
@@ -154,12 +160,15 @@
 
          <div class="row no-gutters filter_data">
             <?php
-            echo $_GET['brand'];
+
             if (isset($_GET['brand'])) {
                $brand_id = $_GET['brand'];
                $q = $conn->prepare("SELECT * FROM products WHERE brand = ?");
                $q->execute([$brand_id]);
                $search_products = $q->fetchAll();
+               if (!empty($search_products)) {
+                  $is_product = true;
+               }
 
                foreach ($search_products as $product) { ?>
                   <div class="col-lg-3 col-md-3 col-sm-6 col-6 p_list"> <!-- 4 items per row -->
@@ -212,6 +221,12 @@
             } ?>
          </div>
 
+         <?php
+         if ($is_product == true) {
+         } else {
+            echo "<h1>Product are not available</h1>";
+         }
+         ?>
 
       </div>
    </section>
