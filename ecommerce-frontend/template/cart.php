@@ -356,6 +356,8 @@
                   alert("Error updating cart.");
                }
             });
+            window.location.reload(true);
+
          }
 
          $(".inc").click(function() {
