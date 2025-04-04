@@ -50,11 +50,18 @@
             <div class="col-lg-2 col-md-2">
                 <h6 class="mb-4">CATEGORIES</h6>
                 <ul>
-                    <li><a href="#">Vegetables</a></li>
-                    <li><a href="#">Grocery & Staples</a></li>
-                    <li><a href="#">Breakfast & Dairy</a></li>
-                    <li><a href="#">Soft Drinks</a></li>
-                    <li><a href="#">Biscuits & Cookies</a></li>
+                    <?php
+                    $query = $conn->prepare("SELECT * FROM category");
+                    $query->execute();
+                    $category = $query->fetchAll();
+                    foreach ($category as $ca) {
+
+                        echo '
+                                <li><a href="shop.php?category=' . $ca["id"] . '"> ' . $ca["name"] . '</a></li>
+                              ';
+                    }
+                    ?>
+
                     <ul>
             </div>
             <div class="col-lg-2 col-md-2">

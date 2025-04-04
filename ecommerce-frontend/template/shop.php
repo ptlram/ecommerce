@@ -98,6 +98,70 @@ $is_product = false;
 
          <div class="row no-gutters filter_data">
             <?php
+            if (isset($_GET['category'])) {
+               $category_id = $_GET['category'];
+               $q = $conn->prepare("SELECT * FROM products WHERE category = ?");
+               $q->execute([$category_id]);
+               $category_products = $q->fetchAll();
+
+               if (!empty($category_products)) {
+                  $is_product = true;
+               }
+
+               foreach ($category_products as $product) { ?>
+                  <div class="col-lg-3 col-md-3 col-sm-6 col-6 p_list"> <!-- 4 items per row -->
+                     <div class="product">
+                        <a href="single.php?product=<?= $product['id'] ?>">
+                           <div class="product-header">
+                              <?php
+                              $mrp = $product["mrp"];
+                              $retailer_price = $product["retailer_price"];
+                              $discount = (($mrp - $retailer_price) / $mrp) * 100;
+
+                              // Display discount only if it's greater than 0
+                              if ($discount > 0) {
+                                 echo '<span class="badge badge-success">' . number_format($discount, 2) . '% OFF</span>';
+                              }
+                              ?>
+                              <img class="img-fluid lazyload" src="../../ecommerce-backend/pages/uploads/products/<?= $product['product_image'] ?>" alt="<?= $product['product_name'] ?>">
+                           </div>
+                           <div class="product-body">
+                              <h5 class="cut-text" title="<?= htmlspecialchars($product['product_name']) ?>">
+                                 <?= htmlspecialchars($product['product_name']) ?>
+                              </h5>
+                              <h6><strong><span class="mdi mdi-approval"></span> <?= htmlspecialchars($product['variant_name']) ?></strong></h6>
+                           </div>
+                        </a>
+                        <div class="product-footer">
+                           <!-- Add to Cart Button -->
+                           <button type="button" class="btn btn-secondary btn-sm float-right add-to-cart" data-product-id="<?= $product['id'] ?>">
+                              <i class="mdi mdi-cart-outline"></i> Add To Cart
+                           </button>
+
+                           <!-- Quantity Selector -->
+                           <div class="qty-selector d-none" id="qty-selector-<?= $product['id'] ?>">
+                              <button type="button" class="btn btn-outline-secondary decrease-qty" data-product-id="<?= $product['id'] ?>">-</button>
+                              <span class="quantity" id="quantity-<?= $product['id'] ?>">1</span>
+                              <button type="button" class="btn btn-outline-secondary increase-qty" data-product-id="<?= $product['id'] ?>">+</button>
+                           </div>
+
+                           <p class="offer-price mb-0">₹<?= number_format($product['retailer_price'], 2) ?> <br>
+                              <?php
+                              if ($product['retailer_price'] !== $product['mrp']) {
+                                 echo '<span class="regular-price">₹' . number_format($product['mrp'], 2) . '</span>';
+                              }
+                              ?>
+                           </p>
+                        </div>
+                     </div>
+                  </div>
+            <?php }
+            } ?>
+         </div>
+
+
+         <div class="row no-gutters filter_data">
+            <?php
             if (isset($_GET['subcategory'])) {
                $subcategory_id = $_GET['subcategory'];
                $q = $conn->prepare("SELECT * FROM products WHERE subcategory = ?");
