@@ -184,10 +184,10 @@ include "./connection.php";
                                  <button type="button" class="btn btn-secondary btn-sm float-right add-to-cart" data-product-id="<?= $product['id'] ?>">
                                     <i class="mdi mdi-cart-outline"></i> Add To Cart
                                  </button>
-                                 <div class="qty-selector d-none">
-                                    <button type="button" class="btn btn-outline-secondary decrease-qty" data-product-id="<?= $product['id'] ?>">-</button>
+                                 <div class="qty-selector d-none ">
+                                    <button type="button" class="btn btn-outline-secondary decrease-qty" data-product-id="<?= $product['id'] ?>"> - </button>
                                     <span class="quantity">1</span>
-                                    <button type="button" class="btn btn-outline-secondary increase-qty" data-product-id="<?= $product['id'] ?>">+</button>
+                                    <button type="button" class="btn btn-outline-secondary increase-qty" data-product-id="<?= $product['id'] ?>"> + </button>
                                  </div>
                                  <p class="offer-price mb-0">₹<?= number_format($product['retailer_price'], 2) ?> <br>
                                     <?php
