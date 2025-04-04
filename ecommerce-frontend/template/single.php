@@ -76,17 +76,27 @@ include "./connection.php";
                         <br> Discounted price : ₹<?= number_format($products[0]['retailer_price'], 2) ?>
                      </p>
 
-                     <!-- Add to Cart Button -->
-                     <button type="button" class="btn btn-secondary btn-lg add-to-cart" data-product-id="<?= $products[0]['id'] ?>">
-                        <i class="mdi mdi-cart-outline"></i> Add To Cart
-                     </button>
 
-                     <!-- Quantity Selector -->
-                     <div class="qty-selector d-none">
-                        <button type="button" class="btn btn-outline-secondary decrease-qty" data-product-id="<?= $products[0]['id'] ?>">-</button>
-                        <span class="quantity">1</span>
-                        <button type="button" class="btn btn-outline-secondary increase-qty" data-product-id="<?= $products[0]['id'] ?>">+</button>
+                     <!-- Add to Cart Button -->
+                     <div class="product-footer">
+                        <button type="button" class="btn btn-secondary btn-sm float-right add-to-cart" data-product-id="<?= $products[0]['id'] ?>">
+                           <i class="mdi mdi-cart-outline"></i> Add To Cart
+                        </button>
+
+                        <div class="qty-selector d-none">
+                           <button type="button" class="btn btn-outline-secondary decrease-qty" data-product-id="<?= $products[0]['id'] ?>">-</button>
+                           <span class="quantity">1</span>
+                           <button type="button" class="btn btn-outline-secondary increase-qty" data-product-id="<?= $products[0]['id'] ?>">+</button>
+                        </div>
+
+                        <p style="display:none;" ; class="offer-price mb-0">Discounted price : ₹<?= number_format($products[0]['retailer_price'], 2) ?> <br>
+                           <?php if ($products[0]['retailer_price'] !== $products[0]['mrp']) : ?>
+                              <span class="regular-price">₹<?= number_format($products[0]['mrp'], 2) ?></span>
+                           <?php endif; ?>
+                        </p>
                      </div>
+                     <br>
+                     <br>
 
                      <div class="short-description">
                         <h5>Quick Overview
