@@ -16,7 +16,7 @@ if ($_SERVER["REQUEST_METHOD"] == "POST") {
     $customer_address = $_POST["customer_address"];
     $invoice_special_instruction = $_POST["invoice_special_instruction"];
     $delivery_time_slot = $_POST["delivery_time_slot"];
-    $invoice_payment_mode = $_POST["invoice_payment_mode"];
+    $invoice_payment_mode = $_POST["mode"] ?? $_POST["invoice_payment_mode"];
 
     $customer_id = $_SESSION['customer_id'];
 
@@ -41,7 +41,7 @@ if ($_SERVER["REQUEST_METHOD"] == "POST") {
     $status = "Pending";  // Initial order status
 
     // Insert order data    
-    $query = $conn->prepare("INSERT INTO orders (customer_name, mobile, email, city, address, pincode, delivery_time, discount, delivery_charge, special_instruction, sms, final_price, status, created_at, updated_at) VALUES (?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, NOW(), NOW())");
+    $query = $conn->prepare("INSERT INTO orders (customer_name, mobile, email, city, address, pincode, delivery_time, discount, delivery_charge, special_instruction, final_price, status,payment_mode, created_at, updated_at) VALUES (?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, NOW(), NOW())");
 
     $result = $query->execute([
         $customer_name,
@@ -54,9 +54,9 @@ if ($_SERVER["REQUEST_METHOD"] == "POST") {
         $discount,
         $delivery_charge,
         $invoice_special_instruction,
-        '', // `sms` field (empty for now)
         $final_price,
-        $status
+        $status,
+        $invoice_payment_mode
     ]);
     $order_id = $conn->lastInsertId();
     if ($result) {

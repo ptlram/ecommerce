@@ -31,6 +31,7 @@
    <link rel="stylesheet" href="vendor/owl-carousel/owl.carousel.css">
    <link rel="stylesheet" href="vendor/owl-carousel/owl.theme.css">
    <title>Confirm Order | Bits Infotech</title>
+   <script src="https://checkout.razorpay.com/v1/checkout.js"></script>
 
 </head>
 
@@ -52,6 +53,8 @@
          overflow-y: auto;
       }
    </style>
+
+
    <?php
    include "./connection.php";
 
@@ -155,7 +158,7 @@
             <div class="col-md-8">
                <div class="checkout-step">
                   <div class="accordion" id="accordionExample">
-                     <form action="placeorder.php" method="post" id="checkout-selection">
+                     <form method="post" action="placeorder.php" id="checkout-selection">
                         <div class="card checkout-step-one">
                         </div>
                         <?php include "./connection.php";
@@ -257,10 +260,17 @@
                                              $query = $conn->prepare("SELECT * FROM time_slot ORDER BY priority");
                                              $query->execute();
                                              $timedata = $query->fetchAll();
+                                             $first = true;
                                              foreach ($timedata as $time) {
-                                                echo '<option value="' . $time["time_slot"] . '">' . $time["time_slot"] . '</option><br />';
+                                                echo '<option value="' . $time["time_slot"] . '"';
+                                                if ($first) {
+                                                   echo ' selected';
+                                                   $first = false;
+                                                }
+                                                echo '>' . $time["time_slot"] . '</option>';
                                              }
                                              ?>
+
                                           </select>
                                        </div>
                                     </div>
@@ -284,9 +294,9 @@
                                        <input type="hidden" name="applied_coupon_code" id="applied_coupon_code">
                                        <input type="hidden" name="applied_coupon_code_id" id="applied_coupon_code_id">
                                        <input type="hidden" name="applied_coupon_code_type" id="applied_coupon_code_type">
-                                       <input type="radio" id="customRadio1" name="invoice_payment_mode" value="1" required checked>
+                                       <input type="radio" id="customRadio1" name="invoice_payment_mode" value="Cash on Delivery" required checked>
                                        <label class="selected-payment" for="customRadio1">Cash on Delivery</label>
-                                       <input type="radio" id="customRadio2" name="invoice_payment_mode" value="2" required>
+                                       <input type="radio" id="customRadio2" name="invoice_payment_mode" value="Pay Online" required>
                                        <label class="" for="customRadio2">Pay Online</label>
                                     </div>
                                  </div>
@@ -295,6 +305,89 @@
                                        <button type="submit" name="btn_invoice" class="btn btn-secondary mb-2 btn-lg" id="btn_next"> Place Order <i class="fa fa-long-arrow-right ml-2"></i></button>
                                     </div>
                                  </div>
+                                 <?php
+                                 $order_id = $_GET['order_id'] ?? '';
+                                 $amount = $_GET['amount'] ?? 0;
+
+
+                                 if (isset($_SESSION["email"])) {
+
+                                    $email = $_SESSION["email"];
+                                    $quer = $conn->prepare("SELECT * FROM customers WHERE email='$email' OR mobile_number='$email'");
+                                    $quer->execute();
+                                    $caddress = $quer->fetch(PDO::FETCH_ASSOC);
+                                 }
+
+                                 if ($order_id && $amount):
+                                 ?>
+                                    <!DOCTYPE html>
+                                    <html>
+
+                                    <head>
+                                       <title>Auto Razorpay Payment</title>
+                                       <script src="https://checkout.razorpay.com/v1/checkout.js"></script>
+                                    </head>
+
+                                    <body>
+
+                                       <script>
+                                          var options = {
+                                             key: "rzp_test_fhtEq2pTItvqVr",
+                                             amount: "<?php echo $amount; ?>",
+                                             currency: "INR",
+                                             name: "Bits",
+                                             description: "Order Payment",
+                                             image: "https://cdn.razorpay.com/logos/GhRQcyean79PqE_medium.png",
+                                             order_id: "<?php echo $order_id; ?>",
+                                             handler: function(response) {
+                                                // Add Razorpay payment ID to the form
+                                                var form = document.getElementById('checkout-selection');
+
+                                                var paymentIdInput = document.createElement('input');
+                                                paymentIdInput.type = 'hidden';
+                                                paymentIdInput.name = 'razorpay_payment_id';
+                                                paymentIdInput.value = response.razorpay_payment_id;
+                                                form.appendChild(paymentIdInput);
+
+                                                var modeInput = document.createElement('input');
+                                                modeInput.type = 'hidden';
+                                                modeInput.name = 'mode';
+                                                modeInput.value = "online";
+                                                form.appendChild(modeInput);
+
+                                                // Add more Razorpay fields if needed (like signature, order_id)
+
+                                                // Submit the form
+                                                form.submit();
+                                             },
+                                             prefill: {
+                                                name: "<?php echo $caddress["name"]; ?>",
+                                                email: "<?php echo $caddress["email"]; ?>",
+                                                contact: "<?php echo $caddress["mobile_number"]; ?>"
+                                             },
+                                             notes: {
+                                                address: "<?php echo $caddress["address"]; ?>"
+                                             },
+                                             theme: {
+                                                color: "#3399cc"
+                                             },
+                                             callback_url: "placeorder.php"
+                                          };
+
+                                          var rzp = new Razorpay(options);
+                                          window.onload = function() {
+                                             rzp.open();
+                                          };
+                                       </script>
+
+                                    </body>
+
+                                    </html>
+
+
+                                 <?php endif; ?>
+
+
                               </div>
                            </div>
                         </div>
@@ -396,17 +489,20 @@
          for (const iterator of $(".selected-payment")) {
             $(iterator).removeClass("selected-payment")
          }
+         let paymentMode = Number(e.target.value);
 
-         if (e.target.value == 1) {
+         if (paymentMode == 1) {
             document.getElementById("btn_next").innerText = "Place Order";
+            document.getElementById("checkout-selection").action = "placeorder.php";
          } else {
             document.getElementById("btn_next").innerText = "Proceed to payment";
+            document.getElementById("checkout-selection").action = "payment.php";
          }
          var icon = document.createElement("i");
          icon.className = "fa fa-long-arrow-right ml-2"
          document.getElementById("btn_next").appendChild(icon)
          $(e.target).next().addClass("selected-payment")
-      })
+      });
       $(document).ready(function() {
          document.getElementById("btn-offer-close").addEventListener("click", () => {
             setTimeout(() => {
