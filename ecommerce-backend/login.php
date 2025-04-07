@@ -1,43 +1,68 @@
 <?php
-session_start(); // Start session
+
+use PHPMailer\PHPMailer\PHPMailer;
+use PHPMailer\PHPMailer\Exception;
+
+include "../ecommerce-backend/PHPMailer-master/PHPMailer-master/src/PHPMailer.php";
+include "../ecommerce-backend/PHPMailer-master/PHPMailer-master/src/SMTP.php";
+include "../ecommerce-backend/PHPMailer-master/PHPMailer-master/src/Exception.php";
 include "./connection.php";
+session_start();
 
 if ($_SERVER["REQUEST_METHOD"] == "POST") {
     $myemail = trim($_POST["email"]);
     $mypassword = $_POST["password"];
 
     try {
-        // Fetch user data for the provided email
+        // Fetch user info
         $query = $conn->prepare("SELECT * FROM login WHERE email = :email");
         $query->bindParam(':email', $myemail);
         $query->execute();
         $user = $query->fetch(PDO::FETCH_ASSOC);
 
-        $querys = $conn->prepare("SELECT * FROM customers WHERE email = :email or mobile_number=:mobile_number ");
+        // Fetch customer info (optional if needed)
+        $querys = $conn->prepare("SELECT * FROM customers WHERE email = :email OR mobile_number = :mobile_number");
         $querys->bindParam(':email', $myemail);
         $querys->bindParam(':mobile_number', $myemail);
         $querys->execute();
         $customer = $querys->fetch(PDO::FETCH_ASSOC);
 
-
-
+        // Validate password
         if ($user && password_verify($mypassword, $user["password"])) {
-            // Store user session
+            // Save session info
             $_SESSION["email"] = $user["email"];
             $_SESSION["role"] = $user["role"];
-            $_SESSION["customer_id"] = $customer["id"];
+            $_SESSION["customer_id"] = $customer["id"] ?? null;
             $_SESSION["last_activity"] = time();
 
+            // Generate OTP
+            $otp = rand(100000, 999999);
+            $_SESSION["otp"] = $otp;
 
+            // Send OTP
+            $mail = new PHPMailer(true);
+            try {
+                $mail->isSMTP();
+                $mail->Host       = 'smtp.gmail.com';
+                $mail->SMTPAuth   = true;
+                $mail->Username   = 'ramvijaypatel96@gmail.com';
+                $mail->Password   = 'odhc onch hcmt nahz'; // move to env var!
+                $mail->SMTPSecure = 'tls';
+                $mail->Port       = 587;
 
+                $mail->setFrom('ramvijaypatel96@gmail.com', 'Your Site');
+                $mail->addAddress($myemail);
 
-            // Redirect based on role
-            if ($user["role"] == "admin") {
-                header("location: ./admin/dashboard.php");
-            } else {
-                header("location: ../ecommerce-frontend/template/index.php");
+                $mail->isHTML(true);
+                $mail->Subject = 'Your OTP Code';
+                $mail->Body    = "<h3>Your OTP is: <strong>$otp</strong></h3>";
+
+                $mail->send();
+                header("Location: verify-otp.php");
+                exit();
+            } catch (Exception $e) {
+                echo "Mailer Error: " . $mail->ErrorInfo;
             }
-            exit();
         } else {
             echo "<script>alert('Invalid email or password!'); window.location.href='../ecommerce-frontend/template/index.php'</script>";
         }
@@ -45,4 +70,3 @@ if ($_SERVER["REQUEST_METHOD"] == "POST") {
         echo "Error: " . $e->getMessage();
     }
 }
-//ends
