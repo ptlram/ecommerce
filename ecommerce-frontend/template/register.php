@@ -28,7 +28,7 @@ if ($_SERVER["REQUEST_METHOD"] == "POST") {
             exit;
         }
 
-        if (isset($_POST["refferal_code"])) {
+        if (!empty($_POST["refferal_code"])) {
             // Check if email or phone already exists
             $refferal_code = $_POST["refferal_code"];
             $stmt = $conn->prepare("SELECT COUNT(*) FROM customers WHERE ReferralCode = :ReferralCode");
