@@ -24,6 +24,8 @@ include "./connection.php";
    <!-- Owl Carousel -->
    <link rel="stylesheet" href="vendor/owl-carousel/owl.carousel.css">
    <link rel="stylesheet" href="vendor/owl-carousel/owl.theme.css">
+
+   <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.5.0/css/all.min.css">
 </head>
 
 <body>
@@ -84,9 +86,9 @@ include "./connection.php";
                         </button>
 
                         <div class="qty-selector d-none">
-                           <button type="button" class="btn btn-outline-secondary decrease-qty" data-product-id="<?= $products[0]['id'] ?>">-</button>
-                           <span class="quantity">1</span>
-                           <button type="button" class="btn btn-outline-secondary increase-qty" data-product-id="<?= $products[0]['id'] ?>">+</button>
+                           <button type="button" class="btn btn-outline-secondary decrease-qty" data-product-id="<?= $products[0]['id'] ?>" style="background-color:rgb(250, 155, 114);padding: 4%;"><i class="fa-sharp fa-solid fa-minus"></i></button>
+                           <span class="quantity" style="font-size: large;">1</span>
+                           <button type="button" class="btn btn-outline-secondary increase-qty" data-product-id="<?= $products[0]['id'] ?>" style="background-color:rgb(250, 155, 114);padding: 4%;"><i class="fa-sharp fa-solid fa-plus"></i></button>
                         </div>
 
                         <p style="display:none;" ; class="offer-price mb-0">Discounted price : ₹<?= number_format($products[0]['retailer_price'], 2) ?> <br>

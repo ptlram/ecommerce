@@ -93,7 +93,7 @@
                                                 <td>' . $data["created_at"] . '</td>
                                                 <td>' . $data["status"] . '</td>
                                                 <td>₹' . $data["final_price"] . '</td>
-                                                <td><a data-toggle="tooltip" data-placement="top" title="" href="#" data-original-title="View Detail" class="btn btn-info btn-sm"><i class="mdi mdi-eye"></i></a></td>
+                                                <td><a data-toggle="tooltip" data-placement="top" title="" href="orderdetails.php?orderid=' . $data["id"] . '" data-original-title="View Detail" class="btn btn-info btn-sm"><i class="mdi mdi-eye"></i></a></td>
                                              </tr>';
                                     }
                                     ?>
