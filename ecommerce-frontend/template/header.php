@@ -21,7 +21,7 @@ include "../../ecommerce-backend/session_expire.php";
                                         <h5 class="heading-design-h5">Login to your account</h5>
                                         <form action="../../ecommerce-backend/login.php" method="post">
                                             <fieldset class="form-group">
-                                                <label>Enter Email/Mobile number</label>
+                                                <label>Enter Email ID</label>
                                                 <input type="text" name="email" class="form-control" placeholder="+91 123 456 7890">
                                             </fieldset>
                                             <fieldset class="form-group">
@@ -47,7 +47,7 @@ include "../../ecommerce-backend/session_expire.php";
                                         <h5 class="heading-design-h5">Register Now!</h5>
                                         <form action="register.php" method="post">
                                             <fieldset class="form-group">
-                                                <label for="emailOrMobile">Enter Email/Mobile number</label>
+                                                <label for="emailOrMobile">Enter Email ID</label>
                                                 <input type="text" class="form-control" id="emailOrMobile" name="emailOrMobile" placeholder="+91 123 456 7890" required>
                                             </fieldset>
                                             <fieldset class="form-group">

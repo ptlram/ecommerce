@@ -1,12 +1,24 @@
 <?php
 include "./connection.php"; // Ensure this file correctly initializes a PDO connection
 
+session_start();
+
+use PHPMailer\PHPMailer\PHPMailer;
+use PHPMailer\PHPMailer\Exception;
+
+
+include "../../ecommerce-backend/PHPMailer-master/PHPMailer-master/src/PHPMailer.php";
+include "../../ecommerce-backend/PHPMailer-master/PHPMailer-master/src/SMTP.php";
+include "../../ecommerce-backend/PHPMailer-master/PHPMailer-master/src/Exception.php";
+
+
 if ($_SERVER["REQUEST_METHOD"] == "POST") {
     $email_or_mobile = trim($_POST["emailOrMobile"]);
     $password = $_POST["password"];
     $confirm_password = $_POST["confirmPassword"];
-
     $refferal_code = $_POST["refferal_code"] || null;
+
+
 
 
     // Check if passwords match
@@ -24,7 +36,7 @@ if ($_SERVER["REQUEST_METHOD"] == "POST") {
         $count = $stmt->fetchColumn();
 
         if ($count > 0) {
-            echo "<script>alert('Error: Email or mobile number already exists!'); window.location.href='./index.php';</script>";
+            echo "<script>alert('Error: Email ID already exists!'); window.location.href='./index.php';</script>";
             exit;
         }
 
@@ -60,22 +72,38 @@ if ($_SERVER["REQUEST_METHOD"] == "POST") {
         // Generate a unique referral code
         $rcode = generateAlphanumericCode();
 
-        // Insert new user
-        $stmt = $conn->prepare("INSERT INTO login (email, password, role) VALUES (:email, :password, 'customer')");
-        $stmt->bindParam(":email", $email_or_mobile, PDO::PARAM_STR);
-        $stmt->bindParam(":password", $password_hash, PDO::PARAM_STR);
-        if (is_numeric($email_or_mobile)) {
-            $stmtt = $conn->prepare("INSERT INTO customers (mobile_number,ReferralCode,referral_by) VALUES ('$email_or_mobile','$rcode','$refferal_code')");
-        } else {
-            $stmtt = $conn->prepare("INSERT INTO customers (email,ReferralCode,referral_by) VALUES ('$email_or_mobile','$rcode','$refferal_code')");
-        }
+        // Store in session
+        $_SESSION["email_or_mobile"] = $email_or_mobile;
+        $_SESSION["password"] = $password;
+        $_SESSION["refferal_code"] = $refferal_code;
 
+        // Generate OTP
+        $otp = rand(100000, 999999);
+        $_SESSION["otp"] = $otp;
 
+        // Send OTP
+        $mail = new PHPMailer(true);
+        try {
+            $mail->isSMTP();
+            $mail->Host       = 'smtp.gmail.com';
+            $mail->SMTPAuth   = true;
+            $mail->Username   = 'ramvijaypatel96@gmail.com';
+            $mail->Password   = 'odhc onch hcmt nahz'; // move to env var!
+            $mail->SMTPSecure = 'tls';
+            $mail->Port       = 587;
 
-        if ($stmt->execute() && $stmtt->execute()) {
-            echo "<script>alert('Registration successful!'); window.location.href='./index.php';</script>";
-        } else {
-            echo "<script>alert('Error: Unable to insert data.'); window.location.href='./index.php';</script>";
+            $mail->setFrom('ramvijaypatel96@gmail.com', 'Bits infotech');
+            $mail->addAddress($email_or_mobile);
+
+            $mail->isHTML(true);
+            $mail->Subject = 'Your OTP Code';
+            $mail->Body    = "<h3>Your OTP is: <strong>$otp</strong></h3>";
+
+            $mail->send();
+            header("Location: registerverify.php");
+            exit();
+        } catch (Exception $e) {
+            echo "Mailer Error: " . $mail->ErrorInfo;
         }
     } catch (PDOException $e) {
         echo "<script>alert('Error: " . $e->getMessage() . "'); window.location.href='./index.php';</script>";
