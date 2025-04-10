@@ -81,11 +81,21 @@ $ssubcategory = $query->fetchAll();
         <div class="container">
             <h5 class="heading-design-h5">Shop by Brand</h5>
 
+
             <div class="owl-carousel owl-carousel-category">
                 <?php
-                $query = $conn->prepare("SELECT * FROM brand");
-                $query->execute();
-                $brand = $query->fetchAll();
+                // $query = $conn->prepare("SELECT * FROM brand");
+                // $query->execute();
+                // $brand = $query->fetchAll();
+                $url = "http://localhost/project/ecommerce/ecommerce-frontend/template/fetch_api_brand.php";
+                // Initialize a cURL session
+                $ch = curl_init($url);
+                curl_setopt($ch, CURLOPT_RETURNTRANSFER, true);
+                $response = curl_exec($ch);
+                curl_close($ch);
+
+                $brand = json_decode($response, true);
+
                 foreach ($brand as $b) {
                     echo '<div class="item">
                             <div class="category-item">
