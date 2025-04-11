@@ -169,7 +169,6 @@
                                                 <!-- Hidden input with the order id -->
                                                 <input type="hidden" name="selected_invoice_id" value="<?= isset($order['id']) ? htmlspecialchars($order['id']) : ''; ?>">
                                                 <select class="form-control select2me" name="selected_invoice_status" data-placeholder="Select Status" required style="width: 200px;">
-                                                    <option value="">Select Status</option>
                                                     <option value="Pending" style="color: #ff9800;" <?= (isset($order['status']) && $order['status'] == "Pending") ? 'selected' : ''; ?>>Pending</option>
                                                     <option value="Confirm" style="color: #4caf50;" <?= (isset($order['status']) && $order['status'] == "Confirm") ? 'selected' : ''; ?>>Confirm</option>
                                                     <option value="Dispatched" style="color: #2196f3;" <?= (isset($order['status']) && $order['status'] == "Dispatched") ? 'selected' : ''; ?>>Dispatched</option>
@@ -330,6 +329,24 @@
                                         $stmt2->execute();
 
 
+                                        if (!empty($order_id) && !empty($new_status)) {
+                                            try {
+                                                $updateQuery = $conn->prepare("UPDATE orders SET status = :status WHERE id = :id");
+                                                $updateQuery->execute([
+                                                    ':status' => $new_status,
+                                                    ':id'     => $order_id
+                                                ]);
+                                                echo "<script>alert('Order status updated successfully!'); window.location.href = 'orders.php';</script>";
+                                                exit();
+                                            } catch (PDOException $e) {
+                                                echo "<script>alert('Error updating status: " . $e->getMessage() . "'); window.history.back();</script>";
+                                                exit();
+                                            }
+                                        } else {
+                                            echo "<script>alert('Please select a valid status.'); window.history.back();</script>";
+                                            exit();
+                                        }
+                                    } else {
                                         if (!empty($order_id) && !empty($new_status)) {
                                             try {
                                                 $updateQuery = $conn->prepare("UPDATE orders SET status = :status WHERE id = :id");
