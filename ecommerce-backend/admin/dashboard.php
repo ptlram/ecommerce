@@ -409,10 +409,22 @@ if ($firstDate && $lastDate) {
                 <!-- MONTHLY PROFIT CHART START END -->
 
                 <!-- MONTHLY PORFIT CHART START -->
+                <div class="row">
+                    <div class="col-md-6">
+                        <div id="piechart" style="width: 600px; height: 400px;"></div>
+                        <br>
+                    </div>
 
-                <div id="piechart" style="width: 600px; height: 400px;"></div>
-                <br>
+                    <div class="col-md-6">
+                        <div id="category-piechart" style="width: 600px; height: 400px;"></div>
+                        <br>
+                    </div>
 
+                    <div class="col-md-6">
+                        <div id="payment-piechart" style="width: 600px; height: 400px;"></div>
+                        <br>
+                    </div>
+                </div>
                 <!-- MONTHLY PROFIT CHART END -->
 
                 <!-- END DASHBOARD STATS 1-->
@@ -1028,6 +1040,7 @@ if ($firstDate && $lastDate) {
                             ");
     $query->execute();
     $expensevalue = $query->fetchAll();
+    $query->closeCursor();
     ?>
     <script type="text/javascript" src="https://www.gstatic.com/charts/loader.js"></script>
     <script type="text/javascript">
@@ -1065,6 +1078,110 @@ if ($firstDate && $lastDate) {
             // Draw the Chart in the 'piechart' div
             var chart = new google.visualization.PieChart(document.getElementById('piechart'));
             chart.draw(data, options);
+        }
+    </script>
+
+
+    <!-- pie chart  category -->
+
+    <?php
+    $cchartquery = $conn->prepare("SELECT c.name, SUM(o.quantity) AS total_quantity_ordered 
+                            FROM order_details o 
+                            JOIN products p ON o.product_name = p.product_name 
+                            JOIN category c ON p.category = c.id 
+                            GROUP BY c.name 
+                            ORDER BY total_quantity_ordered DESC; -- (Optional) Sort in descending order
+                            ");
+    $cchartquery->execute();
+    $categorychartdata = $cchartquery->fetchAll();
+    $cchartquery->closeCursor();
+
+    ?>
+    <script type="text/javascript">
+        // Load Google Charts
+        google.charts.load('current', {
+            packages: ['corechart']
+        });
+
+        // Draw the Pie Chart when the page loads
+        google.charts.setOnLoadCallback(categorydrawChart);
+
+        function categorydrawChart() {
+            var categorydata = google.visualization.arrayToDataTable([
+                ['Category', 'Value'],
+                <?php
+                $cchartData = []; // Create an array to store data rows
+                foreach ($categorychartdata as $exv) {
+                    $cchartData[] = '["' . $exv["name"] . '", ' . number_format($exv["total_quantity_ordered"], 1, '.', '') . ']';
+                }
+                echo implode(",", $cchartData); // Join array elements to avoid trailing comma
+                ?>
+            ]);
+
+            // Chart Options
+            var categoryoptions = {
+                title: 'ordered By category',
+                is3D: true,
+                pieSliceText: 'value',
+                pieSliceTextStyle: {
+                    fontSize: 12,
+                    bold: true
+                },
+            };
+
+            // Draw the Chart in the 'piechart' div
+            var categorychart = new google.visualization.PieChart(document.getElementById('category-piechart'));
+            categorychart.draw(categorydata, categoryoptions);
+        }
+    </script>
+
+    <!-- pie chart payment -->
+
+    <?php
+
+    $pquery = $conn->prepare("SELECT payment_mode, SUM(final_price) AS total_received, ROUND(SUM(final_price) * 100.0 / (SELECT SUM(final_price) FROM orders), 2) AS percentage 
+                            FROM orders 
+                            GROUP BY payment_mode; -- (Optional) Sort in descending order
+                            ");
+    $pquery->execute();
+    $pexpensevalue = $pquery->fetchAll();
+    ?>
+
+    <script type="text/javascript">
+        // Load Google Charts
+        google.charts.load('current', {
+            packages: ['corechart']
+        });
+
+        // Draw the Pie Chart when the page loads
+        google.charts.setOnLoadCallback(paymentdrawChart);
+
+        function paymentdrawChart() {
+            var paymentdata = google.visualization.arrayToDataTable([
+                ['Category', 'Value'],
+                <?php
+                $paymentchartData = []; // Create an array to store data rows
+                foreach ($pexpensevalue as $exv) {
+                    $paymentchartData[] = '["' . $exv["payment_mode"] . '", ' . number_format($exv["total_received"], 1, '.', '') . ']';
+                }
+                echo implode(",", $paymentchartData); // Join array elements to avoid trailing comma
+                ?>
+            ]);
+
+            // Chart Options
+            var paymentoptions = {
+                title: 'Payment Distribution',
+                is3D: true,
+                pieSliceText: 'value',
+                pieSliceTextStyle: {
+                    fontSize: 12,
+                    bold: true
+                },
+            };
+
+            // Draw the Chart in the 'piechart' div
+            var paymentchart = new google.visualization.PieChart(document.getElementById('payment-piechart'));
+            paymentchart.draw(paymentdata, paymentoptions);
         }
     </script>
 
