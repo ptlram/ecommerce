@@ -68,7 +68,7 @@ try {
     $_SESSION['registration'] = [
         'email_or_mobile' => $emailOrMobile,
         'password_hash' => $passwordHash,
-        'referral_code' => $referralCode,
+        'rcode' => $referralCode,
         'generated_referral_code' => $newReferralCode,
         'otp' => $otp,
         'otp_generated_at' => time()

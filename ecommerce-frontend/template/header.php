@@ -22,11 +22,11 @@ include "../../ecommerce-backend/session_expire.php";
                                         <form id="login-form" method="post">
                                             <fieldset class="form-group">
                                                 <label>Enter Email ID</label>
-                                                <input type="text" name="email" class="form-control" placeholder="+91 123 456 7890">
+                                                <input type="text" name="email" class="form-control" placeholder="enter your email Id" required>
                                             </fieldset>
                                             <fieldset class="form-group">
                                                 <label>Enter Password</label>
-                                                <input type="password" name="password" class="form-control" placeholder="********">
+                                                <input type="password" name="password" class="form-control" placeholder="********" required>
                                             </fieldset>
                                             <!-- OTP Field (hidden by default) -->
                                             <fieldset class="form-group" id="otp-field" style="display:none;">
@@ -44,7 +44,7 @@ include "../../ecommerce-backend/session_expire.php";
                                         <form id="register-form" method="post">
                                             <fieldset class="form-group">
                                                 <label for="emailOrMobile">Enter Email ID</label>
-                                                <input type="text" class="form-control" id="emailOrMobile" name="emailOrMobile" placeholder="+91 123 456 7890" required>
+                                                <input type="text" class="form-control" id="emailOrMobile" name="emailOrMobile" placeholder="enter your email Id" required>
                                             </fieldset>
                                             <fieldset class="form-group">
                                                 <label for="password">Enter Password</label>
@@ -100,7 +100,6 @@ include "../../ecommerce-backend/session_expire.php";
                                     const otp = otpInput?.value || "";
                                     const errorBox = document.getElementById("register-error");
                                     const registerButton = document.getElementById("register-button");
-
                                     if (otpField.style.display === "block") {
                                         // OTP verification step
                                         fetch("./registerverify.php", {
