@@ -9,6 +9,9 @@ include "../ecommerce-backend/PHPMailer-master/PHPMailer-master/src/Exception.ph
 include "./connection.php";
 session_start();
 
+// Check if this is an AJAX request (for modal login)
+$isAjax = isset($_POST['ajax']) && $_POST['ajax'] == '1';
+
 if ($_SERVER["REQUEST_METHOD"] == "POST") {
     $myemail = trim($_POST["email"]);
     $mypassword = $_POST["password"];
@@ -46,7 +49,7 @@ if ($_SERVER["REQUEST_METHOD"] == "POST") {
                 $mail->Host       = 'smtp.gmail.com';
                 $mail->SMTPAuth   = true;
                 $mail->Username   = 'ramvijaypatel96@gmail.com';
-                $mail->Password   = 'odhc onch hcmt nahz'; // move to env var!
+                $mail->Password   = 'odhc onch hcmt nahz'; // Move to environment variable in production!
                 $mail->SMTPSecure = 'tls';
                 $mail->Port       = 587;
 
@@ -58,15 +61,40 @@ if ($_SERVER["REQUEST_METHOD"] == "POST") {
                 $mail->Body    = "<h3>Your OTP is: <strong>$otp</strong></h3>";
 
                 $mail->send();
-                header("Location: verify-otp.php");
-                exit();
+
+                // ✅ AJAX response
+                if ($isAjax) {
+                    echo json_encode(["otpSent" => true, "message" => "OTP sent to your email."]);
+                    exit();
+                } else {
+                    header("Location: verify-otp.php");
+                    exit();
+                }
             } catch (Exception $e) {
-                echo "Mailer Error: " . $mail->ErrorInfo;
+                $error = "Mailer Error: " . $mail->ErrorInfo;
+                if ($isAjax) {
+                    echo json_encode(["otpSent" => false, "message" => $error]);
+                    exit();
+                } else {
+                    echo $error;
+                }
             }
         } else {
-            echo "<script>alert('Invalid email or password!'); window.location.href='../ecommerce-frontend/template/index.php'</script>";
+            $errorMsg = "Invalid email or password!";
+            if ($isAjax) {
+                echo json_encode(["otpSent" => false, "message" => $errorMsg]);
+                exit();
+            } else {
+                echo "<script>alert('$errorMsg'); window.location.href='../ecommerce-frontend/template/index.php'</script>";
+            }
         }
     } catch (PDOException $e) {
-        echo "Error: " . $e->getMessage();
+        $errorMsg = "Database error: " . $e->getMessage();
+        if ($isAjax) {
+            echo json_encode(["otpSent" => false, "message" => $errorMsg]);
+            exit();
+        } else {
+            echo $errorMsg;
+        }
     }
 }
