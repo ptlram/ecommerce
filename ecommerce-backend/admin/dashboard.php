@@ -431,7 +431,7 @@ if ($firstDate && $lastDate) {
                 <div class="row">
                     <div class="col-md-6">
                         <!-- BEGIN EXAMPLE TABLE PORTLET-->
-                        <div class="portlet box green">
+                        <div class="portlet box green" style="overflow: auto; height: 390px;">
                             <div class="portlet-title">
                                 <div class="caption">Today's Pending Orders</div>
                             </div>
@@ -473,9 +473,9 @@ if ($firstDate && $lastDate) {
                             </div>
                         </div>
                     </div>
-                    <div class="col-md-6">
+                    <div class="col-md-6" style="overflow: auto; height: fit-content;">
                         <!-- BEGIN EXAMPLE TABLE PORTLET-->
-                        <div class="portlet box green">
+                        <div class=" portlet box green">
                             <div class="portlet-title">
                                 <div class="caption">Today's Confirm Orders</div>
                             </div>

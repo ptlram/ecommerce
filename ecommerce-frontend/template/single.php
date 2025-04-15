@@ -81,21 +81,22 @@ include "./connection.php";
 
                      <!-- Add to Cart Button -->
                      <div class="product-footer">
-                        <button type="button" class="btn btn-secondary btn-sm float-right add-to-cart" data-product-id="<?= $products[0]['id'] ?>">
-                           <i class="mdi mdi-cart-outline"></i> Add To Cart
-                        </button>
-
-                        <div class="qty-selector d-none">
-                           <button type="button" class="btn btn-outline-secondary decrease-qty" data-product-id="<?= $products[0]['id'] ?>" style="background-color:rgb(250, 155, 114);padding: 4%;"><i class="fa-sharp fa-solid fa-minus"></i></button>
-                           <span class="quantity" style="font-size: large;">1</span>
-                           <button type="button" class="btn btn-outline-secondary increase-qty" data-product-id="<?= $products[0]['id'] ?>" style="background-color:rgb(250, 155, 114);padding: 4%;"><i class="fa-sharp fa-solid fa-plus"></i></button>
-                        </div>
-
                         <p style="display:none;" ; class="offer-price mb-0">Discounted price : ₹<?= number_format($products[0]['retailer_price'], 2) ?> <br>
                            <?php if ($products[0]['retailer_price'] !== $products[0]['mrp']) : ?>
                               <span class="regular-price">₹<?= number_format($products[0]['mrp'], 2) ?></span>
                            <?php endif; ?>
                         </p>
+                        <button type="button" class="btn btn-secondary btn-sm  add-to-cart" data-product-id="<?= $products[0]['id'] ?>">
+                           <i class="mdi mdi-cart-outline"></i> Add To Cart
+                        </button>
+
+                        <div class="qty-selector d-none">
+                           <button type="button" class="btn btn-secondary btn-sm decrease-qty" data-product-id="<?= $products[0]['id'] ?>" style="background-color:rgb(250, 155, 114);padding: 4%;"><i class="fa-sharp fa-solid fa-minus"></i></button>
+                           <span class="quantity" style="font-size: large;">1</span>
+                           <button type="button" class="btn btn-secondary btn-sm increase-qty" data-product-id="<?= $products[0]['id'] ?>" style="background-color:rgb(250, 155, 114);padding: 4%;"><i class="fa-sharp fa-solid fa-plus"></i></button>
+                        </div>
+
+
                      </div>
                      <br>
                      <br>
@@ -183,21 +184,24 @@ include "./connection.php";
                                  <h6><strong><span class="mdi mdi-approval"></span> Available in</strong> - <?= htmlspecialchars($product['variant_name']) ?></h6>
                               </div>
                               <div class="product-footer">
-                                 <button type="button" class="btn btn-secondary btn-sm float-right add-to-cart" data-product-id="<?= $product['id'] ?>">
-                                    <i class="mdi mdi-cart-outline"></i> Add To Cart
-                                 </button>
-                                 <div class="qty-selector d-none ">
-                                    <button type="button" class="btn btn-outline-secondary decrease-qty" data-product-id="<?= $product['id'] ?>"> - </button>
-                                    <span class="quantity">1</span>
-                                    <button type="button" class="btn btn-outline-secondary increase-qty" data-product-id="<?= $product['id'] ?>"> + </button>
-                                 </div>
                                  <p class="offer-price mb-0">₹<?= number_format($product['retailer_price'], 2) ?> <br>
                                     <?php
                                     if ($product['retailer_price'] !== $product['mrp']) {
                                        echo '<span class="regular-price">₹' . number_format($product['mrp'], 2) . '</span>';
+                                    } else {
+                                       echo "<br>";
                                     }
                                     ?>
                                  </p>
+                                 <button type="button" class="btn btn-secondary btn-sm add-to-cart" data-product-id="<?= $product['id'] ?>">
+                                    <i class="mdi mdi-cart-outline"></i> Add To Cart
+                                 </button>
+                                 <div class="qty-selector d-none ">
+                                    <button type="button" class="btn btn-secondary btn-sm decrease-qty" data-product-id="<?= $product['id'] ?>"> - </button>
+                                    <span class="quantity">1</span>
+                                    <button type="button" class="btn btn-secondary btn-sm increase-qty" data-product-id="<?= $product['id'] ?>"> + </button>
+                                 </div>
+
                               </div>
                            </a>
                         </div>

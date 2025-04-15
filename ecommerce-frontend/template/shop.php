@@ -123,7 +123,7 @@ $is_product = false;
                                  echo '<span class="badge badge-success">' . number_format($discount, 2) . '% OFF</span>';
                               }
                               ?>
-                              <img class="img-fluid lazyload" src="../../ecommerce-backend/pages/uploads/products/<?= $product['product_image'] ?>" alt="<?= $product['product_name'] ?>">
+                              <img class="img-fluid lazyload" data-src="../../ecommerce-backend/pages/uploads/products/<?= $product['product_image'] ?>" alt="<?= $product['product_name'] ?>">
                            </div>
                            <div class="product-body">
                               <h5 class="cut-text" title="<?= htmlspecialchars($product['product_name']) ?>">
@@ -133,6 +133,15 @@ $is_product = false;
                            </div>
                         </a>
                         <div class="product-footer">
+                           <p class="offer-price mb-0">₹<?= number_format($product['retailer_price'], 2) ?> <br>
+                              <?php
+                              if ($product['retailer_price'] !== $product['mrp']) {
+                                 echo '<span class="regular-price">₹' . number_format($product['mrp'], 2) . '</span>';
+                              } else {
+                                 echo "<br>";
+                              }
+                              ?>
+                           </p>
                            <!-- Add to Cart Button -->
                            <button type="button" class="btn btn-secondary btn-sm float-right add-to-cart" data-product-id="<?= $product['id'] ?>">
                               <i class="mdi mdi-cart-outline"></i> Add To Cart
@@ -140,18 +149,12 @@ $is_product = false;
 
                            <!-- Quantity Selector -->
                            <div class="qty-selector d-none" id="qty-selector-<?= $product['id'] ?>">
-                              <button type="button" class="btn btn-outline-secondary decrease-qty" data-product-id="<?= $product['id'] ?>">-</button>
+                              <button type="button" class="btn btn-secondary btn-sm decrease-qty" data-product-id="<?= $product['id'] ?>">-</button>
                               <span class="quantity" id="quantity-<?= $product['id'] ?>">1</span>
-                              <button type="button" class="btn btn-outline-secondary increase-qty" data-product-id="<?= $product['id'] ?>">+</button>
+                              <button type="button" class="btn btn-secondary btn-sm increase-qty" data-product-id="<?= $product['id'] ?>">+</button>
                            </div>
 
-                           <p class="offer-price mb-0">₹<?= number_format($product['retailer_price'], 2) ?> <br>
-                              <?php
-                              if ($product['retailer_price'] !== $product['mrp']) {
-                                 echo '<span class="regular-price">₹' . number_format($product['mrp'], 2) . '</span>';
-                              }
-                              ?>
-                           </p>
+
                         </div>
                      </div>
                   </div>
@@ -186,7 +189,7 @@ $is_product = false;
                                  echo '<span class="badge badge-success">' . number_format($discount, 2) . '% OFF</span>';
                               }
                               ?>
-                              <img class="img-fluid lazyload" src="../../ecommerce-backend/pages/uploads/products/<?= $product['product_image'] ?>" alt="<?= $product['product_name'] ?>">
+                              <img class="img-fluid lazyload" data-src="../../ecommerce-backend/pages/uploads/products/<?= $product['product_image'] ?>" alt="<?= $product['product_name'] ?>">
                            </div>
                            <div class="product-body">
                               <h5 class="cut-text" title="<?= htmlspecialchars($product['product_name']) ?>">
@@ -196,25 +199,28 @@ $is_product = false;
                            </div>
                         </a>
                         <div class="product-footer">
+                           <p class="offer-price mb-0">₹<?= number_format($product['retailer_price'], 2) ?> <br>
+                              <?php
+                              if ($product['retailer_price'] !== $product['mrp']) {
+                                 echo '<span class="regular-price">₹' . number_format($product['mrp'], 2) . '</span>';
+                              } else {
+                                 echo "<br>";
+                              }
+                              ?>
+                           </p>
                            <!-- Add to Cart Button -->
-                           <button type="button" class="btn btn-secondary btn-sm float-right add-to-cart" data-product-id="<?= $product['id'] ?>">
+                           <button type="button" class="btn btn-secondary btn-sm add-to-cart" data-product-id="<?= $product['id'] ?>">
                               <i class="mdi mdi-cart-outline"></i> Add To Cart
                            </button>
 
                            <!-- Quantity Selector -->
                            <div class="qty-selector d-none" id="qty-selector-<?= $product['id'] ?>">
-                              <button type="button" class="btn btn-outline-secondary decrease-qty" data-product-id="<?= $product['id'] ?>">-</button>
+                              <button type="button" class="btn btn-secondary btn-sm decrease-qty" data-product-id="<?= $product['id'] ?>">-</button>
                               <span class="quantity" id="quantity-<?= $product['id'] ?>">1</span>
-                              <button type="button" class="btn btn-outline-secondary increase-qty" data-product-id="<?= $product['id'] ?>">+</button>
+                              <button type="button" class="btn btn-secondary btn-sm increase-qty" data-product-id="<?= $product['id'] ?>">+</button>
                            </div>
 
-                           <p class="offer-price mb-0">₹<?= number_format($product['retailer_price'], 2) ?> <br>
-                              <?php
-                              if ($product['retailer_price'] !== $product['mrp']) {
-                                 echo '<span class="regular-price">₹' . number_format($product['mrp'], 2) . '</span>';
-                              }
-                              ?>
-                           </p>
+
                         </div>
                      </div>
                   </div>
@@ -249,7 +255,12 @@ $is_product = false;
                                  echo '<span class="badge badge-success">' . number_format($discount, 2) . '% OFF</span>';
                               }
                               ?>
-                              <img class="img-fluid lazyload" src="../../ecommerce-backend/pages/uploads/products/<?= $product['product_image'] ?>" alt="<?= $product['product_name'] ?>">
+                              <img
+                                 class="img-fluid lazyload"
+                                 data-src="../../ecommerce-backend/pages/uploads/products/<?= htmlspecialchars($product['product_image']) ?>"
+                                 alt="<?= htmlspecialchars($product['product_name']) ?>"
+                                 width="300"
+                                 height="200" />
                            </div>
                            <div class="product-body">
                               <h5 class="cut-text" title="<?= htmlspecialchars($product['product_name']) ?>">
@@ -259,25 +270,28 @@ $is_product = false;
                            </div>
                         </a>
                         <div class="product-footer">
+                           <p class="offer-price mb-0">₹<?= number_format($product['retailer_price'], 2) ?> <br>
+                              <?php
+                              if ($product['retailer_price'] !== $product['mrp']) {
+                                 echo '<span class="regular-price">₹' . number_format($product['mrp'], 2) . '</span>';
+                              } else {
+                                 echo "<br>";
+                              }
+                              ?>
+                           </p>
                            <!-- Add to Cart Button -->
-                           <button type="button" class="btn btn-secondary btn-sm float-right add-to-cart" data-product-id="<?= $product['id'] ?>">
+                           <button type="button" class="btn btn-secondary btn-sm  add-to-cart" data-product-id="<?= $product['id'] ?>">
                               <i class="mdi mdi-cart-outline"></i> Add To Cart
                            </button>
 
                            <!-- Quantity Selector -->
                            <div class="qty-selector d-none" id="qty-selector-<?= $product['id'] ?>">
-                              <button type="button" class="btn btn-outline-secondary decrease-qty" data-product-id="<?= $product['id'] ?>">-</button>
+                              <button type="button" class="btn btn-secondary btn-sm decrease-qty" data-product-id="<?= $product['id'] ?>">-</button>
                               <span class="quantity" id="quantity-<?= $product['id'] ?>">1</span>
-                              <button type="button" class="btn btn-outline-secondary increase-qty" data-product-id="<?= $product['id'] ?>">+</button>
+                              <button type="button" class="btn btn-secondary btn-sm increase-qty" data-product-id="<?= $product['id'] ?>">+</button>
                            </div>
 
-                           <p class="offer-price mb-0">₹<?= number_format($product['retailer_price'], 2) ?> <br>
-                              <?php
-                              if ($product['retailer_price'] !== $product['mrp']) {
-                                 echo '<span class="regular-price">₹' . number_format($product['mrp'], 2) . '</span>';
-                              }
-                              ?>
-                           </p>
+
                         </div>
                      </div>
                   </div>
@@ -311,7 +325,7 @@ $is_product = false;
       <div class="cart-sidebar-body">
          <div class="cart-list-product">
             <a class="float-right remove-cart" href="#"><i class="mdi mdi-close"></i></a>
-            <img class="img-fluid" src="img/item/11.jpg" alt="">
+            <img class="img-fluid lazyload" data-src="img/item/11.jpg" alt="">
             <span class="badge badge-success">50% OFF</span>
             <h5><a href="#">Product Title Here</a></h5>
             <h6><strong><span class="mdi mdi-approval"></span> Available in</strong> - 500 gm</h6>
@@ -319,7 +333,7 @@ $is_product = false;
          </div>
          <div class="cart-list-product">
             <a class="float-right remove-cart" href="#"><i class="mdi mdi-close"></i></a>
-            <img class="img-fluid" src="img/item/7.jpg" alt="">
+            <img class="img-fluid lazyload" data-src="img/item/7.jpg" alt="">
             <span class="badge badge-success">50% OFF</span>
             <h5><a href="#">Product Title Here</a></h5>
             <h6><strong><span class="mdi mdi-approval"></span> Available in</strong> - 500 gm</h6>
@@ -327,7 +341,7 @@ $is_product = false;
          </div>
          <div class="cart-list-product">
             <a class="float-right remove-cart" href="#"><i class="mdi mdi-close"></i></a>
-            <img class="img-fluid" src="img/item/9.jpg" alt="">
+            <img class="img-fluid lazyload" data-src="img/item/9.jpg" alt="">
             <span class="badge badge-success">50% OFF</span>
             <h5><a href="#">Product Title Here</a></h5>
             <h6><strong><span class="mdi mdi-approval"></span> Available in</strong> - 500 gm</h6>
@@ -335,7 +349,7 @@ $is_product = false;
          </div>
          <div class="cart-list-product">
             <a class="float-right remove-cart" href="#"><i class="mdi mdi-close"></i></a>
-            <img class="img-fluid" src="img/item/1.jpg" alt="">
+            <img class="img-fluid lazyload" data-src="img/item/1.jpg" alt="">
             <span class="badge badge-success">50% OFF</span>
             <h5><a href="#">Product Title Here</a></h5>
             <h6><strong><span class="mdi mdi-approval"></span> Available in</strong> - 500 gm</h6>
@@ -343,7 +357,7 @@ $is_product = false;
          </div>
          <div class="cart-list-product">
             <a class="float-right remove-cart" href="#"><i class="mdi mdi-close"></i></a>
-            <img class="img-fluid" src="img/item/2.jpg" alt="">
+            <img class="img-fluid lazyload" data-src="img/item/2.jpg" alt="">
             <span class="badge badge-success">50% OFF</span>
             <h5><a href="#">Product Title Here</a></h5>
             <h6><strong><span class="mdi mdi-approval"></span> Available in</strong> - 500 gm</h6>
@@ -359,6 +373,16 @@ $is_product = false;
          <a href="checkout.html"><button class="btn btn-secondary btn-lg btn-block text-left" type="button"><span class="float-left"><i class="mdi mdi-cart-outline"></i> Proceed to Checkout </span><span class="float-right"><strong>₹1200.69</strong> <span class="mdi mdi-chevron-right"></span></span></button></a>
       </div>
    </div>
+   <!-- lazy load -->
+   <script src="https://cdnjs.cloudflare.com/ajax/libs/lazysizes/5.3.2/lazysizes.min.js" async></script>
+   <script>
+      if (window.lazySizes) {
+         console.log("LazySizes is loaded");
+      } else {
+         console.log("LazySizes failed to load");
+      }
+   </script>
+
    <!-- Bootstrap core JavaScript -->
    <script src="vendor/jquery/jquery.min.js"></script>
    <script src="vendor/bootstrap/js/bootstrap.bundle.min.js"></script>
