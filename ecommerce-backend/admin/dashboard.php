@@ -431,7 +431,7 @@ if ($firstDate && $lastDate) {
                 <div class="row">
                     <div class="col-md-6">
                         <!-- BEGIN EXAMPLE TABLE PORTLET-->
-                        <div class="portlet box green">
+                        <div class="portlet box green" style="overflow: auto; height: 390px;">
                             <div class="portlet-title">
                                 <div class="caption">Today's Pending Orders</div>
                             </div>
@@ -448,9 +448,9 @@ if ($firstDate && $lastDate) {
                                     </thead>
                                     <tbody>
                                         <?php
-
                                         $query = $conn->prepare('SELECT customer_name, mobile, final_price FROM orders where status="Pending"');
                                         $query->execute();
+
                                         $pendings = $query->fetchAll();
                                         $i = 1;
                                         foreach ($pendings as $pending) {
@@ -473,9 +473,9 @@ if ($firstDate && $lastDate) {
                             </div>
                         </div>
                     </div>
-                    <div class="col-md-6">
+                    <div class="col-md-6" style="overflow: auto; height: fit-content;">
                         <!-- BEGIN EXAMPLE TABLE PORTLET-->
-                        <div class="portlet box green">
+                        <div class=" portlet box green">
                             <div class="portlet-title">
                                 <div class="caption">Today's Confirm Orders</div>
                             </div>
@@ -559,7 +559,9 @@ if ($firstDate && $lastDate) {
                         <!-- BEGIN EXAMPLE TABLE PORTLET-->
                         <div class="portlet box green">
                             <div class="portlet-title">
-                                <div class="caption">Top 10 Selling Products</div>
+                                <div class="caption">Top 10 Selling Products <?php if (isset($_SESSION["selected_month"])) {
+                                                                                    echo "In " . htmlspecialchars($_SESSION["selected_month"]);
+                                                                                } ?></div>
                             </div>
                             <div class="portlet-body">
                                 <table class="table table-striped table-bordered table-hover" id="sample_2">
@@ -573,8 +575,20 @@ if ($firstDate && $lastDate) {
                                     </thead>
                                     <tbody>
                                         <?php
-                                        $query = $conn->prepare('SELECT product_name, COUNT(*) AS total_products FROM order_details GROUP BY product_name ORDER BY total_products DESC LIMIT 10;');
-                                        $query->execute();
+                                        if (isset($_SESSION["selected_month"])) {
+                                            $month = $_SESSION["selected_month"]; // e.g., "March"
+
+                                            // Convert month name to numeric (e.g., "March" => 3)
+                                            $monthNumber = date('m', strtotime($month)); // returns "03"
+
+                                            $query = $conn->prepare('SELECT product_name, COUNT(*) AS total_products FROM order_details WHERE MONTH(created_at) = ? GROUP BY product_name ORDER BY total_products DESC LIMIT 10;');
+                                            $query->execute([$monthNumber]);
+                                        } else {
+                                            $query = $conn->prepare('SELECT product_name, COUNT(*) AS total_products FROM order_details GROUP BY product_name ORDER BY total_products DESC LIMIT 10;');
+                                            $query->execute();
+                                        }
+
+
                                         $topproducts = $query->fetchAll();
                                         $i = 1;
                                         foreach ($topproducts as $topproduct) {
@@ -595,7 +609,9 @@ if ($firstDate && $lastDate) {
                         <!-- BEGIN EXAMPLE TABLE PORTLET-->
                         <div class="portlet box green">
                             <div class="portlet-title">
-                                <div class="caption">Top 10 Customer By Order</div>
+                                <div class="caption">Top 10 Customer By Order <?php if (isset($_SESSION["selected_month"])) {
+                                                                                    echo "In " . htmlspecialchars($_SESSION["selected_month"]);
+                                                                                } ?></div>
                             </div>
                             <div class="portlet-body">
                                 <table class="table table-striped table-bordered table-hover" id="sample_2">
@@ -609,8 +625,20 @@ if ($firstDate && $lastDate) {
                                     </thead>
                                     <tbody>
                                         <?php
-                                        $query = $conn->prepare('SELECT  customer_name,mobile, COUNT(customer_name) AS total_order FROM orders GROUP BY customer_name ORDER BY total_order DESC LIMIT 10;');
-                                        $query->execute();
+                                        if (isset($_SESSION["selected_month"])) {
+                                            $month = $_SESSION["selected_month"]; // e.g., "March"
+
+                                            // Convert month name to numeric (e.g., "March" => 3)
+                                            $monthNumber = date('m', strtotime($month)); // returns "03"
+
+                                            $query = $conn->prepare('SELECT  customer_name,mobile, COUNT(customer_name) AS total_order FROM orders  WHERE MONTH(created_at) = ? GROUP BY customer_name ORDER BY total_order DESC LIMIT 10;');
+                                            $query->execute([$monthNumber]);
+                                        } else {
+                                            $query = $conn->prepare('SELECT  customer_name,mobile, COUNT(customer_name) AS total_order FROM orders GROUP BY customer_name ORDER BY total_order DESC LIMIT 10;');
+                                            $query->execute();
+                                        }
+
+
                                         $toporeders = $query->fetchAll();
                                         $i = 1;
                                         foreach ($toporeders as $toporeder) {
@@ -636,7 +664,9 @@ if ($firstDate && $lastDate) {
                         <!-- BEGIN EXAMPLE TABLE PORTLET-->
                         <div class="portlet box green">
                             <div class="portlet-title">
-                                <div class="caption">Top 10 Customer By Amount</div>
+                                <div class="caption">Top 10 Customer By Amount <?php if (isset($_SESSION["selected_month"])) {
+                                                                                    echo "In " . htmlspecialchars($_SESSION["selected_month"]);
+                                                                                } ?></div>
                             </div>
                             <div class="portlet-body">
                                 <table class="table table-striped table-bordered table-hover" id="sample_2">
@@ -650,8 +680,19 @@ if ($firstDate && $lastDate) {
                                     </thead>
                                     <tbody>
                                         <?php
-                                        $query = $conn->prepare('SELECT  customer_name,mobile, SUM(final_price) AS total_amount FROM orders GROUP BY customer_name ORDER BY total_amount DESC LIMIT 10;');
-                                        $query->execute();
+                                        if (isset($_SESSION["selected_month"])) {
+                                            $month = $_SESSION["selected_month"]; // e.g., "March"
+
+                                            // Convert month name to numeric (e.g., "March" => 3)
+                                            $monthNumber = date('m', strtotime($month)); // returns "03"
+
+                                            $query = $conn->prepare('SELECT  customer_name,mobile, SUM(final_price) AS total_amount FROM orders WHERE MONTH(created_at) = ? GROUP BY customer_name ORDER BY total_amount DESC LIMIT 10;');
+                                            $query->execute([$monthNumber]);
+                                        } else {
+                                            $query = $conn->prepare('SELECT  customer_name,mobile, SUM(final_price) AS total_amount FROM orders GROUP BY customer_name ORDER BY total_amount DESC LIMIT 10;');
+                                            $query->execute();
+                                        }
+
                                         $topamounts = $query->fetchAll();
                                         $i = 1;
                                         foreach ($topamounts as $topamount) {
@@ -832,10 +873,11 @@ if ($firstDate && $lastDate) {
             $("#selected_month, input[name='selected_year']").on("keyup", updateChart);
         });
 
+
         //dashboard_chart2
         $(document).ready(function() {
             google.charts.load('current', {
-                packages: ['bar']
+                packages: ['corechart'] // Use 'corechart' instead of 'bar'
             });
 
             function secondchart() {
@@ -847,7 +889,7 @@ if ($firstDate && $lastDate) {
                 if (year.length === 4 && !isNaN(year)) {
                     $.ajax({
                         type: "POST",
-                        url: "dashboard_chart2.php", // Ensure this file returns correct JSON
+                        url: "dashboard_chart2.php",
                         data: {
                             year: year
                         },
@@ -860,7 +902,7 @@ if ($firstDate && $lastDate) {
                             } else {
                                 console.warn("No data available for this year.");
 
-                                // Draw an empty chart with 0 values
+                                // Draw empty chart
                                 var emptyData = Array.from({
                                     length: 12
                                 }, (_, i) => ({
@@ -890,17 +932,61 @@ if ($firstDate && $lastDate) {
                 }
 
                 var dataTable = google.visualization.arrayToDataTable(chartData);
+
                 var options = {
                     legend: {
                         position: 'none'
                     },
-                    chart: {
-                        title: "Monthly Received Amount"
-                    }
+                    chartArea: {
+                        width: '93%', // Makes bars take full width
+                    },
+                    vAxis: {
+                        minValue: 0,
+                        format: 'short' // Optional: e.g., 20K instead of 20000
+                    },
+                    hAxis: {
+                        textStyle: {
+                            fontSize: 12
+                        }
+                    },
+                    bar: {
+                        groupWidth: '70%'
+                    } // Thicker bars like the first chart
                 };
 
-                var chart = new google.charts.Bar(document.getElementById('curve_chart'));
-                chart.draw(dataTable, google.charts.Bar.convertOptions(options));
+
+                // Use ColumnChart instead of Bar chart
+                var chart = new google.visualization.ColumnChart(document.getElementById('curve_chart'));
+                chart.draw(dataTable, options);
+
+                // Add select event
+                google.visualization.events.addListener(chart, 'select', function() {
+                    var selection = chart.getSelection();
+                    if (selection.length > 0) {
+                        var selectedRow = selection[0].row;
+                        if (selectedRow != null) {
+                            var selectedMonth = dataTable.getValue(selectedRow, 0);
+                            console.log("Selected month:", selectedMonth);
+
+                            // Send to server via AJAX to store in session
+                            $.ajax({
+                                type: "POST",
+                                url: "dashboard_set_selected_month.php", // A PHP script that sets the session
+                                data: {
+                                    month: selectedMonth
+                                },
+                                success: function(response) {
+                                    console.log("Session updated:", response);
+                                    location.reload(); // 🔄 This reloads the current page
+                                },
+                                error: function() {
+                                    console.error("Failed to store month in session.");
+                                }
+                            });
+                        }
+                    }
+                });
+
             }
 
             function getMonthName(month) {
@@ -914,13 +1000,12 @@ if ($firstDate && $lastDate) {
             // Set the current year and call secondchart
             let currentYear = new Date().getFullYear();
             $("input[name='selected_year2']").val(currentYear);
-
-            // Call secondchart after setting the year
             setTimeout(secondchart, 0);
 
-            // Trigger chart update when year input changes
+            // Update chart when year input changes
             $("input[name='selected_year2']").on("input", secondchart);
         });
+
 
         //dashboard_chart3
         $(document).ready(function() {
@@ -1033,14 +1118,33 @@ if ($firstDate && $lastDate) {
 
     <!-- pie chart  -->
     <?php
-    $query = $conn->prepare("SELECT transaction_type, SUM(amount) AS total_price
-                            FROM expense
-                            GROUP BY transaction_type
-                            ORDER BY total_price DESC; -- (Optional) Sort in descending order
-                            ");
-    $query->execute();
+    if (isset($_SESSION["selected_month"])) {
+        $month = $_SESSION["selected_month"]; // e.g., "March"
+
+        // Convert month name to numeric (e.g., "March" => 3)
+        $monthNumber = date('m', strtotime($month)); // returns "03"
+
+        $query = $conn->prepare("
+            SELECT transaction_type, SUM(amount) AS total_price
+            FROM expense
+            WHERE MONTH(date) = ?
+            GROUP BY transaction_type
+            ORDER BY total_price DESC
+        ");
+        $query->execute([$monthNumber]);
+    } else {
+        $query = $conn->prepare("
+            SELECT transaction_type, SUM(amount) AS total_price
+            FROM expense
+            GROUP BY transaction_type
+            ORDER BY total_price DESC
+        ");
+        $query->execute();
+    }
+
     $expensevalue = $query->fetchAll();
     $query->closeCursor();
+
     ?>
     <script type="text/javascript" src="https://www.gstatic.com/charts/loader.js"></script>
     <script type="text/javascript">
@@ -1066,15 +1170,14 @@ if ($firstDate && $lastDate) {
 
             // Chart Options
             var options = {
-                title: 'Expense Distribution',
+                title: 'Expense Distribution <?php echo isset($_SESSION["selected_month"]) ? "In " . htmlspecialchars($_SESSION["selected_month"]) : ""; ?>',
                 is3D: true,
                 pieSliceText: 'value',
                 pieSliceTextStyle: {
                     fontSize: 12,
                     bold: true
-                },
+                }
             };
-
             // Draw the Chart in the 'piechart' div
             var chart = new google.visualization.PieChart(document.getElementById('piechart'));
             chart.draw(data, options);
@@ -1085,14 +1188,33 @@ if ($firstDate && $lastDate) {
     <!-- pie chart  category -->
 
     <?php
-    $cchartquery = $conn->prepare("SELECT c.name, SUM(o.quantity) AS total_quantity_ordered 
-                            FROM order_details o 
-                            JOIN products p ON o.product_name = p.product_name 
-                            JOIN category c ON p.category = c.id 
-                            GROUP BY c.name 
-                            ORDER BY total_quantity_ordered DESC; -- (Optional) Sort in descending order
-                            ");
-    $cchartquery->execute();
+    if (isset($_SESSION["selected_month"])) {
+        $month = $_SESSION["selected_month"]; // e.g., "March"
+
+        // Convert month name to numeric (e.g., "March" => 3)
+        $monthNumber = date('m', strtotime($month)); // returns "03"
+
+        $cchartquery = $conn->prepare("SELECT c.name, SUM(o.quantity) AS total_quantity_ordered 
+            FROM order_details o 
+            JOIN products p ON o.product_name = p.product_name 
+            JOIN category c ON p.category = c.id 
+            WHERE MONTH(o.created_at) = ?
+            GROUP BY c.name 
+            ORDER BY total_quantity_ordered DESC; -- (Optional) Sort in descending order
+        ");
+
+        $cchartquery->execute([$monthNumber]);
+    } else {
+        $cchartquery = $conn->prepare("SELECT c.name, SUM(o.quantity) AS total_quantity_ordered 
+            FROM order_details o 
+            JOIN products p ON o.product_name = p.product_name 
+            JOIN category c ON p.category = c.id 
+            GROUP BY c.name 
+            ORDER BY total_quantity_ordered DESC; -- (Optional) Sort in descending order
+        ");
+        $cchartquery->execute();
+    }
+
     $categorychartdata = $cchartquery->fetchAll();
     $cchartquery->closeCursor();
 
@@ -1120,13 +1242,13 @@ if ($firstDate && $lastDate) {
 
             // Chart Options
             var categoryoptions = {
-                title: 'ordered By category',
+                title: 'Ordered By Category <?php echo isset($_SESSION["selected_month"]) ? "In " . htmlspecialchars($_SESSION["selected_month"]) : ""; ?>',
                 is3D: true,
                 pieSliceText: 'value',
                 pieSliceTextStyle: {
                     fontSize: 12,
                     bold: true
-                },
+                }
             };
 
             // Draw the Chart in the 'piechart' div
@@ -1139,11 +1261,25 @@ if ($firstDate && $lastDate) {
 
     <?php
 
-    $pquery = $conn->prepare("SELECT payment_mode, SUM(final_price) AS total_received, ROUND(SUM(final_price) * 100.0 / (SELECT SUM(final_price) FROM orders), 2) AS percentage 
+    if (isset($_SESSION["selected_month"])) {
+        $month = $_SESSION["selected_month"]; // e.g., "March"
+
+        // Convert month name to numeric (e.g., "March" => 3)
+        $monthNumber = date('m', strtotime($month)); // returns "03"
+
+        $pquery = $conn->prepare("SELECT payment_mode, SUM(final_price) AS total_received, ROUND(SUM(final_price) * 100.0 / (SELECT SUM(final_price) FROM orders), 2) AS percentage 
+                            FROM orders 
+                            WHERE MONTH(created_at) = ?
+                            GROUP BY payment_mode; -- (Optional) Sort in descending order
+                            ");
+        $pquery->execute([$monthNumber]);
+    } else {
+        $pquery = $conn->prepare("SELECT payment_mode, SUM(final_price) AS total_received, ROUND(SUM(final_price) * 100.0 / (SELECT SUM(final_price) FROM orders), 2) AS percentage 
                             FROM orders 
                             GROUP BY payment_mode; -- (Optional) Sort in descending order
                             ");
-    $pquery->execute();
+        $pquery->execute();
+    }
     $pexpensevalue = $pquery->fetchAll();
     ?>
 
@@ -1170,13 +1306,13 @@ if ($firstDate && $lastDate) {
 
             // Chart Options
             var paymentoptions = {
-                title: 'Payment Distribution',
+                title: 'Payment Distribution <?php echo isset($_SESSION["selected_month"]) ? "In " . htmlspecialchars($_SESSION["selected_month"]) : ""; ?>',
                 is3D: true,
                 pieSliceText: 'value',
                 pieSliceTextStyle: {
                     fontSize: 12,
                     bold: true
-                },
+                }
             };
 
             // Draw the Chart in the 'piechart' div

@@ -84,17 +84,10 @@ $ssubcategory = $query->fetchAll();
 
             <div class="owl-carousel owl-carousel-category">
                 <?php
-                // $query = $conn->prepare("SELECT * FROM brand");
-                // $query->execute();
-                // $brand = $query->fetchAll();
-                $url = "http://localhost/project/ecommerce/ecommerce-frontend/template/fetch_api_brand.php";
-                // Initialize a cURL session
-                $ch = curl_init($url);
-                curl_setopt($ch, CURLOPT_RETURNTRANSFER, true);
-                $response = curl_exec($ch);
-                curl_close($ch);
+                $query = $conn->prepare("SELECT * FROM brand");
+                $query->execute();
+                $brand = $query->fetchAll();
 
-                $brand = json_decode($response, true);
 
                 foreach ($brand as $b) {
                     echo '<div class="item">
@@ -159,9 +152,9 @@ $ssubcategory = $query->fetchAll();
 
                                             <!-- Quantity Selector -->
                                             <div class="qty-selector d-none">
-                                                <button type="button" class="btn btn-outline-secondary decrease-qty" data-product-id="<?= $product['id'] ?>">-</button>
+                                                <button type="button" class="btn btn-secondary btn-sm decrease-qty" data-product-id="<?= $product['id'] ?>">-</button>
                                                 <span class="quantity">1</span>
-                                                <button type="button" class="btn btn-outline-secondary increase-qty" data-product-id="<?= $product['id'] ?>">+</button>
+                                                <button type="button" class="btn btn-secondary btn-sm increase-qty" data-product-id="<?= $product['id'] ?>">+</button>
                                             </div>
 
                                             <p class="offer-price mb-0">₹<?= number_format($product['retailer_price'], 2) ?> <br>

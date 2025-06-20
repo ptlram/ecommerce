@@ -19,36 +19,32 @@ include "../../ecommerce-backend/session_expire.php";
                                 <div class="tab-content">
                                     <div class="tab-pane active" id="login" role="tabpanel">
                                         <h5 class="heading-design-h5">Login to your account</h5>
-                                        <form action="../../ecommerce-backend/login.php" method="post">
+                                        <form id="login-form" method="post">
                                             <fieldset class="form-group">
                                                 <label>Enter Email ID</label>
-                                                <input type="text" name="email" class="form-control" placeholder="+91 123 456 7890">
+                                                <input type="text" name="email" class="form-control" placeholder="enter your email Id" required>
                                             </fieldset>
                                             <fieldset class="form-group">
                                                 <label>Enter Password</label>
-                                                <input type="password" name="password" class="form-control" placeholder="********">
+                                                <input type="password" name="password" class="form-control" placeholder="********" required>
+                                            </fieldset>
+                                            <!-- OTP Field (hidden by default) -->
+                                            <fieldset class="form-group" id="otp-field" style="display:none;">
+                                                <label>Enter OTP</label>
+                                                <input type="text" name="otp" class="form-control" maxlength="6" placeholder="Enter 6-digit OTP">
                                             </fieldset>
                                             <fieldset class="form-group">
-                                                <button type="submit" class="btn btn-lg btn-secondary btn-block">Enter to your account</button>
+                                                <button id="login-button" type="submit" class="btn btn-lg btn-secondary btn-block">Enter to your account</button>
                                             </fieldset>
-                                            <!-- <div class="login-with-sites text-center">
-                                                <p>or Login with your social profile:</p>
-                                                <button class="btn-facebook login-icons btn-lg"><i class="mdi mdi-facebook"></i> Facebook</button>
-                                                <button class="btn-google login-icons btn-lg"><i class="mdi mdi-google"></i> Google</button>
-                                                <button class="btn-twitter login-icons btn-lg"><i class="mdi mdi-twitter"></i> Twitter</button>
-                                            </div> -->
-                                            <div class="custom-control custom-checkbox">
-                                                <input type="checkbox" class="custom-control-input" id="customCheck1">
-                                                <label class="custom-control-label" for="customCheck1">Remember me</label>
-                                            </div>
                                         </form>
+                                        <div id="login-error" style="color:red;"></div>
                                     </div>
                                     <div class="tab-pane" id="register" role="tabpanel">
                                         <h5 class="heading-design-h5">Register Now!</h5>
-                                        <form action="register.php" method="post">
+                                        <form id="register-form" method="post">
                                             <fieldset class="form-group">
                                                 <label for="emailOrMobile">Enter Email ID</label>
-                                                <input type="text" class="form-control" id="emailOrMobile" name="emailOrMobile" placeholder="+91 123 456 7890" required>
+                                                <input type="text" class="form-control" id="emailOrMobile" name="emailOrMobile" placeholder="enter your email Id" required>
                                             </fieldset>
                                             <fieldset class="form-group">
                                                 <label for="password">Enter Password</label>
@@ -62,16 +58,16 @@ include "../../ecommerce-backend/session_expire.php";
                                                 <label for="refferal_code">Refferal Code (optional)</label>
                                                 <input type="text" class="form-control" id="refferal_code" name="refferal_code" placeholder="Enter Refferal Code">
                                             </fieldset>
-                                            <div class="custom-control custom-checkbox">
-                                                <input type="checkbox" class="custom-control-input" id="customCheck2" required>
-                                                <label class="custom-control-label" for="customCheck2">
-                                                    I Agree with <a href="#">Terms and Conditions</a>
-                                                </label>
-                                            </div>
+                                            <!-- OTP Field (hidden by default) -->
+                                            <fieldset class="form-group" id="register-otp-field" style="display:none;">
+                                                <label>Enter OTP</label>
+                                                <input type="text" name="otp" class="form-control" maxlength="6" placeholder="Enter 6-digit OTP" inputmode="numeric" autocomplete="one-time-code">
+                                            </fieldset>
                                             <fieldset class="form-group mt-3">
-                                                <button type="submit" class="btn btn-lg btn-secondary btn-block">Create Your Account</button>
+                                                <button id="register-button" type="submit" class="btn btn-lg btn-secondary btn-block">Create Your Account</button>
                                             </fieldset>
                                         </form>
+                                        <div id="register-error" style="color:red;"></div>
 
                                     </div>
                                 </div>
@@ -88,6 +84,134 @@ include "../../ecommerce-backend/session_expire.php";
                                 </div>
                                 <div class="clearfix"></div>
                             </div>
+
+                            <script>
+                                // Registration Form Submission
+                                document.getElementById("register-form").addEventListener("submit", function(e) {
+                                    e.preventDefault();
+
+                                    const form = e.target;
+                                    const emailOrMobile = form.emailOrMobile.value.trim();
+                                    const password = form.password.value;
+                                    const confirmPassword = form.confirmPassword.value;
+                                    const referralCode = form.refferal_code?.value || "";
+                                    const otpField = document.getElementById("register-otp-field");
+                                    const otpInput = form.otp; // Ensure this matches the name attribute in your HTML
+                                    const otp = otpInput?.value || "";
+                                    const errorBox = document.getElementById("register-error");
+                                    const registerButton = document.getElementById("register-button");
+                                    if (otpField.style.display === "block") {
+                                        // OTP verification step
+                                        fetch("./registerverify.php", {
+                                                method: "POST",
+                                                headers: {
+                                                    "Content-Type": "application/x-www-form-urlencoded"
+                                                },
+                                                body: `otp=${encodeURIComponent(otp)}`
+                                            })
+                                            .then(res => res.json()) // Handling response as JSON
+                                            .then(result => {
+                                                if (result.success) {
+                                                    window.location.href = result.redirect; // Redirect to the appropriate page
+                                                } else {
+                                                    errorBox.textContent = result.message || "Invalid OTP. Please try again.";
+                                                }
+                                            })
+                                            .catch(err => {
+                                                errorBox.textContent = "An error occurred while verifying OTP.";
+                                            });
+                                    } else {
+                                        // Initial registration step - send data and get OTP
+                                        fetch("./register.php", {
+                                                method: "POST",
+                                                headers: {
+                                                    "Content-Type": "application/x-www-form-urlencoded"
+                                                },
+                                                body: `emailOrMobile=${encodeURIComponent(emailOrMobile)}&password=${encodeURIComponent(password)}&confirmPassword=${encodeURIComponent(confirmPassword)}&refferal_code=${encodeURIComponent(referralCode)}&ajax=1`
+                                            })
+                                            .then(res => res.json()) // Handling response as JSON
+                                            .then(result => {
+                                                if (result.otpSent) {
+                                                    otpField.style.display = "block"; // Show OTP field
+                                                    registerButton.textContent = "Verifying...";
+                                                    errorBox.textContent = "OTP sent to your email.";
+
+                                                    otpInput?.addEventListener("input", () => {
+                                                        if (otpInput.value.length === 6) {
+                                                            form.dispatchEvent(new Event("submit"));
+                                                        }
+                                                    });
+                                                } else {
+                                                    errorBox.textContent = result.message || "Failed to send OTP. Please try again.";
+                                                }
+                                            })
+                                            .catch(err => {
+                                                errorBox.textContent = "An error occurred while sending OTP.";
+                                            });
+                                    }
+                                });
+
+
+
+                                document.getElementById("login-form").addEventListener("submit", function(e) {
+                                    e.preventDefault(); // Prevent default form submission
+
+                                    const form = e.target;
+                                    const email = form.email.value;
+                                    const password = form.password.value;
+                                    const otpField = document.getElementById("otp-field");
+                                    const otpInput = form.otp;
+                                    const otp = otpInput ? otpInput.value : "";
+                                    const errorBox = document.getElementById("login-error");
+
+                                    // If OTP field is visible, user is verifying OTP
+                                    if (otpField.style.display === "block") {
+                                        // Verify OTP
+                                        fetch("../../ecommerce-backend/verify-otp.php", {
+                                                method: "POST",
+                                                headers: {
+                                                    "Content-Type": "application/x-www-form-urlencoded"
+                                                },
+                                                body: `otp=${encodeURIComponent(otp)}`
+                                            })
+                                            .then(res => res.json())
+                                            .then(data => {
+                                                if (data.success) {
+                                                    window.location.href = data.redirect; // Redirect to dashboard or homepage
+                                                } else {
+                                                    errorBox.textContent = data.message;
+                                                }
+                                            });
+                                    } else {
+                                        // First step: validate email and password
+                                        fetch("../../ecommerce-backend/login.php", {
+                                                method: "POST",
+                                                headers: {
+                                                    "Content-Type": "application/x-www-form-urlencoded"
+                                                },
+                                                body: `email=${encodeURIComponent(email)}&password=${encodeURIComponent(password)}&ajax=1`
+                                            })
+                                            .then(res => res.json())
+                                            .then(data => {
+                                                if (data.otpSent) {
+                                                    otpField.style.display = "block"; // Show OTP field
+                                                    document.getElementById("login-button").textContent = "Verifying...";
+                                                    errorBox.textContent = "OTP sent to your email.";
+
+                                                    // Add event listener for OTP input
+                                                    otpInput.addEventListener("input", function() {
+                                                        if (otpInput.value.length === 6) {
+                                                            // Automatically submit the form when 6 digits are entered
+                                                            form.dispatchEvent(new Event("submit"));
+                                                        }
+                                                    });
+                                                } else {
+                                                    errorBox.textContent = data.message;
+                                                }
+                                            });
+                                    }
+                                });
+                            </script>
 
                         </div>
                     </div>
